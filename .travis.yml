@@ -20,10 +20,10 @@ script: tox
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel
-  user: simon-m-mudd
+  user: LSDtopotools
   password:
     secure: PLEASE_REPLACE_ME
   on:
     tags: true
-    repo: simon-m-mudd/lsdmviztools
+    repo: LSDtopotools/lsdmviztools
     python: 3.8
