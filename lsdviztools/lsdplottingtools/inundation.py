@@ -8,7 +8,7 @@ ID algorithm, or in the Channel, using the channel network and measuring along
 this line. The mean, max, and total area wil be able to be calculated.)
 """
 
-import LSDMap_GDALIO as lsdgdal
+import lsdmap_gdalio as lsdgdal
 import numpy as _np
 import matplotlib.pyplot as plt
 import glob
