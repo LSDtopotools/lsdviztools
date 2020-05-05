@@ -11,11 +11,11 @@ import numpy as np
 from matplotlib import rcParams
 from .adjust_text import adjust_text
 from lsdviztools.lsdplottingtools import lsdmap_gdalio as LSDMap_IO
-import lsdplottingtools.lsdmap_basicmanipulation as LSDMap_BM
-import lsdplottingtools.lsdmap_osystemtools as LSDOst
+from lsdviztools.lsdplottingtools import lsdmap_basicmanipulation as LSDMap_BM
+from lsdviztools.lsdplottingtools import lsdmap_osystemtools as LSDOst
 from scipy import signal
 import matplotlib.pyplot as plt
-from lsdplottingtools import colours
+from lsdviztools.lsdplottingtools import colours
 
 
 def TickSpineFormatter(ax, sizeformat = "esurf"):
