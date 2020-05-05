@@ -10,7 +10,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import numpy as np
 from matplotlib import rcParams
 from .adjust_text import adjust_text
-import lsdplottingtools.lsdmap_gdalio as LSDMap_IO
+from lsdviztools.lsdplottingtools import lsdmap_gdalio as LSDMap_IO
 import lsdplottingtools.lsdmap_basicmanipulation as LSDMap_BM
 import lsdplottingtools.lsdmap_osystemtools as LSDOst
 from scipy import signal
@@ -364,7 +364,7 @@ def GetTicksForUTMNoInversion(FileName,x_max,x_min,y_max,y_min,n_target_tics,min
 
     CellSize,XMin,XMax,YMin,YMax = LSDMap_IO.GetUTMMaxMin(FileName)
     NDV, xsize, ysize, GeoT, Projection, DataType = LSDMap_IO.GetGeoInfo(FileName)
-    
+
     # take min and max specified as input arguments (MDH addition, these arguments were not otherwise used).
     Extents = [x_min,x_max,y_min,y_max]
     if None not in Extents:
@@ -372,7 +372,7 @@ def GetTicksForUTMNoInversion(FileName,x_max,x_min,y_max,y_min,n_target_tics,min
       XMax = x_max
       YMin = y_min
       YMax = y_max
-      
+
     #print("Getting ticks. YMin: "+str(YMin)+" and YMax: "+str(YMax))
 
     xmax_UTM = XMax
