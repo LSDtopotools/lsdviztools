@@ -1,4 +1,5 @@
 #=============================================================================
+#=============================================================================
 # These functions create figures for Basic visualization
 # 
 #
@@ -16,7 +17,6 @@ import matplotlib
 matplotlib.use('Agg')
 
 import numpy as np
-import lsdplottingtools as LSDP
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
 import matplotlib.ticker as ticker

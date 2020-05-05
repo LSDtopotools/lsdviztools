@@ -15,7 +15,7 @@ import lsdplottingtools.lsdmap_basicmanipulation as LSDMap_BM
 import lsdplottingtools.lsdmap_osystemtools as LSDOst
 from scipy import signal
 import matplotlib.pyplot as plt
-from LSDPlottingTools import colours
+from lsdplottingtools import colours
 
 
 def TickSpineFormatter(ax, sizeformat = "esurf"):
