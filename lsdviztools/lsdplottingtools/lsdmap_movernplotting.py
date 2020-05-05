@@ -16,7 +16,6 @@ import matplotlib
 matplotlib.use('Agg')
 
 import numpy as np
-import LSDPlottingTools as LSDP
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
 import matplotlib.ticker as ticker
@@ -27,11 +26,14 @@ import os
 import subprocess
 from matplotlib import cm
 #from shapely.geometry import Polygon
-from lsdmapfigure import plottinghelpers as Helper
-from lsdmapfigure.plottingraster import MapFigure
-from lsdmapfigure.plottingraster import BaseRaster
-from lsdplottingtools import lsdmap_saplotting as SA
-from lsdplottingtools import joyplot
+from lsdviztools.lsdmapfigure import plottinghelpers as Helper
+from lsdviztools.lsdmapfigure.plottingraster import MapFigure
+from lsdviztools.lsdmapfigure.plottingraster import BaseRaster
+from lsdviztools.lsdplottingtools import lsdmap_saplotting as SA
+from lsdviztools.lsdplottingtools import joyplot
+from lsdviztools.lsdplottingtools import lsdmap_pointtools as LSDP
+from lsdviztools.lsdplottingtools import lsdmap_vectortools as LSDV
+from lsdviztools.lsdplottingtools import statsutilities as LSDstats
 
 #===========================================
 # Function to make a figure object
@@ -359,8 +361,8 @@ def CompareChiAndSAMOverN(DataDirectory, fname_prefix, basin_list=[0], start_mov
     """
 
 
-    from LSDPlottingTools import LSDMap_PointTools as PointTools
-    from LSDPlottingTools import LSDMap_SAPlotting as SAPlot
+    from lsdplottingtools import lsdmap_pointtools as PointTools
+    from lsdplottingtools import lsdmap_saplotting as SAPlot
 
     # read in binned SA data
     binned_csv_fname = DataDirectory+fname_prefix+'_SAbinned.csv'
@@ -671,8 +673,8 @@ def CheckMLEOutliers(DataDirectory, fname_prefix, basin_list=[0], start_movern=0
             RMSE_array = np.asarray(RMSE_values)
 
             # Get the outliers using the MAD-based outlier function
-            RMSE_outliers = LSDP.lsdstatsutilities.is_outlier(RMSE_array)
-            MLE_outliers = LSDP.lsdstatsutilities.is_outlier(RMSE_array)
+            RMSE_outliers = LSDstats.is_outlier(RMSE_array)
+            MLE_outliers = LSDstats.is_outlier(RMSE_array)
 
             # now check each of the outlier arrays to see if e need to flip the array
             RMSE_index_min = np.argmin(RMSE_array)
@@ -1572,7 +1574,7 @@ def MakeChiPlotsColouredByK(DataDirectory, fname_prefix, basin_list=[0], start_m
 
     Author: FJC
     """
-    from LSDPlottingTools import colours
+    from lsdviztools.lsdplottingtools import colours
 
     # check if a directory exists for the chi plots. If not then make it.
     K_directory = DataDirectory+'chi_plots_K/'
@@ -1768,7 +1770,7 @@ def MakeChiPlotsColouredByLith(DataDirectory, fname_prefix, basin_list=[0], star
 
     Author: FJC
     """
-    from LSDPlottingTools import colours
+    from lsdviztools.lsdplottingtools import colours
     print("WARNING DEPRECATED FUNCTION, USE THE MakeChiPlotsByLith FROM LSDMapLithoPlotting")
 
     # check if a directory exists for the chi plots. If not then make it.
@@ -3176,9 +3178,9 @@ def MakeRasterPlotsBasins(DataDirectory, fname_prefix, size_format='ESURF', FigF
 
     # add the basin outlines ### need to parallelise
     if not parallel:
-      Basins = LSDP.GetBasinOutlines(DataDirectory, BasinsName)
+      Basins = LSDV.GetBasinOutlines(DataDirectory, BasinsName)
     else:
-      Basins = LSDP.GetMultipleBasinOutlines(DataDirectory)
+      Basins = LSDV.GetMultipleBasinOutlines(DataDirectory)
 
     MF.plot_polygon_outlines(Basins, linewidth=0.8)
 
@@ -3366,9 +3368,9 @@ def MakeRasterPlotsMOverN(DataDirectory, fname_prefix, start_movern=0.2, n_mover
 
     # add the basin outlines
     if not parallel:
-      Basins = LSDP.GetBasinOutlines(DataDirectory, BasinsName)
+      Basins = LSDV.GetBasinOutlines(DataDirectory, BasinsName)
     else:
-      Basins = LSDP.GetMultipleBasinOutlines(DataDirectory)
+      Basins = LSDV.GetMultipleBasinOutlines(DataDirectory)
 
     MF.plot_polygon_outlines(Basins, linewidth=0.8)
 

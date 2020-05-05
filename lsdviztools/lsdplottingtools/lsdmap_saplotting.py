@@ -14,14 +14,8 @@ from matplotlib import rcParams
 import pandas as pd
 import os
 from scipy import stats
-#import LSDPlottingTools.LSDMap_GDALIO as LSDMap_IO
-#import LSDMap_BasicManipulation as LSDMap_BM
-#import LSDMap_OSystemTools as LSDOst
-#import LSDPlottingTools.LSDMap_BasicPlotting as LSDMap_BP
-#import LSDPlottingTools.LSDMap_PointTools as LSDMap_PD
-#import LSDPlottingTools.LSDMap_BasicManipulation as LSDMap_BM
-import lsdplottingtools.statsutilities as LSDStats
-from lsdmapfigure import plottinghelpers as Helper
+from lsdviztools.lsdplottingtools import statsutilities as LSDStats
+from lsdviztools.lsdmapfigure import plottinghelpers as Helper
 
 
 ##=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=

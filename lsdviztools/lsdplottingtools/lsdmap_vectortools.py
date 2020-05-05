@@ -8,15 +8,15 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import numpy as np
-from . import LSDMap_GDALIO as LSDMap_IO
+from . import lsdmap_gdalio as LSDMap_IO
 from shapely.geometry import Point, Polygon
 import os
 from os.path import exists
 from osgeo import ogr, osr
-import LSDPlottingTools as LSDPT
+from lsdviztools import lsdplottingtools as LSDPT
 import gdal as gdal
 from osgeo.gdalconst import GA_ReadOnly
-from lsdmapfigure import plottinghelpers as Helper
+from lsdviztools.lsdmapfigure import plottinghelpers as Helper
 
 #=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
 # BASIN FUNCTIONS

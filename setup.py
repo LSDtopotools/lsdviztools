@@ -34,7 +34,7 @@ setup(
     description="lsdviztools is a collection of routines for plotting geospatial data, with a focus on data produces by LSDTopoTools or by lsdtopytools.",
     entry_points={
         'console_scripts': [
-            'plotbasicrasters=lsdviztools.scripts.plotbasicrasters.cli:main',
+            'plotbasicrasters=lsdviztools.scripts.plotbasicrasters:main',
         ],
     },
     install_requires=requirements,

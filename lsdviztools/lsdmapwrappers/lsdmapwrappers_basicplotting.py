@@ -30,11 +30,11 @@ from matplotlib import rcParams
     That is, it will not work if you call it from outside the directory structure.
 
 """
-import lsdplottingtools as LSDP
-import lsdplottingtools.lsdmap_pointtools as LSDMap_PD
-from lsdmapfigure.plottingraster import MapFigure
-import lsdmapfigure.plottinghelpers as PlotHelp
-#import LSDPlottingTools.LSDMap_VectorTools as LSDMap_VT
+from lsdviztools.lsdplottingtools import lsdmap_pointtools as LSDP
+from lsdviztools.lsdplottingtools import lsdmap_vectortools as LSDP
+from lsdviztools.lsdmapfigure.plottingraster import MapFigure
+from lsdviztools.lsdmapfigure import plottinghelpers as PlotHelp
+
 
 
 def SimpleHillshade(DataDirectory,Base_file, cmap = "jet", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = ""):
@@ -250,7 +250,7 @@ def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap =
     ChannelFileName = fname_prefix+"_CN.csv"
     chi_csv_fname = DataDirectory+ChannelFileName
 
-    thisPointData = LSDMap_PD.LSDMap_PointData(chi_csv_fname)
+    thisPointData = LSDP.LSDMap_PointData(chi_csv_fname)
 
 
     # clear the plot
@@ -317,7 +317,7 @@ def PrintChannels(DataDirectory,fname_prefix, ChannelFileName, add_basin_labels 
     
     print("Let me get the point data")
     print("The filename is: "+chi_csv_fname)
-    thisPointData = LSDMap_PD.LSDMap_PointData(chi_csv_fname)
+    thisPointData = LSDP.LSDMap_PointData(chi_csv_fname)
     print("The parameter names are")
     thisPointData.GetParameterNames(True)
     
@@ -397,13 +397,13 @@ def PrintChannelsAndBasins(DataDirectory,fname_prefix, add_basin_labels = True, 
     HillshadeName = fname_prefix+'_hs'+raster_ext
     BasinsName = fname_prefix+'_AllBasins'+raster_ext
     print (BasinsName)
-    Basins = LSDP.GetBasinOutlines(DataDirectory, BasinsName)
+    Basins = LSDV.GetBasinOutlines(DataDirectory, BasinsName)
 
 
     ChannelFileName = fname_prefix+"_chi_data_map.csv"
     chi_csv_fname = DataDirectory+ChannelFileName
 
-    thisPointData = LSDMap_PD.LSDMap_PointData(chi_csv_fname)
+    thisPointData = LSDP.LSDMap_PointData(chi_csv_fname)
 
 
     # clear the plot
@@ -491,7 +491,7 @@ def PrintBasins(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet
     HillshadeName = fname_prefix+'_hs'+raster_ext
     BasinsName = fname_prefix+'_AllBasins'+raster_ext
     print (BasinsName)
-    Basins = LSDP.GetBasinOutlines(DataDirectory, BasinsName)
+    Basins = LSDV.GetBasinOutlines(DataDirectory, BasinsName)
 
     # If wanted, add the labels
     if add_basin_labels:
@@ -605,7 +605,7 @@ def PrintBasins_Complex(DataDirectory,fname_prefix,
         ChannelFileName = fname_prefix+"_chi_data_map.csv"
         chi_csv_fname = DataDirectory+ChannelFileName
 
-        thisPointData = LSDMap_PD.LSDMap_PointData(chi_csv_fname)
+        thisPointData = LSDP.LSDMap_PointData(chi_csv_fname)
 
         MF.add_point_data(thisPointData,column_for_plotting = "basin_key",
                        scale_points = True,column_for_scaling = "drainage_area",

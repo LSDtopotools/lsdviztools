@@ -26,5 +26,5 @@ install:
   - conda activate test-environment
   - python setup.py install
 
-script:
-  # Your test script goes here
+script: plotbasicrasters -h
+  

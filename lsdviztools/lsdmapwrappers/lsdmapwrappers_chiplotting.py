@@ -31,12 +31,11 @@ from matplotlib import rcParams
     That is, it will not work if you call it from outside the directory structure.
 
 """
-import lsdplottingtools as LSDP
-import lsdplottingtools.lsdmap_pointtools as LSDMap_PD
-from lsdmapfigure.plottingraster import MapFigure
-import lsdmapfigure.plottinghelpers as PlotHelp
-import lsdplottingtools.lsdmap_chiplotting as LSDCP
-#import LSDPlottingTools.adjust_text
+from lsdviztools.lsdplottingtools import lsdmap_vectortools as LSDV
+from lsdviztools.lsdplottingtools import lsdmap_pointtools as LSDMap_PD
+from lsdviztools.lsdmapfigure.plottingraster import MapFigure
+from lsdviztools.lsdmapfigure import plottinghelpers as PlotHelp
+from lsdviztools.lsdplottingtools import lsdmap_chiplotting as LSDCP
 
 
 def PrintChiChannels(DataDirectory,fname_prefix, ChannelFileName, add_basin_labels = True, cmap = "jet", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250,plotting_column = "source_key",discrete_colours = False, NColours = 10, out_fname_prefix = ""):
@@ -165,7 +164,7 @@ def PrintChiChannelsAndBasins(DataDirectory,fname_prefix, ChannelFileName, add_b
     HillshadeName = fname_prefix+'_hs'+raster_ext
     BasinsName = fname_prefix+'_AllBasins'+raster_ext
     print (BasinsName)
-    Basins = LSDP.GetBasinOutlines(DataDirectory, BasinsName)
+    Basins = LSDV.GetBasinOutlines(DataDirectory, BasinsName)
 
     chi_csv_fname = DataDirectory+ChannelFileName
     chi_csv_fname = DataDirectory+ChannelFileName
@@ -272,7 +271,7 @@ def PrintChiCoordChannelsAndBasins(DataDirectory,fname_prefix, ChannelFileName, 
     BasinsName = fname_prefix+'_AllBasins'+raster_ext
     ChiCoordName = fname_prefix+'_Maskedchi'+raster_ext
     print (BasinsName)
-    Basins = LSDP.GetBasinOutlines(DataDirectory, BasinsName)
+    Basins = LSDV.GetBasinOutlines(DataDirectory, BasinsName)
 
     chi_csv_fname = DataDirectory+ChannelFileName
     chi_csv_fname = DataDirectory+ChannelFileName
@@ -434,7 +433,7 @@ def PrintMultipleStacked(DataDirectory,fname_prefix, ChannelFileNameList, cmap =
     """
 
     # We need to import this because we need to convert point formats
-    import LSDPlottingTools.LSDMap_PointTools as LSDMap_PD
+    from lsdviztools.lsdplottingtools import lsdmap_pointtools as LSDMap_PD
     
     print("Let me print some multiply stacked profile plots for you")
 

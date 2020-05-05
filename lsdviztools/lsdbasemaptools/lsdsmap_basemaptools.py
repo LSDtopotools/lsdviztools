@@ -19,7 +19,7 @@ import cartopy.feature as cfeature
 from cartopy.feature import ShapelyFeature
 import cartopy.io.shapereader as shpreader
 
-import lsdplottingtools.lsdmap_gdalio as LSDMGDAL
+from lsdplottingtools import lsdmap_gdalio as LSDMGDAL
 #from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
 import numpy as np

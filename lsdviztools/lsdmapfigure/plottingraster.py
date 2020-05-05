@@ -16,7 +16,7 @@ This software is released under the Artistic Licence v2.0
 """
 
 # LSDPlottingTools must be in your pythonpath
-import lsdplottingtools as LSDP
+from lsdviztools import lsdplottingtools as LSDP
 from . import plottinghelpers as phelp
 import matplotlib as mpl
 import matplotlib.pyplot as plt

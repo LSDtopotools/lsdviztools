@@ -16,7 +16,7 @@ import sys
 import os
 import pandas as pd
 from lsdviztools.lsdplottingtools import lsdmap_movernplotting as MN
-import lsdviztools.lsdmapwrappers as LSDMW
+from lsdviztools import lsdmapwrappers as LSDMW
 from lsdviztools.lsdmapfigure import plottinghelpers as phelp
 import lsdviztools.lsdplottingtools as LSDP
 from osgeo import ogr
@@ -310,8 +310,11 @@ def DoesBasinInfoExist(DataDir,fname_prefix):
 #=============================================================================
 # This is the main function that runs the whole thing
 #=============================================================================
-def main(argv):
+def main(args=None):
 
+    if args is None:
+        args = sys.argv[1:]    
+    
     # If there are no arguments, send to the welcome screen
     if not len(sys.argv) > 1:
         full_paramfile = print_welcome()
@@ -880,5 +883,5 @@ def main(argv):
 
 #=============================================================================
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()
 
