@@ -13,6 +13,8 @@ install:
   - sudo apt-get update
   - pip install -U pip tox-travis
   - sudo apt-get install proj-bin
+  - pip install -U cython numpy pyshp six
+  - pip install shapely --no-binary shapely
 
 # Command to run tests, e.g. python setup.py test
 script: tox
