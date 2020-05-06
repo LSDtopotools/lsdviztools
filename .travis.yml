@@ -12,7 +12,7 @@ python:
 install: 
   - sudo apt-get update
   - pip install -U pip tox-travis
-  - sudo apt-get install proj-bin geos
+  - sudo apt-get install proj-bin
 
 # Command to run tests, e.g. python setup.py test
 script: tox
