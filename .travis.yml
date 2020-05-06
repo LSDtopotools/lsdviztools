@@ -7,36 +7,39 @@ python:
   - 3.7
   - 3.6
 
-
-# Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
-install: 
-  - sudo apt-get update
-  - pip install -U pip tox-travis
-  - sudo apt-get install proj-bin
-  - pip install -U cython numpy pyshp six
-  - pip install shapely --no-binary shapely
-
-# Command to run tests, e.g. python setup.py test
-script: tox
-
-
-#install:
+## The commented code below was a failed attempt to get this working with pip and tox
+## Command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
+#install: 
 #  - sudo apt-get update
-#  # We do this conditionally because it saves us some downloading if the
-#  # version is the same.
-#  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-#  - bash miniconda.sh -b -p $HOME/miniconda
-#  - source "$HOME/miniconda/etc/profile.d/conda.sh"
-#  - hash -r
-#  - conda config --set always_yes yes --set changeps1 no
-#  - conda config --add channels conda-forge
-#  - conda config --set channel_priority strict
-#  - conda update -c conda-forge conda
-#  
-#  # Replace dep1 dep2 ... with your dependencies
-#  - conda create -q -n test-environment -c conda-forge python=$TRAVIS_PYTHON_VERSION numpy scipy pandas matplotlib gdal geopandas shapely fiona rasterio pyproj cartopy descartes utm
-#  - conda activate test-environment
-#  - python setup.py install
+#  - pip install -U pip tox-travis
+#  - sudo apt-get install proj-bin
+#  - pip install -U cython numpy pyshp six
+#  - pip install shapely --no-binary shapely
 #
-#script: plotbasicrasters -h
+## Command to run tests, e.g. python setup.py test
+#script: tox
+
+
+install:
+  - sudo apt-get update
+  # We do this conditionally because it saves us some downloading if the
+  # version is the same.
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - source "$HOME/miniconda/etc/profile.d/conda.sh"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda config --add channels conda-forge
+  - conda config --set channel_priority strict
+  - conda update -c conda-forge conda
+  
+  # Replace dep1 dep2 ... with your dependencies
+  - conda create -q -n test-environment -c conda-forge python=$TRAVIS_PYTHON_VERSION numpy scipy pandas matplotlib gdal geopandas shapely fiona rasterio pyproj cartopy descartes utm
+  - conda activate test-environment
+  - python setup.py install
+
+script: plotbasicrasters -h
+  
+  
+  
   
