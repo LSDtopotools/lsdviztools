@@ -3,10 +3,10 @@ lsdviztools
 ===============
 
 
-.. image:: https://img.shields.io/pypi/v/lsdviztools.svg
-        :target: https://pypi.python.org/pypi/lsviztools
+.. image:: https://img.shields.io/pypi/v/lsdviztools.svg?branch=master
+        :target: https://pypi.org/project/lsdviztools/
 
-.. image:: https://img.shields.io/travis/LSDtopotools/lsdviztools.svg
+.. image:: https://travis-ci.com/LSDtopotools/lsdviztools.svg?branch=master
         :target: https://travis-ci.com/LSDtopotools/lsdviztools
 
 .. image:: https://readthedocs.org/projects/lsdviztools/badge/?version=latest
