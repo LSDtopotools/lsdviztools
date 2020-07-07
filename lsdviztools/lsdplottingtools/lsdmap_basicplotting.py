@@ -1395,7 +1395,7 @@ def BasinsOverFancyHillshade(FileName, HSName, BasinName, Basin_csv_name, basin_
 
 #==============================================================================
 # Make a simple hillshade plot
-def Hillshade(raster_file, azimuth = 315, angle_altitude = 45, NoDataValue = -9999,z_factor = 1):
+def Hillshade(raster_file, azimuth = 315, angle_altitude = 45, NoDataValue = -9999,z_factor = 1, resolution = 30.0):
     """Creates a hillshade raster
 
     Args:
@@ -1411,11 +1411,17 @@ def Hillshade(raster_file, azimuth = 315, angle_altitude = 45, NoDataValue = -99
         DAV and SWDG
     """
 
+    
+    import rasterio as rio
     #print("The raster file is: "+raster_file)
 
     # You have passed a filepath to be read in as a raster
     if isinstance(raster_file, str):
-      array = LSDMap_IO.ReadRasterArrayBlocks(raster_file,raster_band=1)
+      src =  rio.open(raster_file)
+      gt = raster.affine
+      resolution = gt[0]
+      array = src.read(1)
+      #array = LSDMap_IO.ReadRasterArrayBlocks(,raster_band=1)
 
     # You already have an array and just want the hill shade
     elif isinstance(raster_file, np.ndarray):
@@ -1423,11 +1429,16 @@ def Hillshade(raster_file, azimuth = 315, angle_altitude = 45, NoDataValue = -99
     else:
         print("raster_file must be either a filepath (string) or a numpy array. Try again.")
 
-    # DAV attempting mask nodata vals
-    nodata_mask = array == NoDataValue
-    array[nodata_mask] = np.nan
+    # masking nodata vals
+    #print("The dtype of the data is")
+    #print(array.dtype)
+    array = array.astype(float)
+    resolution = float(resolution)
+    #print("The dtype of the data should not be float")
+    #print(array.dtype)
+    array[array < 0] = np.nan
 
-    x, y = np.gradient(array)
+    x, y = np.true_divide(np.gradient(array),resolution)
     slope = np.pi/2. - np.arctan(np.multiply(z_factor,np.sqrt(x*x + y*y)))
     aspect = np.arctan2(-x, y)
     azimuthrad = azimuth*np.pi / 180.

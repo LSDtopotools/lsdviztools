@@ -10,6 +10,8 @@ import lsdviztools.lsdbasemaptools as bmt
 from lsdviztools.lsdplottingtools import lsdmap_gdalio as gio
 import lsdviztools.lsdplottingtools as lsdplt
 import rasterio as rio
+import numpy as np
+import lsdviztools.lsdmapwrappers as lsdmw
 
 def test_01():
     this_DEM = bmt.ot_scraper()
@@ -29,12 +31,19 @@ def test_02():
     src =  rio.open("mySRTM_SRTM30_UTM.tif")
     rast = src.read(1)
     
+    rast = rast.astype(float)
+    rast[rast < -5] = np.nan
+    
     hs_rast = lsdplt.Hillshade(rast)
     
     gio.array2raster("mySRTM_SRTM30_UTM.tif","mySRTM_SRTM30_UTM_HS.bil",hs_rast)
+    gio.array2raster("mySRTM_SRTM30_UTM.tif","mySRTM_SRTM30_UTM.bil",rast)
 
 
-
+    DataDirectory = "./"
+    Base_file = "mySRTM_SRTM30_UTM"
+    
+    lsdmw.SimpleHillshade(DataDirectory,Base_file)
 
 
 if __name__ == "__main__":

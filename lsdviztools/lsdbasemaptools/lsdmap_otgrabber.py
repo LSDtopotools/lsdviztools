@@ -220,7 +220,7 @@ class ot_scraper(object):
 						dst_resolution=res_tuple,
 						dst_transform=transform,
 						dst_crs=dst_crs,
-						resampling=Resampling.lanczos)
+						resampling=Resampling.cubic)
 		dem_datam2 = rio.open(output_filename)
 
 		print(dem_datam2.meta)			
@@ -265,5 +265,4 @@ class ot_scraper(object):
 		gdal_command = "gdalwarp -t_srs '%s' -tr %s %s -r cubic %s %s %s "%(EPSG, res, res, output_format, self.path+self.prefix+"_"+self.source+ ".tif", self.path+self.prefix+"_"+self.source + "_UTM" + ext)
 		sub.call(gdal_command, shell = True)
 		
-	
 		
