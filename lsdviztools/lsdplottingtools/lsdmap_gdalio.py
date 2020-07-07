@@ -16,6 +16,8 @@ from osgeo import ogr
 import os
 from os.path import exists
 from osgeo.gdalconst import GA_ReadOnly
+import rasterio as rio
+from lsdviztools.lsdplottingtools import lsdmap_basicplotting as bm
 
 #==============================================================================
 def getNoDataValue(rasterfn):
@@ -1074,3 +1076,81 @@ def GetCentreAndExtentOfRaster(DataDirectory, RasterFile):
     #    print("The point is: ")
     #    print(str(pt[0])+" "+str(pt[1]))
     
+def convert2bil(DataDirectory, RasterFile,minimum_elevation=0):
+    """
+    This converts a raster to bil format
+    
+     Args:
+        DataDirectory (str): the data directory with the basin raster
+        RasterFile (str): the name of the raster
+        minimum_elevation (float): the minimum elevation of the raster, below this you have nodata
+
+    Returns:
+        no return, but prints and ENVI bil to file 
+
+    Author: SMM
+    
+    Date: 07/07/2020   
+    
+    """
+
+    # get the filename of the outfile.
+    if not DataDirectory.endswith(os.sep):
+        print("You forgot the separator at the end of the directory, appending...")
+        DataDirectory = DataDirectory+os.sep
+        
+    # Get the raster prefix
+    SplitRasterfile = RasterFile.split(".")
+    RasterPrefix = SplitRasterfile[0]
+    
+    fname = DataDirectory+RasterFile
+    
+    src =  rio.open(fname)
+    rast = src.read(1)
+    
+    rast = rast.astype(float)
+    rast[rast < minimum_elevation] = np.nan
+    
+    outname = DataDirectory+RasterPrefix+".bil"
+    
+    array2raster(fname ,outname,rast)  
+    
+    
+#==============================================================================
+# Make a simple hillshade plot
+def write_hillshade_bil(DataDirectory, RasterFile, azimuth = 315, angle_altitude = 45, NoDataValue = -9999,z_factor = 1, resolution = 30.0):
+    """Creates a hillshade raster
+
+    Args:
+        raster_file (str): The name of the raster file with path and extension.
+        azimuth (float): Azimuth of sunlight
+        angle_altitude (float): Angle altitude of sun
+        NoDataValue (float): The nodata value of the raster
+
+    Returns:
+        HSArray (numpy.array): The hillshade array
+
+    Author:
+        SMM
+        
+    Date: 07/07/2020
+    """
+
+    
+    # get the filename of the outfile.
+    if not DataDirectory.endswith(os.sep):
+        print("You forgot the separator at the end of the directory, appending...")
+        DataDirectory = DataDirectory+os.sep
+        
+    # Get the raster prefix
+    SplitRasterfile = RasterFile.split(".")
+    RasterPrefix = SplitRasterfile[0]    
+    
+    RasterName = DataDirectory+RasterFile
+    
+    
+    hs = bm.Hillshade(RasterName, azimuth = azimuth, angle_altitude = angle_altitude, NoDataValue = NoDataValue,z_factor = z_factor, resolution = resolution)
+    
+    outname = DataDirectory+RasterPrefix+"_HS.bil"
+    array2raster(RasterName,outname,hs)  
+

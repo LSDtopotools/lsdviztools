@@ -28,16 +28,26 @@ def test_02():
     # Now I am going to try to get a hillshade
     #rast = gio.ReadRasterArrayBlocks_numpy("mySRTM_SRTM30_UTM.tif")
     
-    src =  rio.open("mySRTM_SRTM30_UTM.tif")
-    rast = src.read(1)
     
-    rast = rast.astype(float)
-    rast[rast < -5] = np.nan
+    RasterFile = "mySRTM_SRTM30_UTM.tif"
+    DataDirectory = "./"
     
-    hs_rast = lsdplt.Hillshade(rast)
+    gio.convert2bil(DataDirectory, RasterFile,minimum_elevation=-5)
     
-    gio.array2raster("mySRTM_SRTM30_UTM.tif","mySRTM_SRTM30_UTM_HS.bil",hs_rast)
-    gio.array2raster("mySRTM_SRTM30_UTM.tif","mySRTM_SRTM30_UTM.bil",rast)
+    gio.write_hillshade_bil(DataDirectory, RasterFile)
+    
+    
+    
+    #src =  rio.open("mySRTM_SRTM30_UTM.tif")
+    #rast = src.read(1)
+    
+    #rast = rast.astype(float)
+    #rast[rast < -5] = np.nan
+    
+    #hs_rast = lsdplt.Hillshade(rast)
+    
+    #gio.array2raster("mySRTM_SRTM30_UTM.tif","mySRTM_SRTM30_UTM_HS.bil",hs_rast)
+    #gio.array2raster("mySRTM_SRTM30_UTM.tif","mySRTM_SRTM30_UTM.bil",rast)
 
 
     DataDirectory = "./"

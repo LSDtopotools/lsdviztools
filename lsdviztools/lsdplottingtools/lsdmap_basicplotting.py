@@ -13,6 +13,7 @@ from .adjust_text import adjust_text
 from lsdviztools.lsdplottingtools import lsdmap_gdalio as LSDMap_IO
 from lsdviztools.lsdplottingtools import lsdmap_basicmanipulation as LSDMap_BM
 from lsdviztools.lsdplottingtools import lsdmap_osystemtools as LSDOst
+from lsdviztools.lsdplottingtools import lsdmap_osystemtools as LSDOst
 from scipy import signal
 import matplotlib.pyplot as plt
 from lsdviztools.lsdplottingtools import colours
@@ -1418,8 +1419,8 @@ def Hillshade(raster_file, azimuth = 315, angle_altitude = 45, NoDataValue = -99
     # You have passed a filepath to be read in as a raster
     if isinstance(raster_file, str):
       src =  rio.open(raster_file)
-      gt = raster.affine
-      resolution = gt[0]
+      rX,rY = src.res
+      resolution = rX
       array = src.read(1)
       #array = LSDMap_IO.ReadRasterArrayBlocks(,raster_band=1)
 
@@ -1454,6 +1455,7 @@ def Hillshade(raster_file, azimuth = 315, angle_altitude = 45, NoDataValue = -99
     #this_array = 255*(shaded + 1)/2
     return 255*(shaded + 1)/2
 #==============================================================================
+
 
 
 #==============================================================================
