@@ -12,14 +12,15 @@ from __future__ import absolute_import, division, print_function
 import matplotlib
 matplotlib.use('Agg')
 
-import cartopy
-import cartopy.crs as ccrs
-import cartopy.feature as cfeature
-#from cartopy.io.shapereader import Reader
-from cartopy.feature import ShapelyFeature
-import cartopy.io.shapereader as shpreader
+#import cartopy
+#import cartopy.crs as ccrs
+#import cartopy.feature as cfeature
+##from cartopy.io.shapereader import Reader
+#from cartopy.feature import ShapelyFeature
+#import cartopy.io.shapereader as shpreader
 
-from lsdplottingtools import lsdmap_gdalio as LSDMGDAL
+from lsdviztools.lsdplottingtools import lsdmap_gdalio as LSDMGDAL
+#from lsdplottingtools import lsdmap_gdalio as LSDMGDAL
 #from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
 import numpy as np
@@ -251,48 +252,48 @@ def GenerateBasemapImageAutomated(DataDirectory, RasterFile, FigWidthInches = 4,
     print(extents)
 
         
-    # Now we set up the extents and coordinate system
-    #if (is_orthographic):
-    #    ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.Orthographic(centre_lat, #centre_long))
-    #    
-    #    ax.add_feature(cfeature.LAND)
-    #    ax.add_feature(cfeature.OCEAN, edgecolor='black')
-    #    ax.set_global()
-    #    ax.gridlines()       
-    if(is_orthographic):
-    
-        ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.NearsidePerspective(
-                        central_latitude=centre_lat,
-                        central_longitude=centre_long,
-                        satellite_height=10000000.0))
-        
-        ax.coastlines(resolution='110m',linewidth=0.5)
-        borders_110m = cfeature.NaturalEarthFeature('cultural', 'admin_0_boundary_lines_land', '110m',edgecolor='face', facecolor=cfeature.COLORS['land'])
-        ax.add_feature(borders_110m, edgecolor='black', facecolor = "none",linewidth=0.5)
-        ax.gridlines()
-     
-    else:    
-        ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.PlateCarree())
-    
-        ax.set_extent([centre_long-0.5*full_extent_long,
-                   centre_long+0.5*full_extent_long,
-                   centre_lat-0.5*full_extent_lat,
-                   centre_lat+0.5*full_extent_lat], ccrs.PlateCarree())
-        
-        land_50m = cfeature.NaturalEarthFeature('physical', 'land', '50m',
-                                        edgecolor='face',
-                                        facecolor=cfeature.COLORS['land'])
-        borders_50m = cfeature.NaturalEarthFeature('cultural', 'admin_0_boundary_lines_land', '50m',
-                                        edgecolor='face',
-                                        facecolor=cfeature.COLORS['land'])
-        ax.add_feature(land_50m, edgecolor='black', linewidth=0.5)
-        ax.add_feature(borders_50m, edgecolor='black', facecolor = "none",linewidth=0.5)
-        #ax.add_feature(cfeature.LAND)
-        #ax.add_feature(cfeature.OCEAN)
-        #ax.add_feature(cfeature.COASTLINE)
-        #ax.add_feature(cfeature.BORDERS, linestyle='--')
-        #ax.add_feature(cfeature.LAKES, alpha=0.5)
-        #ax.add_feature(cfeature.RIVERS)
+#    # Now we set up the extents and coordinate system
+#    #if (is_orthographic):
+#    #    ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.Orthographic(centre_lat, #centre_long))
+#    #    
+#    #    ax.add_feature(cfeature.LAND)
+#    #    ax.add_feature(cfeature.OCEAN, edgecolor='black')
+#    #    ax.set_global()
+#    #    ax.gridlines()       
+#    if(is_orthographic):
+#    
+#        ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.NearsidePerspective(
+#                        central_latitude=centre_lat,
+#                        central_longitude=centre_long,
+#                        satellite_height=10000000.0))
+#        
+#        ax.coastlines(resolution='110m',linewidth=0.5)
+#        borders_110m = cfeature.NaturalEarthFeature('cultural', 'admin_0_boundary_lines_land', '110m',edgecolor='face', facecolor=cfeature.COLORS['land'])
+#        ax.add_feature(borders_110m, edgecolor='black', facecolor = "none",linewidth=0.5)
+#        ax.gridlines()
+#     
+#    else:    
+#        ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.PlateCarree())
+#    
+#        ax.set_extent([centre_long-0.5*full_extent_long,
+#                   centre_long+0.5*full_extent_long,
+#                   centre_lat-0.5*full_extent_lat,
+#                   centre_lat+0.5*full_extent_lat], ccrs.PlateCarree())
+#        
+#        land_50m = cfeature.NaturalEarthFeature('physical', 'land', '50m',
+#                                        edgecolor='face',
+#                                        facecolor=cfeature.COLORS['land'])
+#        borders_50m = cfeature.NaturalEarthFeature('cultural', 'admin_0_boundary_lines_land', '50m',
+#                                        edgecolor='face',
+#                                        facecolor=cfeature.COLORS['land'])
+#        ax.add_feature(land_50m, edgecolor='black', linewidth=0.5)
+#        ax.add_feature(borders_50m, edgecolor='black', facecolor = "none",linewidth=0.5)
+#        #ax.add_feature(cfeature.LAND)
+#        #ax.add_feature(cfeature.OCEAN)
+#        #ax.add_feature(cfeature.COASTLINE)
+#        #ax.add_feature(cfeature.BORDERS, linestyle='--')
+#        #ax.add_feature(cfeature.LAKES, alpha=0.5)
+#        #ax.add_feature(cfeature.RIVERS)
     
  
     # create the shapefile

@@ -43,7 +43,7 @@ class ot_scraper(object):
 	Date: 06/07/2020
 	"""
 	def __init__(self, source = "SRTM30", longitude_W = -5.178834, longitude_E = -4.808695, latitude_S = 56.554025, latitude_N = 56.699391, padding = 0, path = "./", prefix = "mySRTM"):
-		super(DEM_scraper, self).__init__()
+		super(ot_scraper, self).__init__()
 		
 		# Registering the attributes
 		self.source = source
@@ -189,13 +189,6 @@ class ot_scraper(object):
 			EPSG = "327" + str(UTMzone)
 		else:
 			EPSG = "326" + str(UTMzone)
-
-		if(bil):
-			output_format = "-of ENVI"
-			ext = ".bil"
-		else:
-			output_format = ""
-			ext = ".tif"
 
 		res_tuple = (res,res)
 		print("res tuple is:")
