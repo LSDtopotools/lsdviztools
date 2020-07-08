@@ -108,7 +108,7 @@ class ot_scraper(object):
 		url_string = 'https://portal.opentopography.org/otr/getdem?demtype=%s&south=%s&north=%s&west=%s&east=%s&outputFormat=GTiff'%(str_source,self.latitude_S,self.latitude_N,self.longitude_W,self.longitude_E, )
 		filename = self.path+self.prefix+"_"+self.source + ".tif"
 		
-		print("I am going to download the following fgor you:")
+		print("I am going to download the following for you:")
 		print(url_string)
 		print("This might take a little while, depending on the size of the file. ")     
         
@@ -116,6 +116,7 @@ class ot_scraper(object):
 		with urllib.request.urlopen(url_string) as response, open(filename, 'wb') as out_file:
 			shutil.copyfileobj(response, out_file)
 		
+        print("Finished downloading")
 		
 		
 	def download(self):
