@@ -12,10 +12,13 @@ import subprocess
 
 def test_01():
     
-    lsdtt_drive = lsdmw.lsdtt_driver(read_prefix = "mySRTM_SRTM30_UTM")
-    lsdtt_drive.print_parameters()
     
-    lsdtt_drive.write_lsdtt_driver()
+    #param_dict = {}
+    
+    lsdtt_drive = lsdmw.lsdtt_driver(read_prefix = "lg_conception_SRTM30_UTM",write_prefix= "lg_conception_SRTM30_UTM")
+    lsdtt_drive.print_parameters()
+      
+    lsdtt_drive.run_lsdtt_command_line_tool()
     
     
 

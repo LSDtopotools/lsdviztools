@@ -12,7 +12,6 @@ import lsdviztools.lsdplottingtools as lsdplt
 import rasterio as rio
 import numpy as np
 import lsdviztools.lsdmapwrappers as lsdmw
-import 
 
 def test_01():
     this_DEM = bmt.ot_scraper()
@@ -51,10 +50,10 @@ def test_02():
     #gio.array2raster("mySRTM_SRTM30_UTM.tif","mySRTM_SRTM30_UTM.bil",rast)
 
 
-    DataDirectory = "./"
-    Base_file = "lg_conception_SRTM30_UTM"
+    #DataDirectory = "./"
+    #Base_file = "lg_conception_SRTM30_UTM"
     
-    img_name = lsdmw.SimpleHillshade(DataDirectory,Base_file)
+    #img_name = lsdmw.SimpleHillshade(DataDirectory,Base_file)
 
 def test_03():
     SB_DEM = bmt.ot_scraper(source = "SRTM30",longitude_W = -120.464655, longitude_E = -120.254214, latitude_S = 34.440538, latitude_N = 34.610770,prefix = "lg_conception")

@@ -660,6 +660,7 @@ def array2raster(rasterfn,newRasterfn,array,driver_name = "ENVI", noDataValue = 
     pixelHeight = geotransform[5]
     cols = raster.RasterXSize
     rows = raster.RasterYSize
+    
 
     driver = gdal.GetDriverByName(driver_name)
     outRaster = driver.Create(newRasterfn, cols, rows, 1, gdal.GDT_Float32)
@@ -671,18 +672,21 @@ def array2raster(rasterfn,newRasterfn,array,driver_name = "ENVI", noDataValue = 
     outRasterSRS.ImportFromWkt(raster.GetProjectionRef())
     outRaster.SetProjection(outRasterSRS.ExportToWkt())
     outband.FlushCache()
+    raster=None
+    outRaster=None
     
     # Get the raster prefix
     SplitRasterfile = newRasterfn.split(".")
     RasterPrefix = ".".join(SplitRasterfile[:-1])
     hdrname = RasterPrefix+".hdr"
-    print("The raster prefix is: "+RasterPrefix)
+    #print("The raster prefix is: "+RasterPrefix)
     
     if driver_name == "ENVI":
-        print("Appending data ignore value")
+        #print("Appending data ignore value")
         NoDataValue = -9999
-        with open(hdrname,'a') as f:
-            f.write('\ndata ignore value = '+str(noDataValue)+"\n")
+        with open(hdrname,"a") as f:
+            #print("Appending data div to "+hdrname)
+            f.write('data ignore value = '+str(noDataValue)+"\n")
     
 
 #==============================================================================

@@ -8,6 +8,8 @@
 ##=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 #from __future__ import absolute_import, division, print_function, unicode_literals
 from __future__ import absolute_import, division, print_function
+import os
+import subprocess
 
 class lsdtt_driver(object):
 	"""
@@ -90,7 +92,7 @@ class lsdtt_driver(object):
 			
 	def write_lsdtt_driver(self):
 		"""
-		This checks to see if lsdtt is actually installed on the system
+		This writes the lsdtt driver file
 		
   		Returns:
 			A bool: true if it is installed, false if not
@@ -110,12 +112,26 @@ class lsdtt_driver(object):
 			dfile.write("write fname: "+self.write_prefix+"\n")
 			
 			dfile.write("\n\n# Now for the parameters\n")
-			
-			
-			
+						
 			for parameter, value in self.parameter_dictionary.items():
 				dfile.write(parameter+": "+value+"\n")
 				
 					 
 		print("Done writing the driver file")
-			
+		
+	def run_lsdtt_command_line_tool(self):
+		"""
+		Runs the lsdtt command line tool
+
+		Author: SMM
+
+		Date: 10/07/2020	  
+		"""
+		
+		self.write_lsdtt_driver()
+		
+		print("I've finised writing the driver file. Let me run LSDTT for you.")
+		subprocess.run([self.command_line_tool,self.driver_name+".driver"])
+		
+		
+		
