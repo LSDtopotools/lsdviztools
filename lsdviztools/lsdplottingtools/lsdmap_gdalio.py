@@ -671,6 +671,20 @@ def array2raster(rasterfn,newRasterfn,array,driver_name = "ENVI", noDataValue = 
     outRasterSRS.ImportFromWkt(raster.GetProjectionRef())
     outRaster.SetProjection(outRasterSRS.ExportToWkt())
     outband.FlushCache()
+    
+    # Get the raster prefix
+    SplitRasterfile = newRasterfn.split(".")
+    RasterPrefix = ".".join(SplitRasterfile[:-1])
+    hdrname = RasterPrefix+".hdr"
+    print("The raster prefix is: "+RasterPrefix)
+    
+    if driver_name == "ENVI":
+        print("Appending data ignore value")
+        NoDataValue = -9999
+        with open(hdrname,'a') as f:
+            f.write('\ndata ignore value = '+str(noDataValue)+"\n")
+    
+
 #==============================================================================
 
 
@@ -1112,8 +1126,10 @@ def convert2bil(DataDirectory, RasterFile,minimum_elevation=0):
     rast[rast < minimum_elevation] = np.nan
     
     outname = DataDirectory+RasterPrefix+".bil"
+    hname = DataDirectory+RasterPrefix+".hdr"
     
     array2raster(fname ,outname,rast)  
+
     
     
 #==============================================================================
@@ -1151,6 +1167,6 @@ def write_hillshade_bil(DataDirectory, RasterFile, azimuth = 315, angle_altitude
     
     hs = bm.Hillshade(RasterName, azimuth = azimuth, angle_altitude = angle_altitude, NoDataValue = NoDataValue,z_factor = z_factor, resolution = resolution)
     
-    outname = DataDirectory+RasterPrefix+"_HS.bil"
+    outname = DataDirectory+RasterPrefix+"_hs.bil"
     array2raster(RasterName,outname,hs)  
 

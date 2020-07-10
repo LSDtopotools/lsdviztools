@@ -12,6 +12,7 @@ import lsdviztools.lsdplottingtools as lsdplt
 import rasterio as rio
 import numpy as np
 import lsdviztools.lsdmapwrappers as lsdmw
+import 
 
 def test_01():
     this_DEM = bmt.ot_scraper()
@@ -29,10 +30,10 @@ def test_02():
     #rast = gio.ReadRasterArrayBlocks_numpy("mySRTM_SRTM30_UTM.tif")
     
     
-    RasterFile = "mySRTM_SRTM30_UTM.tif"
+    RasterFile = "lg_conception_SRTM30_UTM.tif"
     DataDirectory = "./"
     
-    gio.convert2bil(DataDirectory, RasterFile,minimum_elevation=-5)
+    gio.convert2bil(DataDirectory, RasterFile,minimum_elevation=-1)
     
     gio.write_hillshade_bil(DataDirectory, RasterFile)
     
@@ -51,10 +52,17 @@ def test_02():
 
 
     DataDirectory = "./"
-    Base_file = "mySRTM_SRTM30_UTM"
+    Base_file = "lg_conception_SRTM30_UTM"
     
-    lsdmw.SimpleHillshade(DataDirectory,Base_file)
+    img_name = lsdmw.SimpleHillshade(DataDirectory,Base_file)
 
+def test_03():
+    SB_DEM = bmt.ot_scraper(source = "SRTM30",longitude_W = -120.464655, longitude_E = -120.254214, latitude_S = 34.440538, latitude_N = 34.610770,prefix = "lg_conception")
+    SB_DEM.print_parameters()
+    
+    SB_DEM.download_pythonic()
+    SB_DEM.to_UTM_pythonic()
+    
 
 if __name__ == "__main__":
     test_02()

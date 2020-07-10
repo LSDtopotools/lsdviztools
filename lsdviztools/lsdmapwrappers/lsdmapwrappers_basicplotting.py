@@ -53,7 +53,7 @@ def SimpleHillshade(DataDirectory,Base_file, cmap = "jet", cbar_loc = "right", s
         out_fname_prefix (str): The prefix of the image file. If blank uses the fname_prefix
 
     Returns:
-        Shaded relief plot. The elevation is also included in the plot.
+        A string with the name of the image (printed to file): Shaded relief plot. The elevation is also included in the plot.
 
     Author: FJC, SMM
     """
@@ -85,6 +85,7 @@ def SimpleHillshade(DataDirectory,Base_file, cmap = "jet", cbar_loc = "right", s
         ImageName = DataDirectory+out_fname_prefix+"_hillshade."+fig_format
 
     MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, axis_style = ax_style, FigFormat=fig_format, Fig_dpi = dpi)
+    return ImageName
 
 
 def SimpleDrape(DataDirectory,Base_file, Drape_prefix, cmap = "jet", cbar_loc = "right", cbar_label = "drape colourbar", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", coord_type = "UTM_km", use_scalebar = False, drape_cnorm = "none", colour_min_max = []):
@@ -109,7 +110,7 @@ def SimpleDrape(DataDirectory,Base_file, Drape_prefix, cmap = "jet", cbar_loc = 
         colour_min_max (float list): Sets the minimum and maximum values of the colourbar
 
     Returns:
-        Shaded relief plot. The elevation is also included in the plot.
+        A string with the name of the image (printed to file): Shaded relief plot. The elevation is also included in the plot.
 
     Author: FJC, SMM
     """
@@ -147,6 +148,7 @@ def SimpleDrape(DataDirectory,Base_file, Drape_prefix, cmap = "jet", cbar_loc = 
         ImageName = DataDirectory+out_fname_prefix+"_drape."+fig_format
 
     MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, axis_style = ax_style, FigFormat=fig_format, Fig_dpi = dpi)
+    return ImageName
 
 
 def SimpleHillshadeForAnimation(DataDirectory,Base_file, cmap = "jet", cbar_loc = "right",
@@ -174,7 +176,7 @@ def SimpleHillshadeForAnimation(DataDirectory,Base_file, cmap = "jet", cbar_loc 
         hide_ticklabels (bool): if true, hide the tick labels from the plot
 
     Returns:
-        Shaded relief plot. The elevation is also included in the plot.
+        A string with the name of the image (printed to file): Shaded relief plot. The elevation is also included in the plot.
 
     Author: FJC, SMM
     """
@@ -210,6 +212,7 @@ def SimpleHillshadeForAnimation(DataDirectory,Base_file, cmap = "jet", cbar_loc 
 
     MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, axis_style = ax_style, FigFormat=fig_format, Fig_dpi = dpi, adjust_cbar_characters=False,
                  fixed_cbar_characters=4, hide_ticklabels=hide_ticklabels)
+    return ImageName
 
 
 def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = ""):
@@ -230,7 +233,7 @@ def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap =
 
 
     Returns:
-        Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
+        A string with the name of the image (printed to file): Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
 
     Author: SMM
     """
@@ -273,6 +276,7 @@ def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap =
 
 
     MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, axis_style = ax_style, FigFormat=fig_format, Fig_dpi = dpi)
+    return ImageName
 
 
 
@@ -296,7 +300,7 @@ def PrintChannels(DataDirectory,fname_prefix, ChannelFileName, add_basin_labels 
 
 
     Returns:
-        Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
+        A string with the name of the image (printed to file): A string with the name of the image (printed to file): Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
 
     Author: SMM
     """
@@ -341,6 +345,7 @@ def PrintChannels(DataDirectory,fname_prefix, ChannelFileName, add_basin_labels 
         ImageName = DataDirectory+out_fname_prefix+"_channels_coloured_by_basin."+fig_format
 
     MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, axis_style = ax_style, FigFormat=fig_format, Fig_dpi = dpi)
+    return ImageName
 
 
 
@@ -362,7 +367,7 @@ def PrintChannelsAndBasins(DataDirectory,fname_prefix, add_basin_labels = True, 
 
 
     Returns:
-        Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
+        A string with the name of the image (printed to file): Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
 
     Author: SMM
     """
@@ -427,6 +432,7 @@ def PrintChannelsAndBasins(DataDirectory,fname_prefix, add_basin_labels = True, 
         ImageName = DataDirectory+out_fname_prefix+"_channels_with_basins."+fig_format
 
     MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, axis_style = ax_style, FigFormat=fig_format, Fig_dpi = dpi)
+    return ImageName
 
 
 
@@ -455,7 +461,7 @@ def PrintBasins(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet
 
 
     Returns:
-        Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
+        A string with the name of the image (printed to file): Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
 
     Author: FJC, SMM
     """
@@ -519,6 +525,7 @@ def PrintBasins(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet
         ImageName = DataDirectory+out_fname_prefix+"_basins."+fig_format
 
     MF.save_fig(fig_width_inches = fig_width_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi) # Save the figure
+    return ImageName
 
 
 
@@ -553,7 +560,7 @@ def PrintBasins_Complex(DataDirectory,fname_prefix,
         label_basins (bool): If true, the basins get labels
 
     Returns:
-        Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin. This allows more complex plotting with renamed and excluded basins.
+        A string with the name of the image (printed to file): Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin. This allows more complex plotting with renamed and excluded basins.
 
     Author: FJC, SMM
     """
@@ -644,7 +651,7 @@ def PrintCategorised(DataDirectory,fname_prefix, Drape_prefix,
         out_fname_prefix (str): The prefix of the image file. If blank uses the fname_prefix
 
     Returns:
-        Shaded relief plot with categorised data.
+        A string with the name of the image (printed to file): Shaded relief plot with categorised data.
 
     Author: SMM
     """

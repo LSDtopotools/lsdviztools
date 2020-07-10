@@ -1,9 +1,9 @@
-## LSDMap_BasemapTools.py
+## lsdmap_otgrabber.py
 ##=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-## These functions are tools to create a basemap
+## These functions are tools to grab DEMs from opentopography (thus ot)
 ##=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 ## SMM
-## 24/01/2018
+## 10/07/2020
 ##=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 #from __future__ import absolute_import, division, print_function, unicode_literals
 from __future__ import absolute_import, division, print_function
@@ -57,19 +57,9 @@ class ot_scraper(object):
 		if(self.path != "./"):
 			os.mkdir(self.path)
 			
-	def print_parameters(self):     
+	def print_parameters(self):	 
 		"""
 		This prints the parameters of the scraper object so you don't mess up the download.
-
-		Args:
-			source (str): The data source
-			longitude_W (float): the western longitude
-			longitude_E (float): the eastern longitude
-			latitude_S (float): the southern latitude
-			latitude_N (float): the northern latitude
-			padding (float): how much padding you want around your target area (in decimal degrees)
-			path (str): the directory where you want to put your data
-			prefix (str): the prefix of thefile to be downloaded
 
 		Returns:
 			A printing to screen of the parameters
@@ -78,7 +68,7 @@ class ot_scraper(object):
 
 		Date: 06/07/2020
 		"""
-    
+	
 		print("The source is: "+self.source)
 		print("The west longitude is: "+str(self.longitude_W))
 		print("The east longitude is: "+str(self.longitude_E))
@@ -110,13 +100,13 @@ class ot_scraper(object):
 		
 		print("I am going to download the following for you:")
 		print(url_string)
-		print("This might take a little while, depending on the size of the file. ")     
-        
+		print("This might take a little while, depending on the size of the file. ")	 
+		
 		# Download the file from `url` and save it locally under `file_name`:
 		with urllib.request.urlopen(url_string) as response, open(filename, 'wb') as out_file:
 			shutil.copyfileobj(response, out_file)
-		
-        print("Finished downloading")
+
+		print("Finished downloading")
 		
 		
 	def download(self):
