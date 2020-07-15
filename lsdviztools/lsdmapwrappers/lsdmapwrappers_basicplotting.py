@@ -31,7 +31,7 @@ from matplotlib import rcParams
 
 """
 from lsdviztools.lsdplottingtools import lsdmap_pointtools as LSDP
-from lsdviztools.lsdplottingtools import lsdmap_vectortools as LSDP
+#from lsdviztools.lsdplottingtools import lsdmap_vectortools as LSDV
 from lsdviztools.lsdmapfigure.plottingraster import MapFigure
 from lsdviztools.lsdmapfigure import plottinghelpers as PlotHelp
 
@@ -106,7 +106,7 @@ def SimpleDrape(DataDirectory,Base_file, Drape_prefix, cmap = "jet", cbar_loc = 
         out_fname_prefix (str): The prefix of the image file. If blank uses the fname_prefix
         coord_type (str): this can be in UTM_km or UTM_m
         use_scalebar (bool): If true inserts a scalebar in the image
-        drape_cnorm (str): Sets the normalisation of the colourbar. 
+        drape_cnorm (str): Sets the normalisation of the colourbar.
         colour_min_max (float list): Sets the minimum and maximum values of the colourbar
 
     Returns:
@@ -136,7 +136,7 @@ def SimpleDrape(DataDirectory,Base_file, Drape_prefix, cmap = "jet", cbar_loc = 
     MF = MapFigure(BackgroundRasterName, DataDirectory,coord_type=coord_type,colourbar_location = cbar_loc)
     #MF.add_drape_image(ElevationName,DataDirectory,colourmap = "gray", alpha = 0.6, colorbarlabel = None)
     MF.add_drape_image(DrapeName,DataDirectory,colourmap = cmap, alpha = 0.6, colorbarlabel = cbar_label, norm = drape_cnorm, colour_min_max = colour_min_max)
-    
+
     if(use_scalebar):
         print("Let me add a scalebar")
         MF.add_scalebar()
@@ -318,13 +318,13 @@ def PrintChannels(DataDirectory,fname_prefix, ChannelFileName, add_basin_labels 
     BackgroundRasterName = fname_prefix+"_hs.bil"
     DrapeRasterName = fname_prefix+".bil"
     chi_csv_fname = DataDirectory+ChannelFileName
-    
+
     print("Let me get the point data")
     print("The filename is: "+chi_csv_fname)
     thisPointData = LSDP.LSDMap_PointData(chi_csv_fname)
     print("The parameter names are")
     thisPointData.GetParameterNames(True)
-    
+
 
 
     # clear the plot
@@ -628,8 +628,8 @@ def PrintBasins_Complex(DataDirectory,fname_prefix,
 
     MF.save_fig(fig_width_inches = fig_width_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi, transparent=True) # Save the figure
 
-    
-def PrintCategorised(DataDirectory,fname_prefix, Drape_prefix, 
+
+def PrintCategorised(DataDirectory,fname_prefix, Drape_prefix,
                      show_colourbar = False,
                      cmap = "jet", cbar_loc = "right", cbar_label = "drape colourbar", size_format = "ESURF",
                      fig_format = "png", dpi = 250, out_fname_prefix = ""):
@@ -683,8 +683,8 @@ def PrintCategorised(DataDirectory,fname_prefix, Drape_prefix,
     # set up the base image and the map
     MF = MapFigure(BackgroundRasterName, DataDirectory,coord_type="UTM_km",colourbar_location = cbar_loc)
     #MF.add_drape_image(ElevationName,DataDirectory,colourmap = "gray", alpha = 0.6, colorbarlabel = None)
-    MF.add_categorised_drape_image(CatName,DataDirectory,colourmap = cmap, alpha = 0.7, colorbarlabel = cbar_label, norm = "none")    
-    
+    MF.add_categorised_drape_image(CatName,DataDirectory,colourmap = cmap, alpha = 0.7, colorbarlabel = cbar_label, norm = "none")
+
 
     # Save the image
     if len(out_fname_prefix) == 0:
@@ -693,6 +693,5 @@ def PrintCategorised(DataDirectory,fname_prefix, Drape_prefix,
         ImageName = DataDirectory+out_fname_prefix+"_categorised."+fig_format
 
     MF.save_fig(fig_width_inches = fig_width_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi, transparent=True) # Save the figure
-    
-    
-    
+
+
