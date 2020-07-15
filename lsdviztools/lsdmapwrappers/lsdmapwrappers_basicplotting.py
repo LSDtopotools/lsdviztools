@@ -215,7 +215,7 @@ def SimpleHillshadeForAnimation(DataDirectory,Base_file, cmap = "jet", cbar_loc 
     return ImageName
 
 
-def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = ""):
+def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", channel_colourmap = "Blues"):
     """
     This function prints a channel map over a hillshade. It gets ALL the channels within the DEM
 
@@ -230,7 +230,7 @@ def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap =
         fig_format (str): An image format. png, pdf, eps, svg all valid
         dpi (int): The dots per inch of the figure
         out_fname_prefix (str): The prefix of the image file. If blank uses the fname_prefix
-
+        channel_colourmap (str or cmap): the colourmap of the point data
 
     Returns:
         A string with the name of the image (printed to file): Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
@@ -262,10 +262,10 @@ def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap =
     # set up the base image and the map
     MF = MapFigure(BackgroundRasterName, DataDirectory,coord_type="UTM_km",colourbar_location = "None")
     MF.add_drape_image(DrapeRasterName,DataDirectory,colourmap = cmap, alpha = 0.6)
-    MF.add_point_data(thisPointData,column_for_plotting = "Stream Order",
+    MF.add_point_data(thisPointData,column_for_plotting = "Stream Order", this_colourmap = channel_colourmap,
                        scale_points = True,column_for_scaling = "Stream Order",
                        scaled_data_in_log = False,
-                       max_point_size = 5, min_point_size = 1)
+                       max_point_size = 5, min_point_size = 1,zorder = 100, alpha = 1)
 
 
     # Save the image

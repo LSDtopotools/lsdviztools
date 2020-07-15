@@ -682,8 +682,7 @@ def array2raster(rasterfn,newRasterfn,array,driver_name = "ENVI", noDataValue = 
     #print("The raster prefix is: "+RasterPrefix)
 
     if driver_name == "ENVI":
-        #print("Appending data ignore value")
-        NoDataValue = -9999
+
         with open(hdrname,"a") as f:
             #print("Appending data div to "+hdrname)
             f.write('data ignore value = '+str(noDataValue)+"\n")
@@ -1125,14 +1124,16 @@ def convert2bil(DataDirectory, RasterFile,minimum_elevation=0.01):
 
     src =  rio.open(fname)
     rast = src.read(1)
+    nodatavalue = -9999
 
     rast = rast.astype(float)
-    rast[rast < minimum_elevation] = np.nan
+    print("Removing pixels with an elevation less than "+str(minimum_elevation))
+    rast[rast < minimum_elevation] = nodatavalue
 
     outname = DataDirectory+RasterPrefix+".bil"
     hname = DataDirectory+RasterPrefix+".hdr"
 
-    array2raster(fname ,outname,rast)
+    array2raster(fname ,outname,rast,noDataValue=nodatavalue)
 
 
 
