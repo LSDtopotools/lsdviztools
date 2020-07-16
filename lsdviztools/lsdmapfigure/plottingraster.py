@@ -1129,7 +1129,9 @@ class MapFigure(object):
         """
         fig = matplotlib.pyplot.gcf()
         ax_list.append(fig.add_axes([0.1,0.8,0.05,0.2]))
-        cbar = plt.colorbar(im,cmap=BaseRaster._colourmap,spacing='uniform', orientation=self.colourbar_orientation,cax=ax_list[-1])
+        cbar = plt.colorbar(im,cmap=BaseRaster._colourmap,spacing='uniform', orientation=self.colourbar_orientation,cax=ax_list[-1],drawedges=False)
+        cbar.solids.set_rasterized(True)
+        cbar.solids.set_edgecolor("face")
 
         if discrete==True:
             # change ticks
@@ -1267,6 +1269,8 @@ class MapFigure(object):
         fig = matplotlib.pyplot.gcf()
         ax_list.append(fig.add_axes([0.1,0.8,0.2,0.5]))
         cbar = plt.colorbar(sc,cmap=cmap, orientation=self.colourbar_orientation,cax=ax_list[-1])
+        cbar.solids.set_rasterized(True)
+        cbar.solids.set_edgecolor("face")
 
         if self.colourbar_location == 'top':
             ax_list[-1].set_xlabel(colorbarlabel, fontname='Liberation Sans',labelpad=5)
@@ -1304,6 +1308,8 @@ class MapFigure(object):
         cbar = mpl.colorbar.ColorbarBase(ax_list[-1], cmap=this_cmap,
                                 norm=cnorm,
                                 orientation=self.colourbar_orientation)
+        cbar.solids.set_rasterized(True)
+        cbar.solids.set_edgecolor("face")
 
         if discrete==True:
             # change ticks

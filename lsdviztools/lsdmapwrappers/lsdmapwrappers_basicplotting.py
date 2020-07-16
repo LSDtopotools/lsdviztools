@@ -37,7 +37,7 @@ from lsdviztools.lsdmapfigure import plottinghelpers as PlotHelp
 
 
 
-def SimpleHillshade(DataDirectory,Base_file, cmap = "jet", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = ""):
+def SimpleHillshade(DataDirectory,Base_file, cmap = "terrain", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = ""):
     """
     This function makes a shaded relief plot of the DEM.
 
@@ -88,7 +88,7 @@ def SimpleHillshade(DataDirectory,Base_file, cmap = "jet", cbar_loc = "right", s
     return ImageName
 
 
-def SimpleDrape(DataDirectory,Base_file, Drape_prefix, cmap = "jet", cbar_loc = "right", cbar_label = "drape colourbar", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", coord_type = "UTM_km", use_scalebar = False, drape_cnorm = "none", colour_min_max = []):
+def SimpleDrape(DataDirectory,Base_file, Drape_prefix, cmap = "cubehelix", cbar_loc = "right", cbar_label = "drape colourbar", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", coord_type = "UTM_km", use_scalebar = False, drape_cnorm = "none", colour_min_max = [],discrete_cmap=False, n_colours=10):
     """
     This function makes a simple drape plot. You can choose the colourbar in this one. Similar to the PlotHillshade routine but a bit more flexible.
 
@@ -108,6 +108,8 @@ def SimpleDrape(DataDirectory,Base_file, Drape_prefix, cmap = "jet", cbar_loc = 
         use_scalebar (bool): If true inserts a scalebar in the image
         drape_cnorm (str): Sets the normalisation of the colourbar.
         colour_min_max (float list): Sets the minimum and maximum values of the colourbar
+        discrete_cmap (bool): If true, make discrete values for colours, otherwise a gradient.
+        n_colours (int): number of colours in discrete colourbar
 
     Returns:
         A string with the name of the image (printed to file): Shaded relief plot. The elevation is also included in the plot.
@@ -135,7 +137,7 @@ def SimpleDrape(DataDirectory,Base_file, Drape_prefix, cmap = "jet", cbar_loc = 
     # set up the base image and the map
     MF = MapFigure(BackgroundRasterName, DataDirectory,coord_type=coord_type,colourbar_location = cbar_loc)
     #MF.add_drape_image(ElevationName,DataDirectory,colourmap = "gray", alpha = 0.6, colorbarlabel = None)
-    MF.add_drape_image(DrapeName,DataDirectory,colourmap = cmap, alpha = 0.6, colorbarlabel = cbar_label, norm = drape_cnorm, colour_min_max = colour_min_max)
+    MF.add_drape_image(DrapeName,DataDirectory,colourmap = cmap, alpha = 0.6, colorbarlabel = cbar_label, norm = drape_cnorm, colour_min_max = colour_min_max,discrete_cmap = discrete_cmap,n_colours=n_colours)
 
     if(use_scalebar):
         print("Let me add a scalebar")
