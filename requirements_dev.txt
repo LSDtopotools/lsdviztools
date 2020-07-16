@@ -16,7 +16,7 @@ Cartopy==0.18.0
 descartes==1.1.0
 Fiona==1.8.13.post1
 GDAL==3.0.4
-geopandas==0.7.0
+geopandas==0.8.1
 matplotlib==3.2.1
 numpy==1.18.4
 pandas==1.0.3
