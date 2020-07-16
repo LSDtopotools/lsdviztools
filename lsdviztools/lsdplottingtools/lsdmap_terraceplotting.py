@@ -14,8 +14,8 @@ from lsdplottingtools import colours
 import matplotlib.cm as cm
 from matplotlib import rcParams
 from matplotlib import colors as colors
-from lsdplottingtools import lsdmap_gdalio as IO
-from lsdmapfigure import plottinghelpers as H
+from lsdviztools.lsdplottingtools import lsdmap_gdalio as IO
+from lsdviztools.lsdmapfigure import plottinghelpers as H
 from shapely.geometry import shape, Polygon, Point, LineString
 import fiona
 import os

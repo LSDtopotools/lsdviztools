@@ -6,7 +6,7 @@ Created on Sat Feb 11 11:40:41 2017
 @author: dav
 """
 
-import lsdplottingtools.lsdmap_gdalio as lsdio
+from lsdviztools.lsdplottingtools import lsdmap_gdalio as lsdio
 
 import numpy as np
 import scipy as sp

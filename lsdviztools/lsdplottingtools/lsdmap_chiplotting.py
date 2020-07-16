@@ -15,22 +15,21 @@ import matplotlib as mpl
 #from cycler import cycler
 from matplotlib import rcParams
 from matplotlib import colors
-import lsdplottingtools.lsdmap_gdalio as LSDMap_IO
-#import LSDMap_BasicManipulation as LSDMap_BM
-#import LSDMap_OSystemTools as LSDOst
-import lsdplottingtools.lsdmap_basicplotting as LSDMap_BP
-import lsdplottingtools.lsdmap_pointtools as LSDMap_PD
-import lsdplottingtools.lsdmap_basicmanipulation as LSDMap_BM
-import lsdplottingtools.statsutilities as LSDStats
-from lsdmapfigure.plottingraster import MapFigure
-from lsdmapfigure.plottingraster import BaseRaster
-from lsdmapfigure import plottinghelpers as Helper
-from lsdplottingtools import colours as lsdcolours
-from lsdplottingtools import statsutilities as SUT
-from lsdplottingtools import init_plotting_DV
-from lsdplottingtools import adjust_text
-import lsdplottingtools as LSDP
-import lsdmapfigure.plottinghelpers as Helper
+from lsdviztools.lsdplottingtools import lsdmap_gdalio as LSDMap_IO
+from lsdviztools.lsdplottingtools import lsdmap_basicplotting as LSDMap_BP
+from lsdviztools.lsdplottingtools import lsdmap_pointtools as LSDMap_PD
+from lsdviztools.lsdplottingtools import lsdmap_basicmanipulation as LSDMap_BM
+from lsdviztools.lsdplottingtools import statsutilities as LSDStats
+from lsdviztools.lsdmapfigure.plottingraster import MapFigure
+from lsdviztools.lsdmapfigure.plottingraster import BaseRaster
+from lsdviztools.lsdmapfigure import plottinghelpers as Helper
+from lsdviztools.lsdplottingtools import colours as lsdcolours
+from lsdviztools.lsdplottingtools import statsutilities as SUT
+from lsdviztools.lsdplottingtools import init_plotting_DV
+from lsdviztools.lsdplottingtools import adjust_text
+from lsdviztools.lsdplottingtools import lsdmap_vectortools as LSDP
+from lsdviztools.lsdplottingtools import lsdmap_pointtools as PointTools
+from lsdviztools.lsdmapfigure import plottinghelpers as Helper
 
 
 def ConvertBasinIndexToJunction(BasinPointData,BasinIndexList):
@@ -2072,7 +2071,7 @@ def map_Mchi_standard(DataDirectory, fname_prefix, size_format='ESURF', FigForma
     # Sorting the sources
     if(len(source_list)> 0):
         ChannelDF = ChannelDF[ChannelDF["source_key"].isin(source_list)] 
-    ChannelPoints = LSDP.LSDMap_PointData(ChannelDF, data_type = "pandas", PANDEX = True)
+    ChannelPoints = PointTools.LSDMap_PointData(ChannelDF, data_type = "pandas", PANDEX = True)
     MF.add_point_data(ChannelPoints,this_colourmap = "inferno", column_for_plotting = "m_chi",show_colourbar = True, colour_manual_scale = colmanscal, scale_points=True,scaled_data_in_log= True, column_for_scaling='drainage_area',alpha=0.4,max_point_size = 1.58,min_point_size = 0.2,zorder=100)
 
     # add the knickpoints plots

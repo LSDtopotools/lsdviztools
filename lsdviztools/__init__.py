@@ -7,4 +7,4 @@ __url__ = 'TBD'
 __license__ = 'MIT'
 
 
-__all__ = ['lsdbasemaptools', 'lsdmapfigure','lsdmapwrappers','lsdplottingtools']
+__all__ = ['lsdbasemaptools', 'lsdmapfigure','lsdmapwrappers','lsdplottingtools','scripts']

@@ -5,9 +5,9 @@ Created on Sun Jan 29 10:20:18 2017
 @author: smudd
 """
 
-import lsdplottingtools.lsdmap_chiplotting as LSDMap_CP
-import lsdplottingtools.lsdmap_basicplotting as LSDMap_BP
-import lsdplottingtools.lsdmap_osystemtools as LSDOst
+from lsdviztools.lsdplottingtools import lsdmap_chiplotting as LSDMap_CP
+from lsdviztools.lsdplottingtools import lsdmap_basicplotting as LSDMap_BP
+from lsdviztools.lsdplottingtools import lsdmap_osystemtools as LSDOst
 import os
 import sys
 import ast

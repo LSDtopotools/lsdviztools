@@ -10,12 +10,13 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import numpy as np
 from matplotlib import rcParams
 from .adjust_text import adjust_text
-import lsdplottingtools.lsdmap_gdalio as LSDMap_IO
-import lsdplottingtools.lsdmap_basicmanipulation as LSDMap_BM
-import lsdplottingtools.lsdmap_osystemtools as LSDOst
+from lsdviztools.lsdplottingtools import lsdmap_gdalio as LSDMap_IO
+from lsdviztools.lsdplottingtools import lsdmap_basicmanipulation as LSDMap_BM
+from lsdviztools.lsdplottingtools import lsdmap_osystemtools as LSDOst
+from lsdviztools.lsdplottingtools import lsdmap_osystemtools as LSDOst
 from scipy import signal
 import matplotlib.pyplot as plt
-from LSDPlottingTools import colours
+from lsdviztools.lsdplottingtools import colours
 
 
 def TickSpineFormatter(ax, sizeformat = "esurf"):
@@ -364,7 +365,7 @@ def GetTicksForUTMNoInversion(FileName,x_max,x_min,y_max,y_min,n_target_tics,min
 
     CellSize,XMin,XMax,YMin,YMax = LSDMap_IO.GetUTMMaxMin(FileName)
     NDV, xsize, ysize, GeoT, Projection, DataType = LSDMap_IO.GetGeoInfo(FileName)
-    
+
     # take min and max specified as input arguments (MDH addition, these arguments were not otherwise used).
     Extents = [x_min,x_max,y_min,y_max]
     if None not in Extents:
@@ -372,7 +373,7 @@ def GetTicksForUTMNoInversion(FileName,x_max,x_min,y_max,y_min,n_target_tics,min
       XMax = x_max
       YMin = y_min
       YMax = y_max
-      
+
     #print("Getting ticks. YMin: "+str(YMin)+" and YMax: "+str(YMax))
 
     xmax_UTM = XMax
@@ -1395,7 +1396,7 @@ def BasinsOverFancyHillshade(FileName, HSName, BasinName, Basin_csv_name, basin_
 
 #==============================================================================
 # Make a simple hillshade plot
-def Hillshade(raster_file, azimuth = 315, angle_altitude = 45, NoDataValue = -9999,z_factor = 1):
+def Hillshade(raster_file, azimuth = 315, angle_altitude = 45, NoDataValue = -9999,z_factor = 1, resolution = 30.0):
     """Creates a hillshade raster
 
     Args:
@@ -1411,11 +1412,17 @@ def Hillshade(raster_file, azimuth = 315, angle_altitude = 45, NoDataValue = -99
         DAV and SWDG
     """
 
+    
+    import rasterio as rio
     #print("The raster file is: "+raster_file)
 
     # You have passed a filepath to be read in as a raster
     if isinstance(raster_file, str):
-      array = LSDMap_IO.ReadRasterArrayBlocks(raster_file,raster_band=1)
+      src =  rio.open(raster_file)
+      rX,rY = src.res
+      resolution = rX
+      array = src.read(1)
+      #array = LSDMap_IO.ReadRasterArrayBlocks(,raster_band=1)
 
     # You already have an array and just want the hill shade
     elif isinstance(raster_file, np.ndarray):
@@ -1423,11 +1430,16 @@ def Hillshade(raster_file, azimuth = 315, angle_altitude = 45, NoDataValue = -99
     else:
         print("raster_file must be either a filepath (string) or a numpy array. Try again.")
 
-    # DAV attempting mask nodata vals
-    nodata_mask = array == NoDataValue
-    array[nodata_mask] = np.nan
+    # masking nodata vals
+    #print("The dtype of the data is")
+    #print(array.dtype)
+    array = array.astype(float)
+    resolution = float(resolution)
+    #print("The dtype of the data should not be float")
+    #print(array.dtype)
+    array[array < 0] = np.nan
 
-    x, y = np.gradient(array)
+    x, y = np.true_divide(np.gradient(array),resolution)
     slope = np.pi/2. - np.arctan(np.multiply(z_factor,np.sqrt(x*x + y*y)))
     aspect = np.arctan2(-x, y)
     azimuthrad = azimuth*np.pi / 180.
@@ -1443,6 +1455,7 @@ def Hillshade(raster_file, azimuth = 315, angle_altitude = 45, NoDataValue = -99
     #this_array = 255*(shaded + 1)/2
     return 255*(shaded + 1)/2
 #==============================================================================
+
 
 
 #==============================================================================

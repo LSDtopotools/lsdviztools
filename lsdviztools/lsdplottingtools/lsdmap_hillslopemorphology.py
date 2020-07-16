@@ -42,8 +42,8 @@ from descartes import PolygonPatch
 
 # plotting tools for using LSDMapFigure
 import lsdplottingtools as LSDP
-from lsdmapfigure import plottinghelpers as Helper
-from lsdmapfigure.plottingraster import mapfigure
+from lsdviztools.lsdmapfigure import plottinghelpers as Helper
+from lsdviztools.lsdmapfigure.plottingraster import mapfigure
 
 #=============================================================================
 # PRELIMINARY FUNCTIONS

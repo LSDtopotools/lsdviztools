@@ -16,7 +16,7 @@ This software is released under the Artistic Licence v2.0
 """
 
 # LSDPlottingTools must be in your pythonpath
-import lsdplottingtools as LSDP
+from lsdviztools import lsdplottingtools as LSDP
 from . import plottinghelpers as phelp
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -218,7 +218,7 @@ class BaseRaster(object):
             self._RasterArray[old_values_index] = new_values[idx]
         #print self._RasterArray
 
-        
+
     def get_min_max(self):
         """
         Gets the minimum and maximum values from the raster array
@@ -227,12 +227,12 @@ class BaseRaster(object):
 
         Date: 17/03/19
         """
-        
+
         zmin = np.nanmin(self._RasterArray)
         zmax = np.nanmax(self._RasterArray)
-        
+
         return([zmin,zmax])
-    
+
     def get_unique(self):
         """
         Gets unique values from the raster. Used for categorised plotting
@@ -241,9 +241,9 @@ class BaseRaster(object):
 
         Date: 23/03/2020
         """
-        
+
         vals = np.unique(self._RasterArray)
-        
+
         return(vals)
 
 class MapFigure(object):
@@ -376,7 +376,7 @@ class MapFigure(object):
         """
         This function makes the tick marks and the tick labels.
         It has been optimised so you get nice looking ticks, so you shouldn't have to mess with them after this is called.
-        
+
         Update 23/02/2019 SMM I've added a "None" option for the ticks
 
         Author: SMM
@@ -563,11 +563,11 @@ class MapFigure(object):
         #print("Getting axis limits in drape function: ")
         #print(self.ax_list[0].get_xlim())
 
-        
+
     def add_categorised_drape_image(self,RasterName,Directory,colourmap = "gray",
                         alpha=0.5,
                         show_colourbar = False,
-                        colorbarlabel = "Colourbar", 
+                        colorbarlabel = "Colourbar",
                         norm = "None",
                         colour_min_max = [],
                         NFF_opti = False, custom_min_max = [], zorder=1):
@@ -587,33 +587,33 @@ class MapFigure(object):
             custom_min_max (list of int/float): if it contains two elements, recast the raster to [min,max] values for display.
 
         Author: SMM
-        
+
         Date: 23/03/2020
         """
         Raster = BaseRaster(RasterName,Directory, NFF_opti = NFF_opti)
-        
-        
+
+
         # Get unique values
         unique_val = Raster.get_unique()
         print("Unique values are:")
         print(unique_val)
-        
+
         dictOfVal = { i : unique_val[i] for i in range(0, len(unique_val) ) }
-        
+
         replace_ints  = list(range(0, len(unique_val) ))
-        
+
         str_vals = []
         for val in unique_val:
             #x = Decimal(val)
             str_val = '{:.1e}'.format(val)
             str_vals.append(str_val)
-            
+
         dictOfStr = { i : str_vals[i] for i in range(0, len(str_vals) ) }
-        
+
         print(dictOfVal)
         print(dictOfStr)
         print(replace_ints)
-        
+
         # Replace the raster vales with integers
         Raster.replace_raster_values(unique_val, replace_ints)
 
@@ -624,18 +624,18 @@ class MapFigure(object):
 
         if(norm == "none"):
             norm = "None"
-            
+
         # Get minimum and maximum values
         yp = Raster.get_min_max()
         #print("Min and max are")
         #print(yp)
         rmin = yp[0]
-        rmax = yp[1]        
+        rmax = yp[1]
         #print("Minimum is: ")
         #print(rmin)
         #print("Maximum is:")
         #print(rmax)
-            
+
         print("I am going to use the normalisation " + norm)
 
         self._RasterList.append(Raster)
@@ -662,9 +662,9 @@ class MapFigure(object):
                 if(norm == "LogNorm"):
                     im = self.ax_list[0].imshow(self._RasterList[-1]._RasterArray, self._RasterList[-1]._colourmap, extent = self._RasterList[0].extents, interpolation="nearest",alpha = alpha, norm = mpl.colors.LogNorm(vmin=colour_min_max[0], vmax=colour_min_max[1]),zorder=zorder)
                 elif(norm == "PowerNorm"):
-                    im = self.ax_list[0].imshow(self._RasterList[-1]._RasterArray, self._RasterList[-1]._colourmap, extent = self._RasterList[0].extents, interpolation="nearest",alpha = alpha, norm = mpl.colors.PowerNorm(gamma=1. / 2.),zorder=zorder) 
+                    im = self.ax_list[0].imshow(self._RasterList[-1]._RasterArray, self._RasterList[-1]._colourmap, extent = self._RasterList[0].extents, interpolation="nearest",alpha = alpha, norm = mpl.colors.PowerNorm(gamma=1. / 2.),zorder=zorder)
                 else:
-                    im = self.ax_list[0].imshow(self._RasterList[-1]._RasterArray, self._RasterList[-1]._colourmap, extent = self._RasterList[0].extents, interpolation="nearest",alpha = alpha, norm = mpl.colors.Normalize(vmin=colour_min_max[0], vmax=colour_min_max[1]),zorder=zorder)                    
+                    im = self.ax_list[0].imshow(self._RasterList[-1]._RasterArray, self._RasterList[-1]._colourmap, extent = self._RasterList[0].extents, interpolation="nearest",alpha = alpha, norm = mpl.colors.Normalize(vmin=colour_min_max[0], vmax=colour_min_max[1]),zorder=zorder)
             else:
                 print("I cannot customize your colour minimum and maximum because I don't understand your input. It should be [min,max] with min max as integers or floats")
         else:
@@ -674,7 +674,7 @@ class MapFigure(object):
                 im = self.ax_list[0].imshow(self._RasterList[-1]._RasterArray, self._RasterList[-1]._colourmap, extent = self._RasterList[0].extents,interpolation="nearest",alpha = alpha, norm=colors.PowerNorm(gamma=1. / 2.), zorder=zorder)
             else:
                 im = self.ax_list[0].imshow(self._RasterList[-1]._RasterArray, self._RasterList[-1]._colourmap,extent = self._RasterList[0].extents, interpolation="nearest",alpha = alpha, zorder=zorder)
-                
+
 
         # This affects all axes because we set share_all = True.
         #ax.set_xlim(self._xmin,self._xmax)
@@ -693,8 +693,8 @@ class MapFigure(object):
                                               n_colours=n_colours, categorized = True, cbar_type=str,categories_string=str_vals)
 
 
-        return self.ax_list    
-        
+        return self.ax_list
+
 
     def _add_drape_image(self,ax_list,RasterName,Directory,
                          colourmap = "gray",
@@ -740,18 +740,18 @@ class MapFigure(object):
 
         if(nroma == "none"):
             nroma = "None"
-            
+
         # Get minimum and maximum values
         yp = Raster.get_min_max()
         #print("Min and max are")
         #print(yp)
         rmin = yp[0]
-        rmax = yp[1]        
+        rmax = yp[1]
         #print("Minimum is: ")
         #print(rmin)
         #print("Maximum is:")
         #print(rmax)
-            
+
         print("I am going to use the normalisation " + nroma)
 
         self._RasterList.append(Raster)
@@ -778,9 +778,9 @@ class MapFigure(object):
                 if(nroma == "LogNorm"):
                     im = self.ax_list[0].imshow(self._RasterList[-1]._RasterArray, self._RasterList[-1]._colourmap, extent = self._RasterList[0].extents, interpolation="nearest",alpha = alpha, norm = mpl.colors.LogNorm(vmin=colour_min_max[0], vmax=colour_min_max[1]),zorder=zorder)
                 elif(nroma == "PowerNorm"):
-                    im = self.ax_list[0].imshow(self._RasterList[-1]._RasterArray, self._RasterList[-1]._colourmap, extent = self._RasterList[0].extents, interpolation="nearest",alpha = alpha, norm = mpl.colors.PowerNorm(gamma=1. / 2.),zorder=zorder) 
+                    im = self.ax_list[0].imshow(self._RasterList[-1]._RasterArray, self._RasterList[-1]._colourmap, extent = self._RasterList[0].extents, interpolation="nearest",alpha = alpha, norm = mpl.colors.PowerNorm(gamma=1. / 2.),zorder=zorder)
                 else:
-                    im = self.ax_list[0].imshow(self._RasterList[-1]._RasterArray, self._RasterList[-1]._colourmap, extent = self._RasterList[0].extents, interpolation="nearest",alpha = alpha, norm = mpl.colors.Normalize(vmin=colour_min_max[0], vmax=colour_min_max[1]),zorder=zorder)                    
+                    im = self.ax_list[0].imshow(self._RasterList[-1]._RasterArray, self._RasterList[-1]._colourmap, extent = self._RasterList[0].extents, interpolation="nearest",alpha = alpha, norm = mpl.colors.Normalize(vmin=colour_min_max[0], vmax=colour_min_max[1]),zorder=zorder)
             else:
                 print("I cannot customize your colour minimum and maximum because I don't understand your input. It should be [min,max] with min max as integers or floats")
         else:
@@ -790,7 +790,7 @@ class MapFigure(object):
                 im = self.ax_list[0].imshow(self._RasterList[-1]._RasterArray, self._RasterList[-1]._colourmap, extent = self._RasterList[0].extents,interpolation="nearest",alpha = alpha, norm=colors.PowerNorm(gamma=1. / 2.), zorder=zorder)
             else:
                 im = self.ax_list[0].imshow(self._RasterList[-1]._RasterArray, self._RasterList[-1]._colourmap,extent = self._RasterList[0].extents, interpolation="nearest",alpha = alpha, zorder=zorder)
-                
+
 
         # This affects all axes because we set share_all = True.
         #ax.set_xlim(self._xmin,self._xmax)
@@ -1203,15 +1203,15 @@ class MapFigure(object):
             print("vmin: "+str(vmin)+" and vmax: "+str(vmax))
             tick_spacing = float(vmax-vmin)/float(n_colours)
             print("tick spacing is: "+str(tick_spacing))
-            
+
             new_vmin = vmin+(tick_spacing/2)
             new_vmax = vmax+(tick_spacing/2+0.0005) #+tick_spacing
-            
-            
-            
+
+
+
             tick_locs = np.arange(new_vmin, new_vmax, step=tick_spacing)
             print(tick_locs)
-            
+
         else:
             tick_spacing = float(vmax-vmin)/float(n_colours)
             print(tick_spacing)
@@ -1473,6 +1473,7 @@ class MapFigure(object):
 
 
         print("I will plot the points now.")
+        print("The colourmap is: " + this_colourmap)
         if len(this_data) == 0 or len(this_data) != len(easting):
             print("I am only plotting the points.")
             unicolor = unicolor
@@ -1954,8 +1955,8 @@ class MapFigure(object):
         for key, poly in polygons.items():
             this_patch = PolygonPatch(poly, fc=facecolour, ec=edgecolour, alpha=alpha)
             self.ax_list[0].add_patch(this_patch)
-            
-            
+
+
     def add_scalebar(self,facecolour='black', edgecolour='black'):
         """
         This function adds a scalebar
@@ -1971,69 +1972,69 @@ class MapFigure(object):
         from matplotlib.patches import Rectangle
 
         print('Let me plot a scale bar for you.')
-        
+
         # Get the axis limits to assert after
         this_xlim = self.ax_list[0].get_xlim()
         this_ylim = self.ax_list[0].get_ylim()
-        
+
         print("X limits:")
         print(this_xlim)
         print("Y limits")
         print(this_ylim)
-        
+
         # First get the limits of x axis
         xmax = this_xlim[1]
         xmin = this_xlim[0]
-        
+
         ymax = this_ylim[1]
         ymin = this_ylim[0]
-        
+
         xrange = xmax-xmin
         yrange = ymax-ymin
-        
+
         # The scale bar will be around a fifth of the range
         scale_start = xrange/7
-        
-               
+
+
         # Now do some stupid stuff to get a reasonable range
         scale_start = int(scale_start)
-        
+
         print("The range is "+str(xrange)+" metres and the scale start will be "+str(scale_start))
-        
+
         scale_str = str(scale_start)
         n_digits = len(scale_str)
         print("number of digits are "+str(n_digits))
         rounded_ss = float(round(scale_start,-n_digits+1))
         print("Rounded scale str is "+str(rounded_ss))
-        
+
         if(rounded_ss > 1000):
             ss_text = str(int(rounded_ss/1000))+ "km"
         else:
             ss_text = str(int(rounded_ss))+"m"
-        
-        
-        
+
+
+
         x_corner = xmax-1.2*(rounded_ss)
         text_x_corner = xmax-0.22*(rounded_ss)
         y_corner = ymin+yrange*0.02
         text_y_corner = ymin+yrange*0.022
-        
+
         # Now make the patch
         rect = Rectangle((x_corner, y_corner), rounded_ss, rounded_ss/5)
         PC = []
         PC.append(rect)
         pc = PatchCollection(PC, facecolor=facecolour, edgecolor=edgecolour,alpha=1.0,zorder=98)
-        
 
 
-        self.ax_list[0].add_collection(pc) 
+
+        self.ax_list[0].add_collection(pc)
         self.ax_list[0].text(text_x_corner, text_y_corner, ss_text, horizontalalignment='right',verticalalignment='baseline', color = "white",fontsize = 6,zorder=99)
-        
-          
+
+
         # Annoying but the scatter plot resets the extents so you need to reassert them
         #self.ax_list[0].set_xlim(this_xlim)
         #self.ax_list[0].set_ylim(this_ylim)
-         
+
 
     def _set_coord_type(self, coord_type):
         """Sets the coordinate type
@@ -2058,7 +2059,7 @@ class MapFigure(object):
             self._coord_type = "Kruskal–Szekeres"
             self._xaxis_label = "X"
             self._yaxis_label = "T"
-            
+
         # Example, do not actually use...
         elif coord_type == "None":
             self._coord_type = "None"

@@ -30,11 +30,11 @@ from matplotlib import rcParams
     That is, it will not work if you call it from outside the directory structure.
 
 """
-import lsdplottingtools as LSDP
-import lsdplottingtools.lsdmap_pointtools as LSDMap_PD
-from lsdmapfigure.plottingraster import MapFigure
-import lsdmapfigure.plottinghelpers as PlotHelp
-#import LSDPlottingTools.LSDMap_VectorTools as LSDMap_VT
+from lsdviztools.lsdplottingtools import lsdmap_pointtools as LSDP
+#from lsdviztools.lsdplottingtools import lsdmap_vectortools as LSDV
+from lsdviztools.lsdmapfigure.plottingraster import MapFigure
+from lsdviztools.lsdmapfigure import plottinghelpers as PlotHelp
+
 
 
 def SimpleHillshade(DataDirectory,Base_file, cmap = "jet", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = ""):
@@ -53,7 +53,7 @@ def SimpleHillshade(DataDirectory,Base_file, cmap = "jet", cbar_loc = "right", s
         out_fname_prefix (str): The prefix of the image file. If blank uses the fname_prefix
 
     Returns:
-        Shaded relief plot. The elevation is also included in the plot.
+        A string with the name of the image (printed to file): Shaded relief plot. The elevation is also included in the plot.
 
     Author: FJC, SMM
     """
@@ -85,6 +85,7 @@ def SimpleHillshade(DataDirectory,Base_file, cmap = "jet", cbar_loc = "right", s
         ImageName = DataDirectory+out_fname_prefix+"_hillshade."+fig_format
 
     MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, axis_style = ax_style, FigFormat=fig_format, Fig_dpi = dpi)
+    return ImageName
 
 
 def SimpleDrape(DataDirectory,Base_file, Drape_prefix, cmap = "jet", cbar_loc = "right", cbar_label = "drape colourbar", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", coord_type = "UTM_km", use_scalebar = False, drape_cnorm = "none", colour_min_max = []):
@@ -105,11 +106,11 @@ def SimpleDrape(DataDirectory,Base_file, Drape_prefix, cmap = "jet", cbar_loc = 
         out_fname_prefix (str): The prefix of the image file. If blank uses the fname_prefix
         coord_type (str): this can be in UTM_km or UTM_m
         use_scalebar (bool): If true inserts a scalebar in the image
-        drape_cnorm (str): Sets the normalisation of the colourbar. 
+        drape_cnorm (str): Sets the normalisation of the colourbar.
         colour_min_max (float list): Sets the minimum and maximum values of the colourbar
 
     Returns:
-        Shaded relief plot. The elevation is also included in the plot.
+        A string with the name of the image (printed to file): Shaded relief plot. The elevation is also included in the plot.
 
     Author: FJC, SMM
     """
@@ -135,7 +136,7 @@ def SimpleDrape(DataDirectory,Base_file, Drape_prefix, cmap = "jet", cbar_loc = 
     MF = MapFigure(BackgroundRasterName, DataDirectory,coord_type=coord_type,colourbar_location = cbar_loc)
     #MF.add_drape_image(ElevationName,DataDirectory,colourmap = "gray", alpha = 0.6, colorbarlabel = None)
     MF.add_drape_image(DrapeName,DataDirectory,colourmap = cmap, alpha = 0.6, colorbarlabel = cbar_label, norm = drape_cnorm, colour_min_max = colour_min_max)
-    
+
     if(use_scalebar):
         print("Let me add a scalebar")
         MF.add_scalebar()
@@ -147,6 +148,7 @@ def SimpleDrape(DataDirectory,Base_file, Drape_prefix, cmap = "jet", cbar_loc = 
         ImageName = DataDirectory+out_fname_prefix+"_drape."+fig_format
 
     MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, axis_style = ax_style, FigFormat=fig_format, Fig_dpi = dpi)
+    return ImageName
 
 
 def SimpleHillshadeForAnimation(DataDirectory,Base_file, cmap = "jet", cbar_loc = "right",
@@ -174,7 +176,7 @@ def SimpleHillshadeForAnimation(DataDirectory,Base_file, cmap = "jet", cbar_loc 
         hide_ticklabels (bool): if true, hide the tick labels from the plot
 
     Returns:
-        Shaded relief plot. The elevation is also included in the plot.
+        A string with the name of the image (printed to file): Shaded relief plot. The elevation is also included in the plot.
 
     Author: FJC, SMM
     """
@@ -210,9 +212,10 @@ def SimpleHillshadeForAnimation(DataDirectory,Base_file, cmap = "jet", cbar_loc 
 
     MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, axis_style = ax_style, FigFormat=fig_format, Fig_dpi = dpi, adjust_cbar_characters=False,
                  fixed_cbar_characters=4, hide_ticklabels=hide_ticklabels)
+    return ImageName
 
 
-def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = ""):
+def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", channel_colourmap = "Blues"):
     """
     This function prints a channel map over a hillshade. It gets ALL the channels within the DEM
 
@@ -227,10 +230,10 @@ def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap =
         fig_format (str): An image format. png, pdf, eps, svg all valid
         dpi (int): The dots per inch of the figure
         out_fname_prefix (str): The prefix of the image file. If blank uses the fname_prefix
-
+        channel_colourmap (str or cmap): the colourmap of the point data
 
     Returns:
-        Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
+        A string with the name of the image (printed to file): Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
 
     Author: SMM
     """
@@ -250,7 +253,7 @@ def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap =
     ChannelFileName = fname_prefix+"_CN.csv"
     chi_csv_fname = DataDirectory+ChannelFileName
 
-    thisPointData = LSDMap_PD.LSDMap_PointData(chi_csv_fname)
+    thisPointData = LSDP.LSDMap_PointData(chi_csv_fname)
 
 
     # clear the plot
@@ -259,10 +262,10 @@ def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap =
     # set up the base image and the map
     MF = MapFigure(BackgroundRasterName, DataDirectory,coord_type="UTM_km",colourbar_location = "None")
     MF.add_drape_image(DrapeRasterName,DataDirectory,colourmap = cmap, alpha = 0.6)
-    MF.add_point_data(thisPointData,column_for_plotting = "Stream Order",
+    MF.add_point_data(thisPointData,column_for_plotting = "Stream Order", this_colourmap = channel_colourmap,
                        scale_points = True,column_for_scaling = "Stream Order",
                        scaled_data_in_log = False,
-                       max_point_size = 5, min_point_size = 1)
+                       max_point_size = 5, min_point_size = 1,zorder = 100, alpha = 1)
 
 
     # Save the image
@@ -273,6 +276,7 @@ def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap =
 
 
     MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, axis_style = ax_style, FigFormat=fig_format, Fig_dpi = dpi)
+    return ImageName
 
 
 
@@ -296,7 +300,7 @@ def PrintChannels(DataDirectory,fname_prefix, ChannelFileName, add_basin_labels 
 
 
     Returns:
-        Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
+        A string with the name of the image (printed to file): A string with the name of the image (printed to file): Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
 
     Author: SMM
     """
@@ -314,13 +318,13 @@ def PrintChannels(DataDirectory,fname_prefix, ChannelFileName, add_basin_labels 
     BackgroundRasterName = fname_prefix+"_hs.bil"
     DrapeRasterName = fname_prefix+".bil"
     chi_csv_fname = DataDirectory+ChannelFileName
-    
+
     print("Let me get the point data")
     print("The filename is: "+chi_csv_fname)
-    thisPointData = LSDMap_PD.LSDMap_PointData(chi_csv_fname)
+    thisPointData = LSDP.LSDMap_PointData(chi_csv_fname)
     print("The parameter names are")
     thisPointData.GetParameterNames(True)
-    
+
 
 
     # clear the plot
@@ -341,6 +345,7 @@ def PrintChannels(DataDirectory,fname_prefix, ChannelFileName, add_basin_labels 
         ImageName = DataDirectory+out_fname_prefix+"_channels_coloured_by_basin."+fig_format
 
     MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, axis_style = ax_style, FigFormat=fig_format, Fig_dpi = dpi)
+    return ImageName
 
 
 
@@ -362,7 +367,7 @@ def PrintChannelsAndBasins(DataDirectory,fname_prefix, add_basin_labels = True, 
 
 
     Returns:
-        Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
+        A string with the name of the image (printed to file): Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
 
     Author: SMM
     """
@@ -397,13 +402,13 @@ def PrintChannelsAndBasins(DataDirectory,fname_prefix, add_basin_labels = True, 
     HillshadeName = fname_prefix+'_hs'+raster_ext
     BasinsName = fname_prefix+'_AllBasins'+raster_ext
     print (BasinsName)
-    Basins = LSDP.GetBasinOutlines(DataDirectory, BasinsName)
+    Basins = LSDV.GetBasinOutlines(DataDirectory, BasinsName)
 
 
     ChannelFileName = fname_prefix+"_chi_data_map.csv"
     chi_csv_fname = DataDirectory+ChannelFileName
 
-    thisPointData = LSDMap_PD.LSDMap_PointData(chi_csv_fname)
+    thisPointData = LSDP.LSDMap_PointData(chi_csv_fname)
 
 
     # clear the plot
@@ -427,6 +432,7 @@ def PrintChannelsAndBasins(DataDirectory,fname_prefix, add_basin_labels = True, 
         ImageName = DataDirectory+out_fname_prefix+"_channels_with_basins."+fig_format
 
     MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, axis_style = ax_style, FigFormat=fig_format, Fig_dpi = dpi)
+    return ImageName
 
 
 
@@ -455,7 +461,7 @@ def PrintBasins(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet
 
 
     Returns:
-        Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
+        A string with the name of the image (printed to file): Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
 
     Author: FJC, SMM
     """
@@ -491,7 +497,7 @@ def PrintBasins(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet
     HillshadeName = fname_prefix+'_hs'+raster_ext
     BasinsName = fname_prefix+'_AllBasins'+raster_ext
     print (BasinsName)
-    Basins = LSDP.GetBasinOutlines(DataDirectory, BasinsName)
+    Basins = LSDV.GetBasinOutlines(DataDirectory, BasinsName)
 
     # If wanted, add the labels
     if add_basin_labels:
@@ -519,6 +525,7 @@ def PrintBasins(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet
         ImageName = DataDirectory+out_fname_prefix+"_basins."+fig_format
 
     MF.save_fig(fig_width_inches = fig_width_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi) # Save the figure
+    return ImageName
 
 
 
@@ -553,7 +560,7 @@ def PrintBasins_Complex(DataDirectory,fname_prefix,
         label_basins (bool): If true, the basins get labels
 
     Returns:
-        Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin. This allows more complex plotting with renamed and excluded basins.
+        A string with the name of the image (printed to file): Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin. This allows more complex plotting with renamed and excluded basins.
 
     Author: FJC, SMM
     """
@@ -605,7 +612,7 @@ def PrintBasins_Complex(DataDirectory,fname_prefix,
         ChannelFileName = fname_prefix+"_chi_data_map.csv"
         chi_csv_fname = DataDirectory+ChannelFileName
 
-        thisPointData = LSDMap_PD.LSDMap_PointData(chi_csv_fname)
+        thisPointData = LSDP.LSDMap_PointData(chi_csv_fname)
 
         MF.add_point_data(thisPointData,column_for_plotting = "basin_key",
                        scale_points = True,column_for_scaling = "drainage_area",
@@ -621,8 +628,8 @@ def PrintBasins_Complex(DataDirectory,fname_prefix,
 
     MF.save_fig(fig_width_inches = fig_width_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi, transparent=True) # Save the figure
 
-    
-def PrintCategorised(DataDirectory,fname_prefix, Drape_prefix, 
+
+def PrintCategorised(DataDirectory,fname_prefix, Drape_prefix,
                      show_colourbar = False,
                      cmap = "jet", cbar_loc = "right", cbar_label = "drape colourbar", size_format = "ESURF",
                      fig_format = "png", dpi = 250, out_fname_prefix = ""):
@@ -644,7 +651,7 @@ def PrintCategorised(DataDirectory,fname_prefix, Drape_prefix,
         out_fname_prefix (str): The prefix of the image file. If blank uses the fname_prefix
 
     Returns:
-        Shaded relief plot with categorised data.
+        A string with the name of the image (printed to file): Shaded relief plot with categorised data.
 
     Author: SMM
     """
@@ -676,8 +683,8 @@ def PrintCategorised(DataDirectory,fname_prefix, Drape_prefix,
     # set up the base image and the map
     MF = MapFigure(BackgroundRasterName, DataDirectory,coord_type="UTM_km",colourbar_location = cbar_loc)
     #MF.add_drape_image(ElevationName,DataDirectory,colourmap = "gray", alpha = 0.6, colorbarlabel = None)
-    MF.add_categorised_drape_image(CatName,DataDirectory,colourmap = cmap, alpha = 0.7, colorbarlabel = cbar_label, norm = "none")    
-    
+    MF.add_categorised_drape_image(CatName,DataDirectory,colourmap = cmap, alpha = 0.7, colorbarlabel = cbar_label, norm = "none")
+
 
     # Save the image
     if len(out_fname_prefix) == 0:
@@ -686,6 +693,5 @@ def PrintCategorised(DataDirectory,fname_prefix, Drape_prefix,
         ImageName = DataDirectory+out_fname_prefix+"_categorised."+fig_format
 
     MF.save_fig(fig_width_inches = fig_width_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi, transparent=True) # Save the figure
-    
-    
-    
+
+

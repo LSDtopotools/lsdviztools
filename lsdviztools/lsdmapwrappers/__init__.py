@@ -9,4 +9,5 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from .lsdmapwrappers_basicplotting import *
 from .lsdmapwrappers_chiplotting import *
+from .lsdmapwrappers_lsdttcli import *
 

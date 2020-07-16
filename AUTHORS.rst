@@ -10,4 +10,7 @@ Development Lead
 Contributors
 ------------
 
-None yet. Why not be the first?
+* Fiona Clubb
+* Boris Gailleton 
+* Martin Hurst
+* Declan Valters

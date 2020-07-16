@@ -14,12 +14,12 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 from matplotlib import rcParams
 from matplotlib import colors
-import lsdplottingtools.lsdmap_gdalio as LSDMap_IO
-import lsdplottingtools.lsdmap_basicplotting as LSDMap_BP
-import lsdplottingtools.lsdmap_pointtools as LSDMap_PD
-from lsdmapfigure.plottingraster import MapFigure
-from lsdmapfigure.plottingraster import BaseRaster
-from lsdmapfigure import plottinghelpers as Helper
+from lsdviztools.lsdplottingtools import lsdmap_gdalio as LSDMap_IO
+from lsdviztools.lsdplottingtools import lsdmap_basicplotting as LSDMap_BP
+from lsdviztools.lsdplottingtools import lsdmap_pointtools as LSDMap_PD
+from lsdviztools.lsdmapfigure.plottingraster import MapFigure
+from lsdviztools.lsdmapfigure.plottingraster import BaseRaster
+from lsdviztools.lsdmapfigure import plottinghelpers as Helper
 
 def PlotSwath(swath_csv_name, FigFileName = 'Image.png', size_format = "geomorphology", fig_format = "png", dpi = 500, aspect_ratio = 2):
     """

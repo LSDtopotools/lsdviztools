@@ -22,7 +22,8 @@ from lsdplottingtools import statsutilities as SUT
 from lsdplottingtools import init_plotting_DV
 from matplotlib.patches import Rectangle
 from matplotlib.ticker import MaxNLocator
-import lsdplottingtools as LSDP
+from lsdviztools.lsdplottingtools import lsdmap_pointtools as LSDP
+from lsdviztools.lsdplottingtools import lsdmap_vectortools as LSDV
 import sys
 import os
 import pandas as pd
@@ -793,7 +794,7 @@ class KP_plotting(object):
                                 NFF_opti = True, custom_min_max = [])
         
         # plot the basin outlines
-        Basins = LSDP.GetBasinOutlines(self.fpath, BasinsName)
+        Basins = LSDV.GetBasinOutlines(self.fpath, BasinsName)
         MF.plot_polygon_outlines(Basins, linewidth = 0.5)
 
         # add the channel network without color
