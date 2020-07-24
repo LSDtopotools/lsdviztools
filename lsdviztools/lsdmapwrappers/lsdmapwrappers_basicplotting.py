@@ -37,7 +37,7 @@ from lsdviztools.lsdmapfigure import plottinghelpers as PlotHelp
 
 
 
-def SimpleHillshade(DataDirectory,Base_file, cmap = "terrain", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = ""):
+def SimpleHillshade(DataDirectory,Base_file, cmap = "terrain", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "",save_fig = True):
     """
     This function makes a shaded relief plot of the DEM.
 
@@ -51,9 +51,10 @@ def SimpleHillshade(DataDirectory,Base_file, cmap = "terrain", cbar_loc = "right
         fig_format (str): An image format. png, pdf, eps, svg all valid
         dpi (int): The dots per inch of the figure
         out_fname_prefix (str): The prefix of the image file. If blank uses the fname_prefix
+        save_fig (bool): If true, saves the fig, else, returns the filename
 
     Returns:
-        A string with the name of the image (printed to file): Shaded relief plot. The elevation is also included in the plot.
+        If save_fig is true, return a string with the name of the image (printed to file). If save_fig is false, returns the figure handle to the hillshade plot
 
     Author: FJC, SMM
     """
@@ -78,17 +79,26 @@ def SimpleHillshade(DataDirectory,Base_file, cmap = "terrain", cbar_loc = "right
     MF = MapFigure(BackgroundRasterName, DataDirectory,coord_type="UTM_km",colourbar_location = cbar_loc)
     MF.add_drape_image(DrapeRasterName,DataDirectory,colourmap = cmap, alpha = 0.6, colorbarlabel = "Elevation (m)")
 
-    # Save the image
-    if len(out_fname_prefix) == 0:
-        ImageName = DataDirectory+Base_file+"_hillshade."+fig_format
+    # Save the image or return the figure handle
+    if (save_fig):
+        if len(out_fname_prefix) == 0:
+            ImageName = DataDirectory+Base_file+"_hillshade."+fig_format
+        else:
+            ImageName = DataDirectory+out_fname_prefix+"_hillshade."+fig_format
+
+        MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi, transparent=True)
+
+        thing_to_return = ImageName
     else:
-        ImageName = DataDirectory+out_fname_prefix+"_hillshade."+fig_format
+        fig = MF.save_fig(fig_width_inches = fig_size_inches, transparent=True, return_fig = True)
+        thing_to_return = fig
 
-    MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, axis_style = ax_style, FigFormat=fig_format, Fig_dpi = dpi)
-    return ImageName
+    print("I'm returning:")
+    print(thing_to_return)
+    return thing_to_return
 
 
-def SimpleDrape(DataDirectory,Base_file, Drape_prefix, cmap = "cubehelix", cbar_loc = "right", cbar_label = "drape colourbar", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", coord_type = "UTM_km", use_scalebar = False, drape_cnorm = "none", colour_min_max = [],discrete_cmap=False, n_colours=10):
+def SimpleDrape(DataDirectory,Base_file, Drape_prefix, cmap = "cubehelix", cbar_loc = "right", cbar_label = "drape colourbar", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", coord_type = "UTM_km", use_scalebar = False, drape_cnorm = "none", colour_min_max = [],discrete_cmap=False, n_colours=10, save_fig = True):
     """
     This function makes a simple drape plot. You can choose the colourbar in this one. Similar to the PlotHillshade routine but a bit more flexible.
 
@@ -110,9 +120,10 @@ def SimpleDrape(DataDirectory,Base_file, Drape_prefix, cmap = "cubehelix", cbar_
         colour_min_max (float list): Sets the minimum and maximum values of the colourbar
         discrete_cmap (bool): If true, make discrete values for colours, otherwise a gradient.
         n_colours (int): number of colours in discrete colourbar
+        save_fig (bool): If true, saves the fig, else, returns the filename
 
     Returns:
-        A string with the name of the image (printed to file): Shaded relief plot. The elevation is also included in the plot.
+        If save_fig is true, return a string with the name of the image (printed to file). If save_fig is false, returns the figure handle to the draped plot
 
     Author: FJC, SMM
     """
@@ -143,20 +154,29 @@ def SimpleDrape(DataDirectory,Base_file, Drape_prefix, cmap = "cubehelix", cbar_
         print("Let me add a scalebar")
         MF.add_scalebar()
 
-    # Save the image
-    if len(out_fname_prefix) == 0:
-        ImageName = DataDirectory+Base_file+"_drape."+fig_format
-    else:
-        ImageName = DataDirectory+out_fname_prefix+"_drape."+fig_format
+    # Save the image or return the figure handle
+    if (save_fig):
+        if len(out_fname_prefix) == 0:
+            ImageName = DataDirectory+Base_file+"_drape."+fig_format
+        else:
+            ImageName = DataDirectory+out_fname_prefix+"_drape."+fig_format
 
-    MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, axis_style = ax_style, FigFormat=fig_format, Fig_dpi = dpi)
-    return ImageName
+        MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi, transparent=True)
+
+        thing_to_return = ImageName
+    else:
+        fig = MF.save_fig(fig_width_inches = fig_size_inches, transparent=True, return_fig = True)
+        thing_to_return = fig
+
+    print("I'm returning:")
+    print(thing_to_return)
+    return thing_to_return
 
 
 def SimpleHillshadeForAnimation(DataDirectory,Base_file, cmap = "jet", cbar_loc = "right",
                                 size_format = "ESURF", fig_format = "png",
                                 dpi = 250, imgnumber = 0, full_basefile = [],
-                                custom_cbar_min_max = [], out_fname_prefix = "", coord_type="UTM_km", hide_ticklabels=False):
+                                custom_cbar_min_max = [], out_fname_prefix = "", coord_type="UTM_km", hide_ticklabels=False, save_fig = True):
     """
     This function make a hillshade image that is optimised for creating
     an animation. Used with the MuddPILE model
@@ -217,9 +237,9 @@ def SimpleHillshadeForAnimation(DataDirectory,Base_file, cmap = "jet", cbar_loc 
     return ImageName
 
 
-def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", channel_colourmap = "Blues"):
+def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", channel_colourmap = "Blues", save_fig = True):
     """
-    This function prints a channel map over a hillshade. It gets ALL the channels within the DEM
+    This function prints a channel map over a hillshade. It gets ALL the channels within the DEM: it automatically selects the _CN csv file that is obtained by the print channel network tool in lsdtopotools. Channels are coloured by the stream order.
 
     Args:
         DataDirectory (str): the data directory with the m/n csv files
@@ -233,9 +253,11 @@ def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap =
         dpi (int): The dots per inch of the figure
         out_fname_prefix (str): The prefix of the image file. If blank uses the fname_prefix
         channel_colourmap (str or cmap): the colourmap of the point data
+        save_fig (bool): If true, saves the fig, else, returns the filename
 
     Returns:
-        A string with the name of the image (printed to file): Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
+        If save_fig is true, return a string with the name of the image (printed to file). If save_fig is false, returns the figure handle to the shaded relief plot with the channels.
+
 
     Author: SMM
     """
@@ -267,24 +289,33 @@ def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap =
     MF.add_point_data(thisPointData,column_for_plotting = "Stream Order", this_colourmap = channel_colourmap,
                        scale_points = True,column_for_scaling = "Stream Order",
                        scaled_data_in_log = False,
-                       max_point_size = 5, min_point_size = 1,zorder = 100, alpha = 1)
+                       max_point_size = 5, min_point_size = 1,zorder = 10, alpha = 1)
 
 
     # Save the image
-    if len(out_fname_prefix) == 0:
-        ImageName = DataDirectory+fname_prefix+"_channels."+fig_format
+    thing_to_return = []
+    if (save_fig):
+        if len(out_fname_prefix) == 0:
+            ImageName = DataDirectory+fname_prefix+"_channels."+fig_format
+        else:
+            ImageName = DataDirectory+out_fname_prefix+"_channels."+fig_format
+
+        MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi, transparent=True)
+
+        thing_to_return = ImageName
+
     else:
-        ImageName = DataDirectory+out_fname_prefix+"_channels."+fig_format
+        fig = MF.save_fig(fig_width_inches = fig_size_inches, transparent=True, return_fig = True)
+        thing_to_return = fig
+
+    print("I'm returning:")
+    print(thing_to_return)
+    return thing_to_return
 
 
-    MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, axis_style = ax_style, FigFormat=fig_format, Fig_dpi = dpi)
-    return ImageName
-
-
-
-def PrintChannels(DataDirectory,fname_prefix, ChannelFileName, cmap = "jet", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", plotting_column = "basin_key"):
+def PrintChannels(DataDirectory,fname_prefix, ChannelFileName, cmap = "jet", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", plotting_column = "basin_key", save_fig = True):
     """
-    This function prints a channel map over a hillshade.
+    This function prints a channel map over a hillshade. It is more flexible than PrintAllChannels since you can choose the channel csv and you can also choose the column in the csv to plot
 
     Args:
         DataDirectory (str): the data directory with the m/n csv files
@@ -296,7 +327,10 @@ def PrintChannels(DataDirectory,fname_prefix, ChannelFileName, cmap = "jet", siz
         dpi (int): The dots per inch of the figure
         out_fname_prefix (str): The prefix of the image file. If blank uses the fname_prefix
         plotting_column (str): the column to plot from the csv file
+        save_fig (bool): If true, saves the fig, else, returns the filename
 
+    Returns:
+        If save_fig is true, return a string with the name of the image (printed to file). If save_fig is false, returns the figure handle to the shaded relief plot with the channels.
 
     Returns:
         A string with the name of the image (printed to file): A string with the name of the image (printed to file): Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
@@ -338,17 +372,29 @@ def PrintChannels(DataDirectory,fname_prefix, ChannelFileName, cmap = "jet", siz
                        max_point_size = 5, min_point_size = 1)
 
     # Save the image
-    if len(out_fname_prefix) == 0:
-        ImageName = DataDirectory+fname_prefix+"_channels_coloured_by_basin."+fig_format
+    thing_to_return = []
+    if (save_fig):
+        if len(out_fname_prefix) == 0:
+            ImageName = DataDirectory+fname_prefix+"_channels_coloured_by_basin."+fig_format
+        else:
+            ImageName = DataDirectory+out_fname_prefix+"_channels_coloured_by_basin."+fig_format
+
+        MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi, transparent=True)
+
+        thing_to_return = ImageName
+
     else:
-        ImageName = DataDirectory+out_fname_prefix+"_channels_coloured_by_basin."+fig_format
+        fig = MF.save_fig(fig_width_inches = fig_size_inches, transparent=True, return_fig = True)
+        thing_to_return = fig
 
-    MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, axis_style = ax_style, FigFormat=fig_format, Fig_dpi = dpi)
-    return ImageName
+    print("I'm returning:")
+    print(thing_to_return)
+    return thing_to_return
 
 
 
-def PrintChannelsAndBasins(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = ""):
+
+def PrintChannelsAndBasins(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", save_fig = True):
     """
     This function prints a channel map over a hillshade.
 
@@ -423,15 +469,24 @@ def PrintChannelsAndBasins(DataDirectory,fname_prefix, add_basin_labels = True, 
                        max_point_size = 3, min_point_size = 1)
 
     # Save the image
-    if len(out_fname_prefix) == 0:
-        ImageName = DataDirectory+fname_prefix+"_channels_with_basins."+fig_format
+    thing_to_return = []
+    if (save_fig):
+        if len(out_fname_prefix) == 0:
+            ImageName = DataDirectory+fname_prefix+"_channels_with_basins."+fig_format
+        else:
+            ImageName = DataDirectory+out_fname_prefix+"_channels_with_basins."+fig_format
+
+        MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi, transparent=True)
+
+        thing_to_return = ImageName
+
     else:
-        ImageName = DataDirectory+out_fname_prefix+"_channels_with_basins."+fig_format
+        fig = MF.save_fig(fig_width_inches = fig_size_inches, transparent=True, return_fig = True)
+        thing_to_return = fig
 
-    MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, axis_style = ax_style, FigFormat=fig_format, Fig_dpi = dpi)
-    return ImageName
-
-
+    print("I'm returning:")
+    print(thing_to_return)
+    return thing_to_return
 
 
 def PrintBasins(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = ""):
@@ -514,15 +569,24 @@ def PrintBasins(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet
         MF.add_drape_image(BasinsName, DataDirectory, colourmap = cmap, alpha = 0.8, colorbarlabel='Basin ID', discrete_cmap=True, n_colours=len(basin_keys), show_colourbar = True, modify_raster_values=True, old_values=basin_junctions, new_values=basin_keys, cbar_type = int)
 
     # Save the image
-    if len(out_fname_prefix) == 0:
-        ImageName = DataDirectory+fname_prefix+"_basins."+fig_format
+    thing_to_return = []
+    if (save_fig):
+        if len(out_fname_prefix) == 0:
+            ImageName = DataDirectory+fname_prefix+"_basins."+fig_format
+        else:
+            ImageName = DataDirectory+out_fname_prefix+"_basins."+fig_format
+
+        MF.save_fig(fig_width_inches = fig_width_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi, transparent=True)
+
+        thing_to_return = ImageName
+
     else:
-        ImageName = DataDirectory+out_fname_prefix+"_basins."+fig_format
+        fig = MF.save_fig(fig_width_inches = fig_width_inches, transparent=True, return_fig = True)
+        thing_to_return = fig
 
-    MF.save_fig(fig_width_inches = fig_width_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi) # Save the figure
-    return ImageName
-
-
+    print("I'm returning:")
+    print(thing_to_return)
+    return thing_to_return
 
 
 
@@ -612,16 +676,6 @@ def PrintBasins_Complex(DataDirectory,fname_prefix,
                        this_colourmap = "Blues_r", scaled_data_in_log = True,
                        max_point_size = 3, min_point_size = 1, discrete_colours = True, NColours = 1, zorder = 5)
 
-
-    # Save the image
-    if len(out_fname_prefix) == 0:
-        ImageName = DataDirectory+fname_prefix+"_basins."+fig_format
-    else:
-        ImageName = DataDirectory+out_fname_prefix+"_basins."+fig_format
-
-#    MF.save_fig(fig_width_inches = fig_width_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi) # Save the figure
-#    return ImageName
-
     # Save the image
     thing_to_return = []
     if (save_fig):
@@ -635,13 +689,12 @@ def PrintBasins_Complex(DataDirectory,fname_prefix,
         thing_to_return = ImageName
 
     else:
-        fig = MF.save_fig(fig_width_inches = fig_width_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi, transparent=True, return_fig = True)
+        fig = MF.save_fig(fig_width_inches = fig_width_inches, transparent=True, return_fig = True)
         thing_to_return = fig
 
-
+    print("I'm returning:")
+    print(thing_to_return)
     return thing_to_return
-
-
 
 
 def PrintCategorised(DataDirectory,fname_prefix, Drape_prefix,
