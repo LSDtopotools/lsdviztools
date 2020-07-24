@@ -211,7 +211,7 @@ def PrintChiChannelsAndBasins(DataDirectory,fname_prefix, ChannelFileName, add_b
 
 def PrintChiCoordChannelsAndBasins(DataDirectory,fname_prefix, ChannelFileName, add_basin_labels = True, cmap = "cubehelix", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250,plotting_column = "source_key",discrete_colours = False, NColours = 10, colour_log = True, colorbarlabel = "Colourbar", Basin_remove_list = [], Basin_rename_dict = {} , value_dict = {}, plot_chi_raster = False, out_fname_prefix = "", show_basins = True, min_channel_point_size = 0.5, max_channel_point_size = 2):
     """
-    This function prints a channel map over a hillshade.
+    This function prints a channel map and has the option of plooting over a raster of chi values. Similar to PrintChiChannelsAndBasins but adds the map of chi coordinate underneath
 
     Args:
         DataDirectory (str): the data directory with the m/n csv files
@@ -229,6 +229,8 @@ def PrintChiCoordChannelsAndBasins(DataDirectory,fname_prefix, ChannelFileName, 
         colour_log (bool): If true the colours are in log scale
         Basin_remove_list (list): A lists containing either key or junction indices of basins you want to remove from plotting
         Basin_rename_dict (dict): A dict where the key is either basin key or junction index, and the value is a new name for the basin denoted by the key
+        Value_dict (dict): A dict where the key is either basin key or junction index, and the value is a value of the basin that is used to colour the basins
+        plot_chi_raster (bool): finds the chi raster and plots this underneath the chi points in the channels. It looks nice.
         out_fname_prefix (str): The prefix of the image file. If blank uses the fname_prefix
         show_basins (bool): If true, plot the basins
         min_channel_point_size (float): The minimum size of a channel point in points
@@ -277,7 +279,7 @@ def PrintChiCoordChannelsAndBasins(DataDirectory,fname_prefix, ChannelFileName, 
     chi_csv_fname = DataDirectory+ChannelFileName
 
     thisPointData = LSDMap_PD.LSDMap_PointData(chi_csv_fname)
-    
+
     # Remove data that has nodata values
     thisPointData.selectValue(plotting_column,value = -9999, operator = "!=")
 
@@ -403,8 +405,8 @@ def PrintChiStacked(DataDirectory,fname_prefix, ChannelFileName, cmap = "jet", c
                        plotting_data_format = plotting_data_format,
                        label_sources = False, source_thinning_threshold = 0,
                        size_format = size_format, aspect_ratio = figure_aspect_ratio, dpi = dpi, rotate_labels=rotate_labels)
-    
-    
+
+
 def PrintMultipleStacked(DataDirectory,fname_prefix, ChannelFileNameList, cmap = "jet", cbar_loc = "bottom", size_format = "ESURF", fig_format = "png", dpi = 250,discrete_colours = False, NColours = 10,colorbarlabel = "Colourbar", axis_data_name = "chi", plotting_data_format = 'log', Basin_select_list = [], Basin_rename_dict = {}, out_fname_prefix = "", first_basin = 0, last_basin = 0, figure_aspect_ratio = 2, X_offset = 5, rotate_labels=False):
     """
     This function takes a list of files and converst them to a stacked plot
@@ -434,7 +436,7 @@ def PrintMultipleStacked(DataDirectory,fname_prefix, ChannelFileNameList, cmap =
 
     # We need to import this because we need to convert point formats
     from lsdviztools.lsdplottingtools import lsdmap_pointtools as LSDMap_PD
-    
+
     print("Let me print some multiply stacked profile plots for you")
 
     # specify the figure size and format
@@ -461,7 +463,7 @@ def PrintMultipleStacked(DataDirectory,fname_prefix, ChannelFileNameList, cmap =
 
     # print("The colourbar is located on the "+cbar_loc)
     # print("Cmap is: "+cmap)
-    
+
     # Now we need to reformat the data into a single data frame and then print the data frame to csv
     PD_list = []
     i = 0;
@@ -477,19 +479,19 @@ def PrintMultipleStacked(DataDirectory,fname_prefix, ChannelFileNameList, cmap =
         #print(new_DF)
         PD_list.append(new_DF)
         i = i+1
-        
+
     new_csv = DataDirectory+fname_prefix+"_concat_chi.csv"
     print("Printing to")
     print(new_csv)
-    
-    concat_DF = pd.concat([PD_list[0],PD_list[1]]) 
+
+    concat_DF = pd.concat([PD_list[0],PD_list[1]])
     concat_DF.to_csv(path_or_buf=new_csv,index=False)
-    
+
     chi_csv_fname = new_csv
     plot_data_name = "file_index"
-    
-    
-    
+
+
+
 
     #print("About to go into the stacks. My x_offset is: " +str(x_offset)+ ", and my rename dict is:" )
     #print(Basin_rename_dict)

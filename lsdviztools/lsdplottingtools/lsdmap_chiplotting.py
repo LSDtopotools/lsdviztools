@@ -1004,7 +1004,7 @@ def ChiProfiles(chi_csv_fname, FigFileName = 'Image.pdf',FigFormat = 'show',
     """This function plots the chi vs elevation: lumps everything onto the same axis. This tends to make a mess.
 
     Args:
-        chi_csv_fname (str): The name (with full path and extension) of the cdv file with chi, chi slope, etc information. This file is produced by the chi_mapping_tool.
+        chi_csv_fname (str): The name (with full path and extension) of the csv file with chi, chi slope, etc information. This file is produced by the chi_mapping_tool.
         FigFileName (str): The name of the figure file
         FigFormat (str): The format of the figure. Usually 'png' or 'pdf'. If "show" then it calls the matplotlib show() command.
         basin_order_list (int list): The basins to plot

@@ -449,7 +449,7 @@ def PrintBasins(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet
         fname_prefix (str): The prefix for the m/n csv files
         add_basin_labels (bool): If true, label the basins with text. Otherwise use a colourbar.
         cmap (str or colourmap): The colourmap to use for the plot
-        cbar_lox (str): where you want the colourbar. Options are none, left, right, top and botton. The colourbar will be of the elevation.
+        cbar_loc (str): where you want the colourbar. Options are none, left, right, top and botton. The colourbar will be of the elevation.
                         If you want only a hillshade set to none and the cmap to "gray"
         size_format (str): Either geomorphology or big. Anything else gets you a 4.9 inch wide figure (standard ESURF size)
         fig_format (str): An image format. png, pdf, eps, svg all valid
@@ -530,7 +530,7 @@ def PrintBasins_Complex(DataDirectory,fname_prefix,
                    use_keys_not_junctions = True, show_colourbar = False,
                    Remove_Basins = [], Rename_Basins = {}, Value_dict= {},
                    cmap = "jet", colorbarlabel = "colourbar", size_format = "ESURF",
-                   fig_format = "png", dpi = 250, out_fname_prefix = "", include_channels = False, label_basins = True):
+                   fig_format = "png", dpi = 250, out_fname_prefix = "", include_channels = False, label_basins = True, save_fig = True):
     """
     This function makes a shaded relief plot of the DEM with the basins coloured
     by the basin ID.
@@ -559,8 +559,6 @@ def PrintBasins_Complex(DataDirectory,fname_prefix,
 
     Author: FJC, SMM
     """
-    #import modules
-    from LSDMapFigure.PlottingRaster import MapFigure
 
     # set figure sizes based on format
     if size_format == "geomorphology":
@@ -617,11 +615,33 @@ def PrintBasins_Complex(DataDirectory,fname_prefix,
 
     # Save the image
     if len(out_fname_prefix) == 0:
-        ImageName = DataDirectory+fname_prefix+"_selected_basins."+fig_format
+        ImageName = DataDirectory+fname_prefix+"_basins."+fig_format
     else:
-        ImageName = DataDirectory+out_fname_prefix+"_selected_basins."+fig_format
+        ImageName = DataDirectory+out_fname_prefix+"_basins."+fig_format
 
-    MF.save_fig(fig_width_inches = fig_width_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi, transparent=True) # Save the figure
+#    MF.save_fig(fig_width_inches = fig_width_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi) # Save the figure
+#    return ImageName
+
+    # Save the image
+    thing_to_return = []
+    if (save_fig):
+        if len(out_fname_prefix) == 0:
+            ImageName = DataDirectory+fname_prefix+"_selected_basins."+fig_format
+        else:
+            ImageName = DataDirectory+out_fname_prefix+"_selected_basins."+fig_format
+
+        MF.save_fig(fig_width_inches = fig_width_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi, transparent=True)
+
+        thing_to_return = ImageName
+
+    else:
+        fig = MF.save_fig(fig_width_inches = fig_width_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi, transparent=True, return_fig = True)
+        thing_to_return = fig
+
+
+    return thing_to_return
+
+
 
 
 def PrintCategorised(DataDirectory,fname_prefix, Drape_prefix,
@@ -650,8 +670,6 @@ def PrintCategorised(DataDirectory,fname_prefix, Drape_prefix,
 
     Author: SMM
     """
-    #import modules
-    from LSDMapFigure.PlottingRaster import MapFigure
 
     # set figure sizes based on format
     if size_format == "geomorphology":
