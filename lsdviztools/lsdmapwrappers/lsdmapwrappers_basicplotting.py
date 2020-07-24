@@ -31,7 +31,7 @@ from matplotlib import rcParams
 
 """
 from lsdviztools.lsdplottingtools import lsdmap_pointtools as LSDP
-#from lsdviztools.lsdplottingtools import lsdmap_vectortools as LSDV
+from lsdviztools.lsdplottingtools import lsdmap_vectortools as LSDV
 from lsdviztools.lsdmapfigure.plottingraster import MapFigure
 from lsdviztools.lsdmapfigure import plottinghelpers as PlotHelp
 
@@ -282,7 +282,7 @@ def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap =
 
 
 
-def PrintChannels(DataDirectory,fname_prefix, ChannelFileName, add_basin_labels = True, cmap = "jet", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", plotting_column = "basin_key"):
+def PrintChannels(DataDirectory,fname_prefix, ChannelFileName, cmap = "jet", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", plotting_column = "basin_key"):
     """
     This function prints a channel map over a hillshade.
 
@@ -290,10 +290,7 @@ def PrintChannels(DataDirectory,fname_prefix, ChannelFileName, add_basin_labels 
         DataDirectory (str): the data directory with the m/n csv files
         fname_prefix (str): The prefix for the m/n csv files
         ChannelFileName (str): The name of the channel file. Doesn't need path but needs extension
-        add_basin_labels (bool): If true, label the basins with text. Otherwise use a colourbar.
         cmap (str or colourmap): The colourmap to use for the plot
-        cbar_lox (str): where you want the colourbar. Options are none, left, right, top and botton. The colourbar will be of the elevation.
-                        If you want only a hillshade set to none and the cmap to "gray"
         size_format (str): Either geomorphology or big. Anything else gets you a 4.9 inch wide figure (standard ESURF size)
         fig_format (str): An image format. png, pdf, eps, svg all valid
         dpi (int): The dots per inch of the figure
@@ -334,9 +331,9 @@ def PrintChannels(DataDirectory,fname_prefix, ChannelFileName, add_basin_labels 
 
     # set up the base image and the map
     MF = MapFigure(BackgroundRasterName, DataDirectory,coord_type="UTM_km",colourbar_location = "None")
-    MF.add_drape_image(DrapeRasterName,DataDirectory,colourmap = cmap, alpha = 0.6)
+    MF.add_drape_image(DrapeRasterName,DataDirectory,colourmap = "gray", alpha = 0.6)
     MF.add_point_data(thisPointData,column_for_plotting = plotting_column,
-                       scale_points = True,column_for_scaling = "drainage_area",
+                       scale_points = True, column_for_scaling = "drainage_area",
                        this_colourmap = cmap, scaled_data_in_log = True,
                        max_point_size = 5, min_point_size = 1)
 
@@ -351,7 +348,7 @@ def PrintChannels(DataDirectory,fname_prefix, ChannelFileName, add_basin_labels 
 
 
 
-def PrintChannelsAndBasins(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = ""):
+def PrintChannelsAndBasins(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = ""):
     """
     This function prints a channel map over a hillshade.
 
@@ -360,8 +357,6 @@ def PrintChannelsAndBasins(DataDirectory,fname_prefix, add_basin_labels = True, 
         fname_prefix (str): The prefix for the m/n csv files
         add_basin_labels (bool): If true, label the basins with text. Otherwise use a colourbar.
         cmap (str or colourmap): The colourmap to use for the plot
-        cbar_lox (str): where you want the colourbar. Options are none, left, right, top and botton. The colourbar will be of the elevation.
-                        If you want only a hillshade set to none and the cmap to "gray"
         size_format (str): Either geomorphology or big. Anything else gets you a 4.9 inch wide figure (standard ESURF size)
         fig_format (str): An image format. png, pdf, eps, svg all valid
         dpi (int): The dots per inch of the figure
@@ -467,8 +462,6 @@ def PrintBasins(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet
 
     Author: FJC, SMM
     """
-    #import modules
-    from LSDMapFigure.PlottingRaster import MapFigure
 
     # set figure sizes based on format
     if size_format == "geomorphology":
@@ -512,7 +505,7 @@ def PrintBasins(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet
         label_dict = dict(zip(basin_junctions,basin_keys))
         # this dict has the basin junction as the key and the basin_key as the value
 
-        Points = LSDP.GetPointWithinBasins(DataDirectory, BasinsName)
+        Points = LSDV.GetPointWithinBasins(DataDirectory, BasinsName)
         MF.add_text_annotation_from_shapely_points(Points, text_colour='k', label_dict=label_dict)
     else:
         print("I am showing the basins without text labels.")

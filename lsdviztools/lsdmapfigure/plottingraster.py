@@ -1339,7 +1339,7 @@ class MapFigure(object):
                        max_point_size = 5, min_point_size = 0.5,
                        colour_log = False, colour_manual_scale = [],
                        manual_size = 0.5, alpha = 1, minimum_log_scale_cut_off = -10, label_field = "None",
-                       font_size = 6, offset = 100, zorder=1, marker = "o", black_contours = False, discrete_colours = False, NColours = 10,scale_in_absolute = False, color_abs =False, unicolor = "blue",
+                       font_size = 6, offset = 100, zorder=10, marker = "o", black_contours = False, discrete_colours = False, NColours = 10,scale_in_absolute = False, color_abs =False, unicolor = "blue",
                        recast_scale_min_max = [], scale_in_abs_after_recasting = False, legend=False, label=""):
 
         """

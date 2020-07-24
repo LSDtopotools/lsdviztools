@@ -42,7 +42,7 @@ def ConvertBasinIndexToJunction(BasinPointData,BasinIndexList):
         BasinIndexList (list of ints): The basin indices to be converted to junctions
 
     Returns:
-        A list on ints with the basin junctions
+        A list of ints with the basin junctions
 
     Author: SMM
     """
@@ -1728,8 +1728,8 @@ def StackedProfilesGradient(chi_csv_fname, FigFileName = 'Image.pdf',
         maskElevation = np.ma.masked_where(np.ma.getmask(m), Elevation)
         maskMChi = np.ma.masked_where(np.ma.getmask(m), M_chi)
         maskSource = np.ma.masked_where(np.ma.getmask(m), Source)
-        
-        
+
+
 
         print("adding an offset of: "+str(this_X_offset))
 
@@ -1823,18 +1823,18 @@ def StackedProfilesGradient(chi_csv_fname, FigFileName = 'Image.pdf',
         # Now plot the scatter for this stack. The colour limits are for all plots
         print("The min and max are:")
         print([M_chi_axis_min,M_chi_axis_max])
-        
+
         print("The cmap is:")
         print(this_cmap)
-        
+
         print("The mChi is:")
         print(maskMChi)
-        
+
         print("the chi is:")
         print(maskX)
-        
+
         cnorm = colors.Normalize( M_chi_axis_min, M_chi_axis_max)
-              
+
         print("cmap is:")
         print(this_cmap)
         sc = ax.scatter(maskX,maskElevation,s=2.0, c=maskMChi,cmap=this_cmap,edgecolors='none',norm = cnorm, vmin = M_chi_axis_min, vmax = M_chi_axis_max)
@@ -1850,7 +1850,7 @@ def StackedProfilesGradient(chi_csv_fname, FigFileName = 'Image.pdf',
         cbar_orient = "horizontal"
         if cbar_loc == "right" or cbar_loc == "left":
             cbar_orient = "vertical"
-            
+
         print("The colourbar orientation is:"+cbar_orient)
         print("The normalisation is")
         print(cnorm)
@@ -2070,7 +2070,7 @@ def map_Mchi_standard(DataDirectory, fname_prefix, size_format='ESURF', FigForma
     ChannelDF = Helper.ReadMChiSegCSV(DataDirectory,fname_prefix, type = knickpoint)
     # Sorting the sources
     if(len(source_list)> 0):
-        ChannelDF = ChannelDF[ChannelDF["source_key"].isin(source_list)] 
+        ChannelDF = ChannelDF[ChannelDF["source_key"].isin(source_list)]
     ChannelPoints = PointTools.LSDMap_PointData(ChannelDF, data_type = "pandas", PANDEX = True)
     MF.add_point_data(ChannelPoints,this_colourmap = "inferno", column_for_plotting = "m_chi",show_colourbar = True, colour_manual_scale = colmanscal, scale_points=True,scaled_data_in_log= True, column_for_scaling='drainage_area',alpha=0.4,max_point_size = 1.58,min_point_size = 0.2,zorder=100)
 
@@ -2080,3 +2080,5 @@ def map_Mchi_standard(DataDirectory, fname_prefix, size_format='ESURF', FigForma
     else:
         ImageName = raster_directory+fname_prefix+"_Mchi_HS."+FigFormat
     MF.save_fig(fig_width_inches = fig_width_inches, FigFileName = ImageName, FigFormat=FigFormat, Fig_dpi = 300) # Save the figure
+
+
