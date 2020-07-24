@@ -1940,7 +1940,7 @@ def StackedProfilesGradient(chi_csv_fname, FigFileName = 'Image.pdf',
         plt.savefig(FigFileName,format=FigFormat,dpi=dpi)
         fig.clf()
 
-def ChannelProfilePlot(DataDirectory, fname_prefix, FigFormat='png', size_format='ESURF',basin_key=[0], source_key=[0]):
+def ChannelProfilePlot(DataDirectory, fname_prefix, FigFormat='png', size_format='ESURF', dpi = 300, basin_key=[0], source_key=[0],use_chi = False):
     """
     This function makes a simple river long profile plot from the chi data map.
 
@@ -1958,6 +1958,7 @@ def ChannelProfilePlot(DataDirectory, fname_prefix, FigFormat='png', size_format
     Author: FJC
     """
     df = Helper.ReadChiDataMapCSV(DataDirectory,fname_prefix)
+
 
     # mask for the basin and the channel
     df = df[df['basin_key'].isin(basin_key)]
@@ -1987,14 +1988,23 @@ def ChannelProfilePlot(DataDirectory, fname_prefix, FigFormat='png', size_format
     elevation = df['elevation'].tolist()
     flow_distance = df['flow_distance'].tolist()
 
+    if use_chi:
+        chi = df['chi'].tolist()
+
     ax.plot(flow_distance, elevation, c='b')
-    ax.set_xlabel('Distance upstream from outlet (m)')
+
+    if use_chi:
+        ax.set_xlabel('Chi (m)')
+    else:
+        ax.set_xlabel('Distance upstream from outlet (m)')
     ax.set_ylabel('Elevation (m)')
 
     newFilename = DataDirectory+fname_prefix+"_profiles."+FigFormat
-    plt.savefig(newFilename,format=FigFormat,dpi=300)
+    plt.savefig(newFilename,format=FigFormat,dpi=dpi)
     ax.cla()
     plt.close(fig)
+
+    return newFilename
 
 
 def map_Mchi_standard(DataDirectory, fname_prefix, size_format='ESURF', FigFormat='png', basin_list = [], source_list = [],outlier_detection_method = "None", log = False, colmanscal = [], bkbg = False, knickpoint = False, alpha_background = 1):

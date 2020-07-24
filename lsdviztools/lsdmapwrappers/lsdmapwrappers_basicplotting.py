@@ -34,6 +34,7 @@ from lsdviztools.lsdplottingtools import lsdmap_pointtools as LSDP
 from lsdviztools.lsdplottingtools import lsdmap_vectortools as LSDV
 from lsdviztools.lsdmapfigure.plottingraster import MapFigure
 from lsdviztools.lsdmapfigure import plottinghelpers as PlotHelp
+from lsdviztools.lsdplottingtools import lsdmap_chiplotting as LSDCP
 
 
 
@@ -453,7 +454,6 @@ def PrintChannelsAndBasins(DataDirectory,fname_prefix, add_basin_labels = True, 
 
     thisPointData = LSDP.LSDMap_PointData(chi_csv_fname)
 
-
     # clear the plot
     plt.clf()
 
@@ -540,6 +540,11 @@ def PrintBasins(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet
 
     # going to make the basin plots - need to have bil extensions.
     print("I'm going to make the basin plots. Your topographic data must be in ENVI bil format or I'll break!!")
+
+
+
+    # clear the plot
+    plt.clf()
 
     # get the rasters
     raster_ext = '.bil'
@@ -647,6 +652,9 @@ def PrintBasins_Complex(DataDirectory,fname_prefix,
     # going to make the basin plots - need to have bil extensions.
     print("I'm going to make the basin plots. Your topographic data must be in ENVI bil format or I'll break!!")
 
+    # clear the plot
+    plt.clf()
+
     # get the rasters
     raster_ext = '.bil'
     #BackgroundRasterName = fname_prefix+raster_ext
@@ -695,6 +703,30 @@ def PrintBasins_Complex(DataDirectory,fname_prefix,
     print("I'm returning:")
     print(thing_to_return)
     return thing_to_return
+
+
+def SimpleProfile(DataDirectory,fname_prefix, size_format = "ESURF", fig_format = "png", dpi = 250, basin_key=[0], source_key=[0], use_chi = False):
+    """
+    This function makes a simple river long profile plot from the chi data map.
+
+    Args:
+        DataDirectory (str): the data directory
+        fname_prefix (str): the name of the DEM without extension
+        FigFormat(str): format of the figure, e.g. png, svg
+        size_format (str): size of the figure, can be either 'geomorphology', 'big', or 'ESURF'
+        basin_key (list): basin keys to analyse
+        source_key (list): source keys of the channels you want to plot.
+
+    Returns:
+        long profile plot
+
+    Author: FJC
+    """
+
+    fname = LSDCP.ChannelProfilePlot(DataDirectory, fname_prefix, FigFormat=fig_format, size_format=size_format, dpi = dpi, basin_key=basin_key, source_key=source_key,use_chi = use_chi)
+
+    return fname
+
 
 
 def PrintCategorised(DataDirectory,fname_prefix, Drape_prefix,
