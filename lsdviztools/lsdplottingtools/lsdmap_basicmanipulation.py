@@ -149,7 +149,7 @@ def GetHillshade(raster_filename,new_raster_filename, azimuth = 315, angle_altit
     Author: SMM
     """
     # avoid circular import
-    from . import LSDMap_BasicPlotting as LSDMBP
+    from . import lsdmap_basicplotting as LSDMBP
     # get the hillshade
     hillshade_raster = LSDMBP.Hillshade(raster_filename, azimuth, angle_altitude)
 

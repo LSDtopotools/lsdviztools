@@ -1261,7 +1261,39 @@ def convert2UTM(DataDirectory, RasterFile,minimum_elevation=0.01,resolution=30):
     print(dem_datam2.meta)
 
 
+def convert4lsdtt(DataDirectory, RasterFile,minimum_elevation=0.01,resolution=30):
+    """
+    Converts the DEM to UTM coordinate system and then to bil format. Leaves a saved tif file in its wake
 
+
+     Args:
+        DataDirectory (str): the data directory with the basin raster
+        RasterFile (str): the name of the raster
+        minimum_elevation (float): the minimum elevation of the raster, below this you have nodata
+        resolution (float): the resultution of the transformed DEM
+
+    Returns:
+        none, but prints a raster to file in UTM coordinate system in ENVI bil format
+
+    Author: SMM
+
+    Date: 27/07/2020
+    """
+
+    # get the filename of the outfile.
+    if not DataDirectory.endswith(os.sep):
+        print("You forgot the separator at the end of the directory, appending...")
+        DataDirectory = DataDirectory+os.sep
+
+    # Get the raster prefix
+    SplitRasterfile = RasterFile.split(".")
+    RasterPrefix = SplitRasterfile[0]
+    RasterSuffix = SplitRasterfile[1]
+
+    NewRasterName = RasterPrefix+"_UTM."+RasterSuffix
+
+    convert2UTM(DataDirectory,RasterFile,minimum_elevation=minimum_elevation,resolution=resolution)
+    convert2bil(DataDirectory,NewRasterName,minimum_elevation=minimum_elevation)
 
 
 #==============================================================================

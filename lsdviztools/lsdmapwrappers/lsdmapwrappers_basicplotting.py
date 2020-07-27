@@ -91,6 +91,7 @@ def SimpleHillshade(DataDirectory,Base_file, cmap = "terrain", cbar_loc = "right
 
         thing_to_return = ImageName
     else:
+
         fig = MF.save_fig(fig_width_inches = fig_size_inches, transparent=True, return_fig = True)
         thing_to_return = fig
 

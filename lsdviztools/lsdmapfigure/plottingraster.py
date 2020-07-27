@@ -2183,6 +2183,7 @@ class MapFigure(object):
 
         # I am returning the figure if wanted, otherwise I am saving the figure and clearing it
         if(return_fig):
+            #fig.show()
             return fig
         else:
             # saving and closing
