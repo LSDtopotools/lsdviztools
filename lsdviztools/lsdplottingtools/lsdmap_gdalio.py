@@ -18,6 +18,7 @@ from os.path import exists
 from osgeo.gdalconst import GA_ReadOnly
 import rasterio as rio
 from lsdviztools.lsdplottingtools import lsdmap_basicplotting as bm
+import utm
 
 #==============================================================================
 def getNoDataValue(rasterfn):
@@ -1134,6 +1135,132 @@ def convert2bil(DataDirectory, RasterFile,minimum_elevation=0.01):
     hname = DataDirectory+RasterPrefix+".hdr"
 
     array2raster(fname ,outname,rast,noDataValue=nodatavalue)
+
+
+def convert2UTM(DataDirectory, RasterFile,minimum_elevation=0.01,resolution=30):
+    """
+    Converts the DEM to UTM coordinate system. Automatically checks the UTM zone using the python package utm.
+    The output is a tif. Also includes resamplig and minimum elevation
+
+
+     Args:
+        DataDirectory (str): the data directory with the basin raster
+        RasterFile (str): the name of the raster
+        minimum_elevation (float): the minimum elevation of the raster, below this you have nodata
+        resolution (float): the resultution of the transformed DEM
+
+    Returns:
+        none, but prints a raster to file in UTM coordinate system
+
+    Author: SMM
+
+    Date: 27/07/2020
+    """
+
+    from pyproj import Proj
+    from pyproj import transform as TFORM
+    from rasterio.warp import calculate_default_transform, reproject, Resampling
+
+
+    # get the filename of the outfile.
+    if not DataDirectory.endswith(os.sep):
+        print("You forgot the separator at the end of the directory, appending...")
+        DataDirectory = DataDirectory+os.sep
+
+    # Get the raster prefix
+    SplitRasterfile = RasterFile.split(".")
+    RasterPrefix = SplitRasterfile[0]
+
+
+    filename = DataDirectory+RasterFile
+
+    # First get the source coordinate system
+    # open dataset
+    ds = gdal.Open(filename)
+    prj=ds.GetProjection()
+    print("The projections is:")
+    print(prj)
+    ds = []
+
+    print("And some extra projection information strings:")
+    srs=osr.SpatialReference(wkt=prj)
+    if srs.IsProjected:
+        print(srs.GetAttrValue('projcs'))
+    print(srs.GetAttrValue('geogcs'))
+
+    # now do it with rasterio
+    dem_data = rio.open(filename)
+
+    # Get the coordinate system
+    this_crs = dem_data.crs
+    this_epsg = this_crs.to_epsg()
+    init_string = "epsg:"+str(this_epsg)
+
+
+
+    # We need to get the centre of the DEM to get the UTM zone
+    centre_point = dem_data.xy(dem_data.height // 2, dem_data.width // 2)
+    print("The centre of the raster is at:")
+    print(centre_point)
+
+    # Get the latlong of this point
+    inProj = Proj(init_string)
+    outProj = Proj(init='epsg:4326')
+    x2,y2 = TFORM(inProj,outProj,centre_point[0],centre_point[1])
+    print("The centre lat-long is")
+    print(y2,x2)
+
+
+    temp_info = utm.from_latlon(y2, x2)
+    if(temp_info[3] in ['X','W','V','U','T','S','R','Q','P','N']):
+        south = False
+    else:
+        south = True
+
+    res = resolution
+
+    UTMzone = temp_info[2]
+    if south:
+        EPSG = "327" + str(UTMzone)
+    else:
+        EPSG = "326" + str(UTMzone)
+
+    res_tuple = (res,res)
+    print("res tuple is:")
+    print(res_tuple)
+
+    dst_crs = 'EPSG:'+EPSG
+    print("The destination CRS is: "+dst_crs)
+    output_filename = DataDirectory+RasterPrefix+ "_UTM.tif"
+
+
+    with rio.open(filename) as src:
+        transform, width, height = calculate_default_transform(
+            src.crs, dst_crs, src.width, src.height, resolution=res_tuple,*src.bounds)
+        kwargs = src.meta.copy()
+        kwargs.update({
+            'crs': dst_crs,
+            'transform': transform,
+            'width': width,
+            'height': height
+        })
+
+        with rio.open(output_filename, 'w', **kwargs) as dst:
+            for i in range(1, src.count + 1):
+                reproject(
+                    source=rio.band(src, i),
+                    destination=rio.band(dst, i),
+                    src_transform=src.transform,
+                    src_crs=src.crs,
+                    dst_resolution=res_tuple,
+                    dst_transform=transform,
+                    dst_crs=dst_crs,
+                    resampling=Resampling.cubic)
+    dem_datam2 = rio.open(output_filename)
+
+    print(dem_datam2.meta)
+
+
 
 
 
