@@ -30,7 +30,28 @@ lsdvizools is a collection of routines for plotting geospatial data, with a focu
 Features
 --------
 
-* There are tons of cool features. One day we will tell you all about them. 
+* Plotting of rasters that includes formatting so you can get publication-ready figures with one command.
+* Selection of basins and channels for topogroahic analysis.
+* Tools for plotting point data, usually associated with channel networks, derived from LSDTopoTools command line tools.
+
+
+Getting started
+---------------
+
+You can install lsdviztools with pip
+
+You can also use our docker container (in the second command you need to change the path after -v to your local directory). You first need to install docker: https://www.docker.com/products/docker-desktop
+
+::
+  $ docker pull lsdtopotools/lsdtt_pytools_docker
+  $ docker run -it -v /path/to/my/local/directory:/LSDTopoTools -p 8888:8888 lsdtopotools/lsdtt_pytools_docker
+  # install_lsdtt_python_packages.sh
+  # jupyter notebook --ip 0.0.0.0 --port 8888 --no-browser --allow-root
+
+Then go to the jupyter notebook in your web browser by going to http://localhost:8888/
+
+
+
 
 Credits
 -------
