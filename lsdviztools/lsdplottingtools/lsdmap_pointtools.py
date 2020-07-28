@@ -227,14 +227,13 @@ class LSDMap_PointData(object):
 
         return self.Longitude
 
-    def QueryData(self,data_name,PrintToScreen = False, PANDEX=False):
+    def QueryData(self,data_name,PrintToScreen = False):
 
         """Returns the list of the data that has the column header data_name
 
         Args:
             PrintToScreen (bool): If true, prints to screen.
             data_name (str): The header of the column you want
-            PANDEX (bool): set to true if you got your point data in pandex mode.
 
         Return:
             float: A list of the data
@@ -246,18 +245,12 @@ class LSDMap_PointData(object):
             empty_list = []
             return empty_list
         else:
-            if PANDEX == False:
-                if PrintToScreen:
-                    print("The " + data_name + "data is: ")
-                    print(self.PointData[data_name])
-                return self.PointData[data_name]
-            else:
-                # get data from the DF to a list
-                if PrintToScreen:
-                    print("The " + data_name + "data is: ")
-                    print(self.PointData[data_name].tolist())
-                this_list = self.PointData[data_name].tolist()
-                return this_list
+            # get data from the DF to a list
+            if PrintToScreen:
+                print("The " + data_name + "data is: ")
+                print(self.PointData[data_name].tolist())
+            this_list = self.PointData[data_name].tolist()
+            return this_list
 
     def GetUTMEastingNorthing(self,EPSG_string):
         """Returns two lists: the latitude and longitude converted to northing and easting.
@@ -539,7 +532,7 @@ class LSDMap_PointData(object):
         Returns:
             None removes data from the object (not reversible!!)
 
-        Author: FJC
+        Author: FJC (Update SMM to make this pandas compatible)
 
         """
         print("I am only keeping the "+data_name+" data with a value of "+str(data_key))
@@ -550,41 +543,9 @@ class LSDMap_PointData(object):
         else:
             this_data = self.PointData[data_name]
 
-        this_data = [int(x) for x in this_data]
-        #print("The original data I need to thin is: ")
-        #print(this_data)
-
-
-        # Start a new data dict
-        NewDataDict = {}
-        NewLat = []
-        NewLon = []
-        for name in self.VariableList:
-            NewDataDict[name] = []
-
-
-        # Get all the data to be deleted
-        print("The data I am keeping is: ")
-        print(data_key)
-        delete_indices = []
-        for index, data in enumerate(this_data):
-            #print("Data: "+str(data))
-            if data != data_key:
-                #print("I'm not keeping it")
-                delete_indices.append(index)
-            else:
-                #print("I'll have that one. ")
-                NewLat.append(self.Latitude[index])
-                NewLon.append(self.Longitude[index])
-                for name in self.VariableList:
-                    this_element = self.PointData[name][index]
-                    NewDataDict[name].append(this_element)
-
-
-        # Now reset the data dict
-        self.PointData = NewDataDict
-        self.Latitude = NewLat
-        self.Longitude = NewLon
+        self.PointData = self.PointData[self.PointData[data_name].isin(data_key)]
+        self.Longitude = self.PointData["longitude"]
+        self.Latitude = self.PointData["latitude"]
 
 
 
