@@ -20,7 +20,7 @@ lsdviztools
 
 
 
-lsdvizools is a collection of routines for plotting geospatial data, with a focus on data produces by LSDTopoTools or by lsdtopytools.
+lsdvizools is a collection of routines for plotting geospatial data, with a focus on data produced by LSDTopoTools or by lsdtopytools.
 
 
 * Free software: MIT license
@@ -38,7 +38,7 @@ Features
 Getting started
 ---------------
 
-You can install lsdviztools with pip
+You can install lsdviztools with pip.
 
 You can also use our docker container (in the second command you need to change the path after -v to your local directory). You first need to install docker: https://www.docker.com/products/docker-desktop
 

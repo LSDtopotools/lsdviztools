@@ -1199,16 +1199,23 @@ def convert2UTM(DataDirectory, RasterFile,minimum_elevation=0.01,resolution=30):
 
 
     # We need to get the centre of the DEM to get the UTM zone
-    centre_point = dem_data.xy(dem_data.height // 2, dem_data.width // 2)
+    centre_point = dem_data.xy(dem_data.width // 2, dem_data.height // 2)
     print("The centre of the raster is at:")
     print(centre_point)
+    print("dem_data.width is: "+ str(dem_data.width))
 
     # Get the latlong of this point
-    inProj = Proj(init_string)
-    outProj = Proj(init='epsg:4326')
-    x2,y2 = TFORM(inProj,outProj,centre_point[0],centre_point[1])
-    print("The centre lat-long is")
-    print(y2,x2)
+    if this_epsg != 4326:
+        inProj = Proj(init_string)
+        outProj = Proj(init='epsg:4326')
+        x2,y2 = TFORM(inProj,outProj,centre_point[0],centre_point[1])
+        print("The centre lat-long is")
+        print(y2,x2)
+    else:
+        y2 = centre_point[1]
+        x2 = centre_point[0]
+        print("The latitude and longitude is")
+        print(y2,x2)
 
 
     temp_info = utm.from_latlon(y2, x2)
@@ -1273,7 +1280,7 @@ def convert4lsdtt(DataDirectory, RasterFile,minimum_elevation=0.01,resolution=30
         resolution (float): the resultution of the transformed DEM
 
     Returns:
-        none, but prints a raster to file in UTM coordinate system in ENVI bil format
+        The name of the new raster file, and prints a raster to file in UTM coordinate system in ENVI bil format
 
     Author: SMM
 
@@ -1294,6 +1301,8 @@ def convert4lsdtt(DataDirectory, RasterFile,minimum_elevation=0.01,resolution=30
 
     convert2UTM(DataDirectory,RasterFile,minimum_elevation=minimum_elevation,resolution=resolution)
     convert2bil(DataDirectory,NewRasterName,minimum_elevation=minimum_elevation)
+
+    return NewRasterName
 
 
 #==============================================================================

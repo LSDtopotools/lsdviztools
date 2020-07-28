@@ -107,7 +107,7 @@ class LSDMap_PointData(object):
             print("The object file prefix is: " + self.FilePrefix)
 
         self.PANDEX = PANDEX
-        
+
 
         ######################### THIS PART OF THE CODE IS ONLY USING PANDAS #########################
         if(self.PANDEX == True):
@@ -399,7 +399,7 @@ class LSDMap_PointData(object):
 
         #print("The latitude is: ")
         #print(self.Latitude)
-        
+
         #print("Now the lat is")
         #print(self.Latitude.values)
         #print(this_Lon)
@@ -535,7 +535,7 @@ class LSDMap_PointData(object):
             data_for_selection_list (int): A list of values to retain. Useful for things like selecting basins or sources.
 
         Returns:
-            None removes data from the object (not reversible!!)
+            None. removes data from the object (not reversible!!)
 
         Author: SMM
 

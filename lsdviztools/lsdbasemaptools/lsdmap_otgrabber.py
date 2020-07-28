@@ -83,7 +83,7 @@ class ot_scraper(object):
         This downloads the DEM. Call it once the DEM_scraper object is created. Uses a pythonic version that doesn't have system calls
 
         Returns:
-            None, but downloads a DEM
+            The filename, the path, and the filename without the path. And in addition downloads the DEM
 
         Author: SMM
 
@@ -98,6 +98,8 @@ class ot_scraper(object):
 
         url_string = 'https://portal.opentopography.org/otr/getdem?demtype=%s&south=%s&north=%s&west=%s&east=%s&outputFormat=GTiff'%(str_source,self.latitude_S,self.latitude_N,self.longitude_W,self.longitude_E, )
         filename = self.path+self.prefix+"_"+self.source + ".tif"
+        fwithoutpath= self.prefix+"_"+self.source + ".tif"
+
 
         print("I am going to download the following for you:")
         print(url_string)
@@ -108,6 +110,7 @@ class ot_scraper(object):
             shutil.copyfileobj(response, out_file)
 
         print("Finished downloading")
+        return filename,self.path,fwithoutpath
 
 
     def download(self):
@@ -115,7 +118,7 @@ class ot_scraper(object):
         This downloads the DEM. Call it once the DEM_scraper object is created.
 
         Returns:
-            None, but downloads a DEM
+            Filename, path, and fielname without path, but downloads a DEM
 
         Author: BG
 
@@ -131,6 +134,11 @@ class ot_scraper(object):
 
         wget_command = 'curl -X GET "https://portal.opentopography.org/API/globaldem?demtype=%s&south=%s&north=%s&west=%s&east=%s&outputFormat=GTiff" -H "accept: */*" > %s'%(str_source,self.latitude_S,self.latitude_N,self.longitude_W,self.longitude_E, self.path+self.prefix+"_"+self.source + ".tif")
         sub.call(wget_command, shell = True)
+
+        filename = self.path+self.prefix+"_"+self.source + ".tif"
+        fnamewithoutpath = self.prefix+"_"+self.source + ".tif"
+
+        return filename,self.path,fnamewithoutpath
 
 
     def to_UTM_pythonic(self):
