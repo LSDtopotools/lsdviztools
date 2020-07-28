@@ -111,13 +111,17 @@ class LSDMap_PointData(object):
 
         ######################### THIS PART OF THE CODE IS ONLY USING PANDAS #########################
         if(self.PANDEX == True):
-            print("Warning, you are using an experimental version of LSDMT that is implementing Pandas dataframe to improve the performance. It is still unstable, switch PANDEX to False in your PointData parameters to use the regular way")
+            #print("Warning, you are using an experimental version of LSDMT that is implementing Pandas dataframe to improve the performance. It is still unstable, switch PANDEX to False in your PointData parameters to use the regular way")
             print("Loading your file from " + data_type)
             if(data_type == "csv"):
                 data = pandas.read_csv(FileName, sep=",")
             else:
                 if(data_type == "pandas"):
                     data = FileName
+
+            # Strip the whitespace and control characters in the headers
+            data = data.rename(columns=lambda x: x.strip())
+
             #Extracting the headers
             self.VariableList = list(data.columns.values)
             self.PointData = data
@@ -136,133 +140,10 @@ class LSDMap_PointData(object):
             else:
                self.Longitude = self.PointData["longitude"].values
             print("done")
-
-        ######################## THIS THE END OF THE PANDEX TEST #######################################
         else:
-            #See if the parameter files exist
-            native_way = False # Switch to TRUE if pandasif creating bugs
-            if (data_type == "pandas"):
-                FileNameCheck = "ok"
-            else:
-                FileNameCheck = FileName
-            if (os.access(FileNameCheck,os.F_OK) or FileNameCheck == "ok"):
-                if(native_way):
-                    this_file = open(FileName, 'r')
-                    lines = this_file.readlines()
-
-                    # get rid of the control characters
-                    this_line = LSDOst.RemoveEscapeCharacters(lines[0])
-
-                    # Now get a list with the names of the parameters
-                    self.VariableList = []
-
-                    TestList = this_line.split(',')
-
-                    for name in TestList:
-                        this_name = LSDOst.RemoveEscapeCharacters(name)
-                        self.VariableList.append(this_name.lower())
+            print("Something has gone wrong, you are trying to read this the non pandemic way.")
 
 
-                    print("Variable list is: ")
-                    print(self.VariableList)
-
-                    # get rid of the names
-                    del lines[0]
-
-                    # now you need to make a dict that contains a list for each varaible name
-                    DataDict = {}
-                    TypeList = []
-                    for name in self.VariableList:
-                        DataDict[name] = []
-
-                    # now get the data into the dict
-                    #firstline = True
-                    for line in lines:
-                        this_line = LSDOst.RemoveEscapeCharacters(line)
-                        split_line = this_line.split(',')
-
-                        for index,name in enumerate(self.VariableList):
-                            this_var = LSDOst.RemoveEscapeCharacters(split_line[index])
-                            #this_variable = LSDOst.ParseStringToType(this_var)
-                            DataDict[name].append(this_var)
-
-                    # now go back and get the correct type
-                    DataDictTyped = {}
-                    for name in self.VariableList:
-                        this_list = DataDict[name]
-                        typed_list = LSDOst.ParseListToType(this_list)
-                        DataDictTyped[name] = typed_list
-
-                        TypeList.append(type(typed_list[0]))
-
-                    self.PointData = DataDictTyped
-                    self.DataTypes = TypeList
-                    print(self.PointData)
-                    print(self.DataTypes)
-                else:
-                    print("I am loading data using pandas, I haven't been widely tested yet, you can switch to the old way if you have troubles by looking for native_way in LSDMap_PointData")
-                    #Loading the file
-                    print("Loading")
-                    if(data_type == "csv"):
-                        data = pandas.read_csv(FileName, sep=",")
-                    else:
-                        if(data_type == "pandas"):
-                            data = FileName
-                    print("Loaded")
-                    #Extracting the headers
-                    self.VariableList = list(data.columns.values)
-                    #Correcting the names
-                    for names in self.VariableList:
-                        names =  LSDOst.RemoveEscapeCharacters(names).lower()
-
-                    print("Your Variable list is : ")
-                    print(self.VariableList)
-                    #ingesting data values
-                    dataPoints = np.array(data.values)
-                    DataDict = {}
-                    #Feeding the dictionnary[header][table of values]
-                    print("I am ingesting the data")
-                    for i in range(len(self.VariableList)):
-                        DataDict[self.VariableList[i]] = dataPoints[:,i]
-                    #dealing with the types
-                    DataDictTyped = {}
-                    TypeList = []
-                    for name in self.VariableList:
-                        this_list = DataDict[name]
-                        typed_list = LSDOst.ParseListToType(this_list)
-                        DataDictTyped[name] = typed_list
-
-                        TypeList.append(type(typed_list[0]))
-
-                    self.PointData = DataDict
-                    self.DataTypes = TypeList
-                    #print(self.PointData)
-                    print("The points data are successfully loaded")
-                    print("DEBUG, pointdata:")
-                    print(self.PointData)
-                    print("DEBUG, DataTypes:")
-                    print(self.DataTypes)
-
-
-            else:
-                print("Uh oh I could not open that file")
-                self.VariableList = []
-                self.DataTypes = []
-                self.PointData = {}
-
-            # now make sure the data has latitude and longitude entries
-            if "latitude" not in self.VariableList:
-                print("Something has gone wrong, latitude is not in the variable list")
-                print("Here is the variable list: ")
-                print(self.VariableList)
-            else:
-               self.Latitude = self.PointData["latitude"]
-            if "longitude" not in self.VariableList:
-                print("Something has gone wrong, longitude is not in the variable list")
-                print("Here is the variable list: ")
-                print(self.VariableList)
-            else:
-               self.Longitude = self.PointData["longitude"]
 
 
 ##==============================================================================
