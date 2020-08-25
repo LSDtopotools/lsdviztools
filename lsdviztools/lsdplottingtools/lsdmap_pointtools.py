@@ -523,7 +523,6 @@ class LSDMap_PointData(object):
     def ThinDataFromKey(self,data_name,data_key):
         """This function takes a key for a value and retains the members in data name corresponding to that selection.
         Similar to ThinDataSelection but just takes one key rather than a list.
-        Not compatible with PANDEX
 
         Args:
             data_name (str): The name of the data member to select

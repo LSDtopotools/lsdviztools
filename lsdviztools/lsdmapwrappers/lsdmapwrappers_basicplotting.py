@@ -36,7 +36,28 @@ from lsdviztools.lsdmapfigure.plottingraster import MapFigure
 from lsdviztools.lsdmapfigure import plottinghelpers as PlotHelp
 from lsdviztools.lsdplottingtools import lsdmap_chiplotting as LSDCP
 
+def make_display_string(img_name, width=600):
+    """
+    This makes a simple markdown display string that you can use in ipython
 
+    Args:
+        img_name (str): name of the image file
+        width (int): the width of the figure in pixels
+
+    Returns:
+        a string that can be passed to the ipython markdown display command
+        use with
+        from IPython.display import display, Markdown, Latex
+        todisplay = make_display_string(img_name, width=600)
+        display(Markdown(todisplay))
+
+    Author: SMM
+
+    Date 25/08/2020
+    """
+
+    todisplay = r"""<img src="%s" width=%i>"""%(img_name,img_width)
+    return todisplay
 
 def SimpleHillshade(DataDirectory,Base_file, cmap = "terrain", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "",save_fig = True):
     """
