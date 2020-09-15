@@ -42,7 +42,7 @@ You can install lsdviztools with pip.
 
 You can also use our docker container (in the second command you need to change the path after -v to your local directory). You first need to install docker: https://www.docker.com/products/docker-desktop
 
-::
+.. code-block:: none
   $ docker pull lsdtopotools/lsdtt_pytools_docker
   $ docker run -it -v /path/to/my/local/directory:/LSDTopoTools -p 8888:8888 lsdtopotools/lsdtt_pytools_docker
   # install_lsdtt_python_packages.sh
