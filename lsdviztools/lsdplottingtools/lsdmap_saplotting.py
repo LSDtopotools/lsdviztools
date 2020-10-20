@@ -303,7 +303,7 @@ def SAPlotDriver(DataDirectory, DEM_prefix, FigFormat = 'show', size_format = "E
 
     Author: SMM
     """
-    from LSDPlottingTools import LSDMap_PointTools as PointTools
+    from lsdviztools.lsdplottingtools import lsdmap_pointtools as PointTools
 
     print("These basin keys are: ")
     print(basin_keys)
@@ -842,12 +842,12 @@ def BinnedWithRawSlopeAreaPlot(DataDirectory, fname_prefix, FigFileName = 'Image
     # If you want RGBA from this you use:  rgba_color = scalarMap.to_rgba(this_data)
 
     # now get the sources
-    sources = np.unique(RawDF['source_key'].as_matrix())
+    sources = np.unique(np.asarray(RawDF['source_key']))
     print (sources)
 
     # get the regression stats for this basin
     RegressionDF = LinearRegressionRawData(DataDirectory, fname_prefix)
-    this_movern = round(RegressionDF.get_value(basin_key,'regression_slope'),2)
+    this_movern = round(RegressionDF.at[basin_key,'regression_slope'],2)
 
     # Mask the data of the segments sequentially
     for idx,source in enumerate(sources):
@@ -855,8 +855,8 @@ def BinnedWithRawSlopeAreaPlot(DataDirectory, fname_prefix, FigFileName = 'Image
         # mask to just get the data for the basin of interest
         RawDFMask = RawDF[RawDF['source_key'] == source]
         BinnedDFMask = BinnedDF[BinnedDF['source_key'] == source]
-        SourceMedianLogSlope = 10**(BinnedDFMask['median_log_S'].as_matrix())
-        SourceMedianLogArea = 10**(BinnedDFMask['median_log_A'].as_matrix())
+        SourceMedianLogSlope = 10**(np.asarray(BinnedDFMask['median_log_S']))
+        SourceMedianLogArea = 10**(np.asarray(BinnedDFMask['median_log_A']))
         print (SourceMedianLogArea)
 
         # Now add the colours for the segments
@@ -865,8 +865,8 @@ def BinnedWithRawSlopeAreaPlot(DataDirectory, fname_prefix, FigFileName = 'Image
         ax.scatter(SourceMedianLogArea,SourceMedianLogSlope,c=tps_color,s=10,marker="o",lw=0.5,edgecolors='k',zorder=100)
 
         # get the errors
-        first_quartile = 10**(BinnedDFMask['logS_FirstQuartile'].as_matrix())
-        third_quartile = 10**(BinnedDFMask['logS_ThirdQuartile'].as_matrix())
+        first_quartile = 10**(np.asarray(BinnedDFMask['logS_FirstQuartile']))
+        third_quartile = 10**(np.asarray(BinnedDFMask['logS_ThirdQuartile']))
         yerr_up = third_quartile-SourceMedianLogSlope
         yerr_down = SourceMedianLogSlope-first_quartile
 

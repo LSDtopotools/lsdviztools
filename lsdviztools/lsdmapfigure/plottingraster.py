@@ -67,7 +67,7 @@ class BaseRaster(object):
 
         # get the EPSG string
         self._EPSGString = LSDP.LSDMap_IO.GetUTMEPSG(self._FullPathRaster)
-        #print("The EPSGString is: "+ self._EPSGString)
+        print("The EPSGString is: "+ self._EPSGString)
 
     @property
     def extents(self):

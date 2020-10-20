@@ -3384,9 +3384,9 @@ def MakeRasterPlotsMOverN(DataDirectory, fname_prefix, start_movern=0.2, n_mover
 
     # add the basin labelling
     if not parallel:
-      Points = LSDP.GetPointWithinBasins(DataDirectory, BasinsName)
+      Points = LSDV.GetPointWithinBasins(DataDirectory, BasinsName)
     else:
-      Points = LSDP.GetPointsWithinMultipleBasins(DataDirectory, BasinsName)
+      Points = LSDV.GetPointsWithinMultipleBasins(DataDirectory, BasinsName)
 
     print ("Adding labels, the label dict is:", labeldict)
     MF.add_text_annotation_from_shapely_points_v2(Points, text_colour='k', label_dict=labeldict, zorder=200)
