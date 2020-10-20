@@ -1395,8 +1395,8 @@ class MapFigure(object):
             [easting,northing] = thisPointData.GetUTMEastingNorthing(EPSG_string)
         except:
             # check to see if easting and northing data already exists
-            easting = thisPointData.QueryData("easting").as_matrix().astype(float)
-            northing = thisPointData.QueryData("northing").as_matrix().astype(float)
+            easting = np.asarray(thisPointData.QueryData("easting")).astype(float)
+            northing = np.asarray(thisPointData.QueryData("northing")).astype(float)
 
         print("I got the easting and northing")
 

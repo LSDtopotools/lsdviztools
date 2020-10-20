@@ -1593,23 +1593,23 @@ def StackedProfilesGradient(chi_csv_fname, FigFileName = 'Image.pdf',
 
     # Get the chi, m_chi, basin number, and source ID code
     if axis_data_name  == 'chi':
-        x_data = thisPointData.QueryData('chi').values
+        x_data = thisPointData.QueryData('chi')
         x_data = [float(x) for x in x_data]
     elif axis_data_name == 'flow_distance':
-        x_data = thisPointData.QueryData('flow_distance').values
+        x_data = thisPointData.QueryData('flow_distance')
         x_data = [float(x) for x in x_data]
     else:
         print("I did not understand the data name. Choices are chi and flow distance. Defaulting to chi.")
         x_data = thisPointData.QueryData('chi')
         x_data = [float(x) for x in x_data]
 
-    elevation = thisPointData.QueryData('elevation').values
+    elevation = thisPointData.QueryData('elevation')
     elevation = [float(x) for x in elevation]
-    m_chi = thisPointData.QueryData(colour_data_name).values
+    m_chi = thisPointData.QueryData(colour_data_name)
     m_chi = [float(x) for x in m_chi]
-    basin = thisPointData.QueryData('basin_key').values
+    basin = thisPointData.QueryData('basin_key')
     basin = [int(x) for x in basin]
-    source = thisPointData.QueryData('source_key').values
+    source = thisPointData.QueryData('source_key')
     source = [int(x) for x in source]
 
     # make a color map of fixed colors

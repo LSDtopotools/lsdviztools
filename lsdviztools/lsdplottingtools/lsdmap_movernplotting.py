@@ -184,8 +184,8 @@ def GetMOverNRangeMCPoints(BasinDF, start_movern=0.2, d_movern=0.1, n_movern=7):
             # and the max.
             Min_MOverN = min(movern_floats)
             Max_MOverN = max(movern_floats)
-            
-            
+
+
 
             # ok, for the minimum, get the previous m/n value
             if float(Min_MOverN) - float(d_movern) < float(start_movern):
@@ -262,7 +262,7 @@ def GetRangeMOverNChiResiduals(DataDirectory, fname_prefix, basin_list=[0], para
     calculates the median best fit m/n along with the min and max from the
     first and third quartiles. These are returned as a pandas dataframe because
     I love pandas <3 <3
-    SMM Note: this isn't really used since the residual analysis doesn't work. 
+    SMM Note: this isn't really used since the residual analysis doesn't work.
 
     Args:
         DataDirectory (str): the data directory with the m/n csv files
@@ -433,7 +433,7 @@ def CompareMOverNEstimatesAllMethods(DataDirectory, fname_prefix, basin_list=[0]
     summary_directory = DataDirectory+'summary_plots/'
     if not os.path.isdir(summary_directory):
         os.makedirs(summary_directory)
-        
+
     # First, we need to check if the full chi actually is there
     Fname_bootstrap_stats = DataDirectory+fname_prefix+'_movernstats_basinstats.csv'
     from pathlib import Path
@@ -445,8 +445,8 @@ def CompareMOverNEstimatesAllMethods(DataDirectory, fname_prefix, basin_list=[0]
         print("The bootstrap data exists. I hope it was worth the wait. ")
     else:
         print("I did not find bootstrap data, so I am assuming only S-A data and disorder data.")
-        
-    
+
+
 
     # read in the full chi dataframe
     if not parallel:
@@ -484,7 +484,7 @@ def CompareMOverNEstimatesAllMethods(DataDirectory, fname_prefix, basin_list=[0]
 
     print ("Getting the m/n from the SA data")
 
-    # Updated on the 21/01/2019 by Boris: I added error management on that part. 
+    # Updated on the 21/01/2019 by Boris: I added error management on that part.
     # Cedric Roerig from Giessen is having issue with plotting routines and the code complains data is empty raising ValueError
     # This should sort it
     # Data is replaced by zeros for SA
@@ -603,7 +603,7 @@ def CheckMLEOutliers(DataDirectory, fname_prefix, basin_list=[0], start_movern=0
     print("d theta is: "+str(d_movern))
     print("n theta is: "+str(n_movern))
     end_movern = float(start_movern)+float(d_movern)*(float(n_movern)-1)
-    print("end theta is: "+str(end_movern))                                                  
+    print("end theta is: "+str(end_movern))
     m_over_n_values = np.linspace(start_movern,end_movern,n_movern)
     movern_strs = []
     for movern in m_over_n_values:
@@ -1357,8 +1357,8 @@ def MakeChiPlotsMLE(DataDirectory, fname_prefix, basin_list=[0], start_movern=0.
             subprocess.call(system_call, shell=True)
     plt.close(fig)
 
-    
-    
+
+
 def MakeChiPlotsChi(DataDirectory, fname_prefix, basin_list=[0], start_movern=0.2, d_movern=0.1, n_movern=7,
                     size_format='ESURF', FigFormat='png', animate=False, keep_pngs=False, parallel=False):
     """
@@ -1402,7 +1402,7 @@ def MakeChiPlotsChi(DataDirectory, fname_prefix, basin_list=[0], start_movern=0.
 
     gs = plt.GridSpec(100,100,bottom=0.15,left=0.1,right=1.0,top=1.0)
     ax = fig.add_subplot(gs[10:95,5:90])
-    
+
     #colorbar axis
     #ax2 = fig.add_subplot(gs[10:95,82:85])
 
@@ -1414,11 +1414,11 @@ def MakeChiPlotsChi(DataDirectory, fname_prefix, basin_list=[0], start_movern=0.
         ProfileDF = Helper.AppendMovernCSV(DataDirectory, fname_prefix)
         DisorderDF = Helper.AppendDisorderCSV(DataDirectory, fname_prefix)
     best_fit_moverns = DisorderDF['median'].tolist()
-    
+
     # get the number of basins
     basin_keys = list(DisorderDF['basin_key'])
     basin_keys = [int(x) for x in basin_keys]
-    
+
     MOverNDict = dict(zip(basin_keys,best_fit_moverns))
 
     # get the list of basins
@@ -1445,24 +1445,24 @@ def MakeChiPlotsChi(DataDirectory, fname_prefix, basin_list=[0], start_movern=0.
             print("This basin key is: "+str(basin_key))
             #print("The best fit concavity is:")
             #print(MOverNDict[basin_key])
-            
+
             # Format the best fit concavity string
             bf_movernstr = "%.2f" % round(MOverNDict[basin_key],2)
             if bf_movernstr.endswith('0'):
                 bf_movernstr = bf_movernstr[:-1]
-                
+
             #print("This concavity is:")
             #print(movern_str)
             #print("Best fit concavity in string format is:")
             #print(bf_movernstr)
-            
+
             this_is_bf_concavity = False
             if (movern_str == bf_movernstr):
                 #print("==================================")
                 #print("This is the best fitting concavity")
                 #print("==================================")
                 this_is_bf_concavity = True
-                
+
             # mask the data frames for this basin
             ProfileDF_basin = ProfileDF[ProfileDF['basin_key'] == basin_key]
 
@@ -1485,8 +1485,8 @@ def MakeChiPlotsChi(DataDirectory, fname_prefix, basin_list=[0], start_movern=0.
             else:
                 sc = ax.scatter(X,Elevation,c='k', s=2.5, edgecolors='none')
                 #sc = ax.scatter(X,Elevation,c=X,cmap=this_cmap, norm=cNorm, s=2.5, edgecolors='none')
-                
-            
+
+
 
             # some formatting of the figure
             ax.spines['top'].set_linewidth(1)
@@ -1500,7 +1500,7 @@ def MakeChiPlotsChi(DataDirectory, fname_prefix, basin_list=[0], start_movern=0.
 
             # the best fit m/n
             best_fit_movern = best_fit_moverns[basin_key]
-            
+
             #print("The best fit concavity is: "+str(best_fit_movern))
 
             # label with the basin and m/n
@@ -1548,9 +1548,9 @@ def MakeChiPlotsChi(DataDirectory, fname_prefix, basin_list=[0], start_movern=0.
         if not keep_pngs:
             system_call = "rm "+MLE_directory+"chi_profiles*.png"
             subprocess.call(system_call, shell=True)
-    plt.close(fig)    
-    
-    
+    plt.close(fig)
+
+
 def MakeChiPlotsColouredByK(DataDirectory, fname_prefix, basin_list=[0], start_movern=0.2, d_movern=0.1, n_movern=7,size_format='ESURF', FigFormat='png', animate=False, keep_pngs=False, parallel=False):
     """
     This function makes chi-elevation plots for each basin and each value of m/n
@@ -2391,8 +2391,8 @@ def MakeMOverNSummaryPlot(DataDirectory, fname_prefix, basin_list=[], start_move
 
     # read in the summary csv
     df = Helper.ReadMOverNSummaryCSV(summary_directory,fname_prefix)
-    
-    
+
+
 
     if basin_list != []:
         basin_keys = basin_list
@@ -2408,7 +2408,7 @@ def MakeMOverNSummaryPlot(DataDirectory, fname_prefix, basin_list=[], start_move
     full_chi_keys = full_chi_keys.astype(float) - 0.2
     print("Full chi keys are: ")
     print(full_chi_keys)
-    
+
     # Now check what is in the dataframe
     if 'Chi_MLE_full' in df:
         if Chi_all:
@@ -2423,7 +2423,7 @@ def MakeMOverNSummaryPlot(DataDirectory, fname_prefix, basin_list=[], start_move
         points_min_err = df['Chi_MLE_points_min'].values
         points_min_err = median_movern.astype(float)-points_min_err.astype(float)
         errors = np.array(list(zip(points_min_err, points_max_err))).T
-    
+
         print("The errors or the point data are")
         print(errors)
 
@@ -2628,7 +2628,7 @@ def MakeMOverNPlotOneMethod(DataDirectory, fname_prefix, basin_list=[], start_mo
                 ax.errorbar(SA_keys, df['SA_raw'], yerr=SA_sterr, c='#2b8cbe', elinewidth=1, fmt='none',label='_nolegend_')
                 ax.scatter(SA_keys, df['SA_raw'], s=15, c='#2b8cbe', edgecolors='k',lw=0.5, label='S-A all data', zorder=100)
 
-                
+
         # plot the chi disorder data if you want it
         elif movern_method=='chi_disorder':
             median_movern = df['Chi_disorder'].values
@@ -2641,8 +2641,8 @@ def MakeMOverNPlotOneMethod(DataDirectory, fname_prefix, basin_list=[], start_mo
             disorder_chi_keys = df['basin_key'].values
             disorder_chi_keys = disorder_chi_keys.astype(float)-0.3
             ax.errorbar(disorder_chi_keys, df['Chi_disorder'], s=15, marker='o', xerr=None, yerr=errors, ecolor='#F06292', fmt='none', elinewidth=1,label='_nolegend_')
-            ax.scatter(disorder_chi_keys, df['Chi_disorder'],marker='o', edgecolors='k', lw=0.5, facecolors='#F06292', s=15, zorder=100, label='Chi disorder')                
-                
+            ax.scatter(disorder_chi_keys, df['Chi_disorder'],marker='o', edgecolors='k', lw=0.5, facecolors='#F06292', s=15, zorder=100, label='Chi disorder')
+
         else:
             # plot the segmented SA data
             median_movern = df['SA_segments'].values
@@ -2675,10 +2675,10 @@ def MakeMOverNPlotOneMethod(DataDirectory, fname_prefix, basin_list=[], start_mo
         ax.cla()
         plt.close(fig)
 
-        
-        
+
+
 def MakeMOverNDisorderDistancePlot(DataDirectory, fname_prefix, basin_list_list=[], start_movern=0.2, d_movern=0.1, n_movern=7,
-                            size_format='ESURF', FigFormat='png', show_legend=True,parallel=False, group_names=[]): 
+                            size_format='ESURF', FigFormat='png', show_legend=True,parallel=False, group_names=[]):
     """
     This function makes a summary plot of the best fit m/n, you choose which method
     you want to plot.
@@ -2725,20 +2725,20 @@ def MakeMOverNDisorderDistancePlot(DataDirectory, fname_prefix, basin_list_list=
 
     # read in the summary csv
     df = Helper.ReadMOverNSummaryCSV(summary_directory,fname_prefix)
-    
+
     # you also need the basin info
     df_basin_info = Helper.ReadBasinInfoCSV(DataDirectory,fname_prefix)
-    
+
     #print("The data frame is")
     #print(df)
-    
+
     #print("The basin info df is:")
     #print(df_basin_info)
-    
+
     # Now merge the two dataframes
     df_new = pd.merge(df,df_basin_info,on='basin_key')
     df = df_new
-    
+
     #print("The new dataframe is")
     #print(df)
 
@@ -2763,23 +2763,23 @@ def MakeMOverNDisorderDistancePlot(DataDirectory, fname_prefix, basin_list_list=
     colour_list.append('#a65628')
     colour_list.append('#f781bf')
     colour_list.append('#999999')
-    
+
     tab20_cm = cm.get_cmap('tab20')
-    
-        
+
+
     # Loop through the basin key list
     colour_index = 0;
     for basin_keys in basin_list_list:
-        
-        
+
+
         print("\n\n\nI am selecting the following basins")
         print(basin_keys)
         print("The colour indexs is: "+str(colour_index))
-        
+
         this_df = df[df['basin_key'].isin(basin_keys)]
 
-        # plot the chi disorder data if you want it. This will fail if the 
-        
+        # plot the chi disorder data if you want it. This will fail if the
+
         if 'Chi_disorder' in this_df:
             colour_index_mod = colour_index % 9
             if group_names == []:
@@ -2841,9 +2841,9 @@ def MakeMOverNDisorderDistancePlot(DataDirectory, fname_prefix, basin_list_list=
     newFilename = summary_directory+fname_prefix+"_concavity_dist."+FigFormat
     plt.savefig(newFilename,format=FigFormat,dpi=300)
     ax.cla()
-    plt.close(fig)    
-        
-        
+    plt.close(fig)
+
+
 def MakeMOverNSummaryHistogram(DataDirectory, fname_prefix, basin_list=[], size_format='ESURF', FigFormat='png', start_movern=0.1, n_movern=7, d_movern=0.1, mn_method = "Chi", show_legend=True, parallel=False, Chi_disorder=False):
     """
     This function makes a stacked histogram showing the distribution of concavity (~m/n) values for each method
@@ -2895,9 +2895,9 @@ def MakeMOverNSummaryHistogram(DataDirectory, fname_prefix, basin_list=[], size_
     else:
       print ("MakeMOverNSummaryHistogram not parallelised yet")
       return
-    
+
     Chi_disorder_only = False
-    if Chi_disorder: 
+    if Chi_disorder:
         if 'Chi_MLE_points' not in df:
             print("I didn't find a bootstrap data line. Switching to disorder only")
             Chi_disorder_only= True
@@ -2919,18 +2919,18 @@ def MakeMOverNSummaryHistogram(DataDirectory, fname_prefix, basin_list=[], size_
             columns = ['Chi_MLE_full', 'Chi_MLE_points', 'SA_raw', 'SA_segments']
             these_labels = ['Chi all data', 'Chi bootstrap', 'S-A all data', 'Segmented S-A']
             colours = ['#e34a33', '#fdbb84', '#2b8cbe', '#a6bddb']
-            
+
     x_spacing = 0.05
     fig, ax = joyplot.joyplot(df, figsize=figsize, column=columns, label_strings=these_labels, x_range=[0,1],grid="x",color=colours,x_title='Best fit '+r'$\theta$' +' distribution',x_spacing=x_spacing)
     #plt.xlabel('Best fit $m/n$')
-    
+
     # change tick spacing
     x_loc = np.arange(0,1.01,0.05)
     print("x_loc is:")
     print(x_loc)
     labels = ["0","","","","0.2","","","","0.4","","","","0.6","","","","0.8","","","","1"]
     plt.xticks(x_loc, labels, rotation='vertical')
-    
+
 
     newFilename = summary_directory+fname_prefix+"_movern_hist."+FigFormat
 
@@ -3196,9 +3196,9 @@ def MakeRasterPlotsBasins(DataDirectory, fname_prefix, size_format='ESURF', FigF
     label_dict = dict(zip(basin_junctions,basin_keys))
 
     if not parallel:
-      Points = LSDP.GetPointWithinBasins(DataDirectory, BasinsName)
+      Points = LSDV.GetPointWithinBasins(DataDirectory, BasinsName)
     else:
-      Points = LSDP.GetPointsWithinMultipleBasins(DataDirectory, BasinsName)
+      Points = LSDV.GetPointsWithinMultipleBasins(DataDirectory, BasinsName)
 
     MF.add_text_annotation_from_shapely_points(Points, text_colour='k', label_dict=label_dict, zorder=200)
 
