@@ -17,7 +17,7 @@ from matplotlib import ticker
 
 try:
     from pandas.plotting._tools import (_subplots, _flatten)
-    print("You are using a quite old version of pandas (<=0.24). Have you through about upgrading?")
+    print("You are using a quite old version of pandas (<=0.24). Have you thought about upgrading?")
 except:
     #TODO this is a quick fix for #38
     from pandas.plotting._matplotlib.tools import (_subplots, _flatten)
