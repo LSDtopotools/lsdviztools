@@ -277,7 +277,7 @@ def GenerateBasemapImageAutomated(DataDirectory, RasterFile, FigWidthInches = 4,
         ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.PlateCarree())
 
         print("Setting extent.")
-        ax.set_extent([extents[2],extents[3],extents[0],extents[1]], ccrs.PlateCarree())
+        ax.set_extent(extents, ccrs.PlateCarree())
         print("Finished setting extent.")
 
         land_50m = cfeature.NaturalEarthFeature('physical', 'land', '50m',
@@ -306,32 +306,7 @@ def GenerateBasemapImageAutomated(DataDirectory, RasterFile, FigWidthInches = 4,
         shpreader.Reader(Shape_name).geometries(),
         ccrs.PlateCarree(),edgecolor='black', facecolor='green', alpha=0.5, linewidth=0.5)
 
-    #==========================================
-    # draw parallels and meridians.
-    # Calculate the spacing of the meridians and parallels
-    # THIS IS ALL FROM BASEMAP AND NOT USED BY CARTOPY
-    max_latlong_ext = extent_lat
-    if extent_long < max_latlong_ext:
-        max_latlong_ext = extent_long
-    max_latlong_ext = max_latlong_ext*regional_extent_multiplier
-    print("The maximum extent is:"+str(max_latlong_ext))
-
-    latlong_label_spacing = int(label_spacing_multiplier*max_latlong_ext+0.5)
-    print("And the label spacing is: "+str(latlong_label_spacing))
-    start_lat = int(centre_lat - max_latlong_ext*2 - 0.5)
-    end_lat = int(centre_lat + max_latlong_ext*2+0.5)
-    start_long = int(centre_long - max_latlong_ext*2 -0.5)
-    end_long = int(centre_long + max_latlong_ext*2+0.5)
-
-    # label parallels on right and top
-    # meridians on bottom and left
-    parallels = np.arange(start_lat,end_lat,latlong_label_spacing)
-    # labels = [left,right,top,bottom]
-    #m.drawparallels(parallels,labels=[False,True,True,False])
-    meridians = np.arange(start_long,end_long,latlong_label_spacing)
-    #m.drawmeridians(meridians,labels=[True,False,False,True])
-    #==========================================
-
-
+    ax.gridlines(draw_labels=False, dms=True, x_inline=False, y_inline=False)
+    #plt.tight_layout()
     plt.savefig(FigFileName,format=FigFormat,dpi=fig_dpi)
 

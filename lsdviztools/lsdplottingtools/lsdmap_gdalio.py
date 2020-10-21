@@ -996,8 +996,6 @@ def CreateShapefileOfRasterFootprint(DataDirectory, RasterFile):
     print("The polygon is:")
     print(poly.ExportToWkt())
 
-
-
     # create the data source
     OutFileName = DataDirectory+RasterPrefix+"_footprint.shp"
     print("The output shapefile is: "+OutFileName)
@@ -1010,7 +1008,6 @@ def CreateShapefileOfRasterFootprint(DataDirectory, RasterFile):
 
     # create the layer
     layer = datasource.CreateLayer(OutFileName, target, ogr.wkbPolygon)
-    #layer = datasource.CreateLayer(OutFileName, source, ogr.wkbPolygon)
 
     # Add an ID field
     idField = ogr.FieldDefn("id", ogr.OFTInteger)
@@ -1025,40 +1022,6 @@ def CreateShapefileOfRasterFootprint(DataDirectory, RasterFile):
     # Clean up
     feature = None
     datasource  = None
-
-
-    ## Now do it another way
-    from shapely.geometry import box, mapping
-    import fiona
-    import rasterio
-    import rasterio.features
-    import rasterio.warp
-
-    with rasterio.open(FullFilename) as dataset:
-
-        bounds = dataset.bounds
-        print("Bounds are:")
-        print(bounds)
-
-        extents = [bounds.left,bounds.bottom,bounds.right,bounds.top]
-        print("As a list")
-        print(extents)
-
-        # create a Polygon from the raster bounds
-        bbox = box(extents[0],extents[1],extents[2],extents[3])
-
-        # create a schema with no properties
-        schema = {'geometry': 'Polygon', 'properties': {}}
-
-        OutFileName2 = DataDirectory+RasterPrefix+"2_footprint.shp"
-
-        # create shapefile
-        with fiona.open(OutFileName2, 'w', driver='ESRI Shapefile',
-                        crs=dataset.crs.to_dict(), schema=schema) as c:
-            c.write({'geometry': mapping(bbox), 'properties': {}})
-        #with fiona.open(OutFileName2, 'w', driver='ESRI Shapefile',
-        #                crs='EPSG:4326', schema=schema) as c:
-        #    c.write({'geometry': mapping(bbox), 'properties': {}})
 
 
 def GetCentreAndExtentOfRaster(DataDirectory, RasterFile):
@@ -1118,6 +1081,12 @@ def GetCentreAndExtentOfRaster(DataDirectory, RasterFile):
 
     target = osr.SpatialReference()
     target.ImportFromEPSG(4326)
+
+    if int(osgeo.__version__[0]) >= 3:
+        print("I need to do something completely stupid since OGR made a terrible decision.")
+        # GDAL 3 changes axis order: https://github.com/OSGeo/gdal/issues/1546
+        source.SetAxisMappingStrategy(osgeo.osr.OAMS_TRADITIONAL_GIS_ORDER)
+        target.SetAxisMappingStrategy(osgeo.osr.OAMS_TRADITIONAL_GIS_ORDER)
 
     transform = osr.CoordinateTransformation(source, target)
 
