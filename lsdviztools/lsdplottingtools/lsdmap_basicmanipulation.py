@@ -10,11 +10,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import numpy as np
 from . import lsdmap_osystemtools as LSDOst
 from . import lsdmap_gdalio as LSDMap_IO
-from pyproj import Proj, transform
-
+from pyproj import CRS
+from pyproj import Transformer
 
 def GetUTMEastingNorthing(EPSG_string,latitude,longitude):
     """This returns the easting and northing for a given latitude and longitide
+    Updated 30/10/2020 to reflect changes to pyproj
 
     Args:
         ESPG_string (str): The ESPG code. 326XX is for UTM north and 327XX is for UTM south
@@ -28,11 +29,16 @@ def GetUTMEastingNorthing(EPSG_string,latitude,longitude):
         Simon M Mudd
     """
 
-    #print "Yo, getting this stuff: "+EPSG_string
+    #print("pyproj version is: "+str(pyproj.__version__))
+    print("basicmaip GetUTMEastingNorthing, getting the epsg string: "+EPSG_string)
+    print("WARNING you must have a recent (>=6) version of proj and pyproj (>=2.4) for this to work ")
     # The lat long are in epsg 4326 which is WGS84
-    inProj = Proj(init='epsg:4326')
-    outProj = Proj(init=EPSG_string)
-    ea,no = transform(inProj,outProj,longitude,latitude)
+
+    crs_4326 = CRS("EPSG:4326")
+    crs_proj = CRS(EPSG_string)
+
+    transformer = Transformer.from_crs(crs_4326, crs_proj,always_xy=True)
+    ea,no = transformer.transform(longitude,latitude)
 
     return ea,no
 

@@ -15,7 +15,8 @@ import os
 import glob
 import pandas
 import numpy as np
-from pyproj import Proj, transform
+from pyproj import CRS
+from pyproj import Transformer
 
 
 #==============================================================================
@@ -254,6 +255,7 @@ class LSDMap_PointData(object):
 
     def GetUTMEastingNorthing(self,EPSG_string):
         """Returns two lists: the latitude and longitude converted to northing and easting.
+        Updated 30/10/2020 to reflect changes to pyproj
 
         Args:
             PrintToScreen (bool): If true, prints to screen.
@@ -264,32 +266,28 @@ class LSDMap_PointData(object):
 
         Author: SMM
         """
-        print("Yo, getting this stuff: "+EPSG_string)
+
+        #print("pyproj version is: "+str(pyproj.__version__))
+        print("pointtools GetUTMEastingNorthing, getting the epsg string: "+EPSG_string)
+        print("WARNING you must have a recent (>=6) version of proj and pyproj (>=2.4) for this to work ")
+
+        print(EPSG_string)
         # The lat long are in epsg 4326 which is WGS84
-        inProj = Proj(init='epsg:4326')
-        outProj = Proj(init=EPSG_string)
-        #this_Lat = self.Latitude[0]
-        #this_Lon = self.Longitude[0]
+        crs_4326 = CRS("EPSG:4326")
+        crs_proj = CRS(EPSG_string)
 
-        #print("The latitude is: ")
-        #print(self.Latitude)
-
-        #print("Now the lat is")
-        #print(self.Latitude.values)
-        #print(this_Lon)
+        transformer = Transformer.from_crs(crs_4326, crs_proj,always_xy=True)
 
         easting =[]
         northing = []
         if(self.PANDEX == True):
-            # Adding exception management, depending on your version of the different packages you may have to add the .values or not
-            try:
-                easting,northing = transform(inProj,outProj,self.Longitude.values,self.Latitude.values)
-            except AttributeError:
-                easting,northing = transform(inProj,outProj,self.Longitude,self.Latitude)
+            Lon_array = np.asarray(self.Longitude)
+            Lat_array = np.asarray(self.Latitude)
+            easting,northing = transformer.transform(Lon_array,Lat_array)
         else:
             for idx, Lon in enumerate(self.Longitude):
                 Lat = self.Latitude[idx]
-                ea,no = transform(inProj,outProj,Lon,Lat)
+                ea,no = transformer.transform(Lon,Lat)
                 easting.append(ea)
                 northing.append(no)
 
@@ -297,9 +295,10 @@ class LSDMap_PointData(object):
 
     def GetUTMEastingNorthingFromQuery(self,EPSG_string,Latitude_string,Longitude_string):
         """Returns two lists: the latitude and longitude converted to northing and easting. But you can define the columns if there are more than one latitude and longitude columns.
+        Updated 30/10/2020 to reflect changes to pyproj
 
         Note:
-            This is used mainly if there are multple lat-long coordinates in the csv file. For example when you have basin centroids and basin outlets in the same file.
+            This is used mainly if there are multiple lat-long coordinates in the csv file. For example when you have basin centroids and basin outlets in the same file.
         Args:
             PrintToScreen (bool): If true, prints to screen.
             EPSG_string (str): The EPSG code of the UTM coordinates you want (326XX) with zone XX is for north, 327XX is for south.
@@ -311,10 +310,15 @@ class LSDMap_PointData(object):
 
         Author: SMM
         """
-        print("Yo, getting this stuff: "+EPSG_string)
+        #print("pyproj version is: "+str(pyproj.__version__))
+        print("pointtools GetUTMEastingNorthingFromQuery, getting the epsg string: "+EPSG_string)
+        print("WARNING you must have a recent (>=6) version of proj and pyproj (>=2.4) for this to work ")
+
         # The lat long are in epsg 4326 which is WGS84
-        inProj = Proj(init='epsg:4326')
-        outProj = Proj(init=EPSG_string)
+        crs_4326 = CRS("EPSG:4326")
+        crs_proj = CRS(EPSG_string)
+
+        transformer = Transformer.from_crs(crs_4326, crs_proj,always_xy=True)
 
 
         this_Lat = self.QueryData(Latitude_string)
@@ -326,7 +330,7 @@ class LSDMap_PointData(object):
 
         for idx, Lon in enumerate(this_Lon):
             Lat = this_Lat[idx]
-            ea,no = transform(inProj,outProj,Lon,Lat)
+            ea,no = transformer.transform(Lon,Lat)
             easting.append(ea)
             northing.append(no)
 
