@@ -274,19 +274,6 @@ def main(argv):
     print("The basins to mask are:")
     print(Mask_basin_keys)
 
-    # This is an old version. It passes empty strings to the plotting functions.
-    #if len(args.basin_keys) == 0:
-    #    print("No basins found, I will plot all of them")
-    #    # Note that if you pass an empty list to the plotting functions, they will plot all the basins
-    #    these_basin_keys = []
-    #else:
-    #    these_basin_keys = [int(item) for item in args.basin_keys.split(',')]
-    #    print("The basins I will plot are:")
-    #    print(these_basin_keys)
-
-
-
-
     # This checks to see if chi points method is being used.
     # If not, assumes only the disorder metric has been calculated
     Using_disorder_metric_only = check_if_disorder_metric_only(this_dir, args.fname_prefix)
@@ -301,7 +288,6 @@ def main(argv):
         # something sensible that relates to the DEM name.
         split_fname = this_dir.split("/")
         split_fname = split_fname[len(split_fname)-2]
-
 
     # get the range of moverns, needed for plotting
     # we need the column headers
@@ -327,7 +313,24 @@ def main(argv):
 
     # make the plots depending on your choices
     if args.plot_rasters:
-        MN.MakeRasterPlotsBasins(this_dir, args.fname_prefix, args.size_format, simple_format, parallel=args.parallel)
+        MN.MakeRasterPlotsBasins(this_dir, args.fname_prefix, args.size_format, args.FigFormat,parallel=args.parallel)
+
+        if not Using_disorder_metric_only:
+            MN.MakeRasterPlotsMOverN(this_dir, args.fname_prefix, start_movern, n_movern, d_movern,
+                                 movern_method="Chi_full", size_format=args.size_format,
+                                 FigFormat=args.FigFormat,parallel=args.parallel)
+            MN.MakeRasterPlotsMOverN(this_dir, args.fname_prefix, start_movern, n_movern, d_movern,
+                                 movern_method="Chi_points", size_format=args.size_format,
+                                 FigFormat=args.FigFormat,parallel=args.parallel)
+
+        MN.MakeRasterPlotsMOverN(this_dir, args.fname_prefix, start_movern, n_movern, d_movern,
+                                 movern_method="SA", size_format=args.size_format,
+                                 FigFormat=args.FigFormat,parallel=args.parallel)
+        MN.MakeRasterPlotsMOverN(this_dir, args.fname_prefix, start_movern, n_movern,
+                                 d_movern, movern_method="Chi_disorder",
+                                 size_format=args.size_format, FigFormat=args.FigFormat,parallel=args.parallel)
+
+
     if args.plot_basic_chi:
         MN.MakePlotsWithMLEStats(this_dir, args.fname_prefix, basin_list=these_basin_keys, start_movern=start_movern, d_movern=d_movern, n_movern=n_movern,parallel=args.parallel)
 
