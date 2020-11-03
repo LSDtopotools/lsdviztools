@@ -24,7 +24,7 @@ descartes==1.1.0
 Fiona==1.8.17
 matplotlib==3.3.2
 geopandas==0.8.1
-GDAL==3.1.4
+GDAL==3.2.0
 matplotlib==3.3.2
 
 numpy==1.19.3
