@@ -36,5 +36,5 @@ pandas==1.1.4
 scipy==1.5.4
 pyproj==3.0.0.post1
 rasterio==1.1.8
-utm==0.6.0
+utm==0.7.0
 Shapely==1.7.1
