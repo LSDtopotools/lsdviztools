@@ -17,10 +17,10 @@ pyproj==3.0.0.post1
 Cartopy==0.18.0
 descartes==1.1.0
 Fiona==1.8.18
-matplotlib==3.3.3
+matplotlib==3.3.4
 geopandas==0.8.2
 GDAL==3.2.1
-matplotlib==3.3.3
+matplotlib==3.3.4
 
 numpy==1.19.5
 
