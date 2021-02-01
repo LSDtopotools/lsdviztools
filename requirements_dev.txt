@@ -1,22 +1,14 @@
 pip==20.3.3
 bump2version==1.0.1
-
 watchdog==1.0.2
-
 wheel==0.36.2
-
 flake8==3.8.4
 watchdog==1.0.2
 flake8==3.8.4
-
-pytest==6.2.1
-
-
+pytest==6.2.2
 tox==3.21.3
-coverage==5.3.1
-
+coverage==5.4
 twine==3.3.0
-
 Sphinx==3.4.3
 pytest-runner==5.2
 
@@ -26,7 +18,7 @@ Cartopy==0.18.0
 descartes==1.1.0
 Fiona==1.8.18
 matplotlib==3.3.3
-geopandas==0.8.1
+geopandas==0.8.2
 GDAL==3.2.1
 matplotlib==3.3.3
 
@@ -38,6 +30,6 @@ pandas==1.2.1
 
 scipy==1.6.0
 pyproj==3.0.0.post1
-rasterio==1.1.8
+rasterio==1.2.0
 utm==0.7.0
 Shapely==1.7.1
