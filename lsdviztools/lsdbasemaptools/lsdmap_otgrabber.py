@@ -96,7 +96,7 @@ class ot_scraper(object):
         if(self.source == "alos"):
             str_source = "AW3D30"
 
-        url_string = 'https://portal.opentopography.org/otr/getdem?demtype=%s&south=%s&north=%s&west=%s&east=%s&outputFormat=GTiff'%(str_source,self.latitude_S,self.latitude_N,self.longitude_W,self.longitude_E, )
+        url_string = 'https://portal.opentopography.org/API/globaldem?demtype=%s&south=%s&north=%s&west=%s&east=%s&outputFormat=GTiff'%(str_source,self.latitude_S,self.latitude_N,self.longitude_W,self.longitude_E, )
         filename = self.path+self.prefix+"_"+self.source + ".tif"
         fwithoutpath= self.prefix+"_"+self.source + ".tif"
 
