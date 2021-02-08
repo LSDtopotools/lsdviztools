@@ -22,7 +22,7 @@ geopandas==0.8.2
 GDAL==3.2.1
 matplotlib==3.3.4
 
-numpy==1.20.0
+numpy==1.20.1
 
 pandas==1.2.1
 
