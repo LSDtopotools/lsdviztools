@@ -294,8 +294,10 @@ def GetUTMEPSG(FileName):
     EPSG_string = 'NULL'
 
 
-    with rasterio.open(FileName) as src:
+    with rio.open(FileName) as src:
         EPSG_string = src.crs
+        EPSG_string = str(EPSG_string)
+        print("Yoyoyoyo the EPSG is :"+EPSG_string)
 
     if ":327" not in EPSG_string:
         if ":326" not in EPSG_string:
@@ -760,7 +762,7 @@ def PolygoniseRaster(DataDirectory, RasterFile, OutputShapefile='polygons'):
     NDV = getNoDataValue(DataDirectory+RasterFile)
 
     # load in the raster using rasterio
-    with rasterio.open(DataDirectory+RasterFile) as src:
+    with rio.open(DataDirectory+RasterFile) as src:
         image = src.read(raster_band, masked=False)
 
         msk = src.read_masks(1)
