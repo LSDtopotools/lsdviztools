@@ -819,7 +819,14 @@ def PolygoniseRaster(DataDirectory, RasterFile, OutputShapefile='polygons'):
 
     # transform results into shapely geometries and write to shapefile using fiona
     PolygonDict = {}
-    with fiona.open(DataDirectory+OutputShapefile, 'w', crs=crs, driver='ESRI Shapefile', schema=schema) as output:
+
+    # We use the internal fiona crs module since this is really buggy and depends on
+    # the proj version
+    print("I need to convert the crs to wkt format so it is resistant to stupid proj errors.")
+    this_crs_in_wkt = crs.to_wkt()
+
+
+    with fiona.open(DataDirectory+OutputShapefile, 'w', crs=this_crs_in_wkt, driver='ESRI Shapefile', schema=schema) as output:
         for f in new_geoms:
             this_shape = Polygon(shape(f['geometry']))
             this_val = float(f['properties']['raster_val'])
@@ -882,12 +889,13 @@ def PolygoniseRasterMerge(DataDirectory, RasterFile, OutputShapefile='polygons')
     schema = {'geometry': 'Polygon',
               'properties': { 'ID': 'float'}}
 
-
+    print("I need to convert the crs to wkt format so it is resistant to stupid proj errors.")
+    this_crs_in_wkt = crs.to_wkt()
 
     # transform results into shapely geometries and write to shapefile using fiona
     geoms = list(results)
     PolygonDict = {}
-    with fiona.open(DataDirectory+OutputShapefile, 'w', crs=crs, driver='ESRI Shapefile', schema=schema) as output:
+    with fiona.open(DataDirectory+OutputShapefile, 'w', crs=this_crs_in_wkt, driver='ESRI Shapefile', schema=schema) as output:
         for f in geoms:
             this_shape = Polygon(shape(f['geometry']))
             this_val = float(f['properties']['raster_val'])

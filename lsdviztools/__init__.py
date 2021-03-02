@@ -2,8 +2,8 @@
 
 __author__ = """Simon Marius Mudd"""
 __email__ = 'simon.m.mudd@ed.ac.uk'
-__version__ = '0.1.0'
-__url__ = 'TBD'
+__version__ = '0.4.4'
+__url__ = 'https://github.com/LSDtopotools/lsdviztools'
 __license__ = 'MIT'
 
 

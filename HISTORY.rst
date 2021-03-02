@@ -22,7 +22,7 @@ History
 
 * Updated opentopography API and fixed chi mapping interface
 
-0.4.2 (2021-03-02)
+0.4.4 (2021-03-02)
 ------------------
 
-* Fixed a bug in the projection section of gdalio
+* Fixed a bug in the projection section of gdalio. Trying to make the code more resistent to errors generate by different versions of proj
