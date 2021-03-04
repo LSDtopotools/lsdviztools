@@ -29,6 +29,6 @@ pandas==1.2.3
 
 scipy==1.6.1
 pyproj==3.0.0.post1
-rasterio==1.2.0
+rasterio==1.2.1
 utm==0.7.0
 Shapely==1.7.1
