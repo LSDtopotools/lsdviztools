@@ -12,7 +12,7 @@ twine==3.3.0
 Sphinx==3.5.1
 pytest-runner==5.3.0
 Proj=4.9.0
-pyproj==3.0.0.post1
+pyproj==3.0.1
 Cartopy==0.18.0
 descartes==1.1.0
 Fiona==1.8.18
@@ -28,7 +28,7 @@ pandas==1.2.3
 
 
 scipy==1.6.1
-pyproj==3.0.0.post1
+pyproj==3.0.1
 rasterio==1.2.1
 utm==0.7.0
 Shapely==1.7.1
