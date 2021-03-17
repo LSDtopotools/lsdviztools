@@ -14,7 +14,7 @@ import os
 from os.path import exists
 from osgeo import ogr, osr
 from lsdviztools import lsdplottingtools as LSDPT
-import gdal as gdal
+from osgeo import gdal
 from osgeo.gdalconst import GA_ReadOnly
 from lsdviztools.lsdmapfigure import plottinghelpers as Helper
 import geopandas as gpd

@@ -13,7 +13,7 @@ import numpy as np
 import os
 import subprocess as sub
 import urllib.request
-import gdal
+from osgeo import gdal
 from osgeo import ogr, osr
 import utm
 import shutil
