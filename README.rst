@@ -48,8 +48,6 @@ You can also use our docker container (in the second command you need to change 
 
   $ docker run -it -v /path/to/my/local/directory:/LSDTopoTools -p 8888:8888 lsdtopotools/lsdtt_pytools_docker
 
-  # install_lsdtt_python_packages.sh
-
   # jupyter notebook --ip 0.0.0.0 --port 8888 --no-browser --allow-root
 
 Then go to the jupyter notebook in your web browser by going to http://localhost:8888/
