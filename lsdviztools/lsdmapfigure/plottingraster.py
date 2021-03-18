@@ -563,6 +563,43 @@ class MapFigure(object):
         #print("Getting axis limits in drape function: ")
         #print(self.ax_list[0].get_xlim())
 
+    def add_binary_drape_image(self,RasterName,Directory,colourmap='Blues', alpha=0.5, zorder=1, NFF_opti = False):
+        """
+        This function adds a drape over the base raster. It is for a binary raster where 1 is the value
+        you want to display and 0 is not displayed.
+
+        Args:
+            RasterName (string): The name of the raster (no directory, but need extension)
+            Directory (string): directory of the data
+            colour (string): The colourmap of the 1 values. The colour will be the max end of the chosen colourmap.
+            alpha (float): The transparency of the drape (1 is opaque, 0 totally transparent)
+            zorder(float): the zorder of the drape.
+            NFF_opti (bool): If true, uses the new file loading functions. It is faster but hasn't been completely tested.
+
+        Author: FJC
+
+        Date: 18/03/21
+        """
+        Raster = BaseRaster(RasterName,Directory, NFF_opti = NFF_opti)
+        Raster._drapeminthreshold = 0.1
+        Raster._drapemaxthreshold = None
+        Raster._middlemaskrange = None
+        Raster._initialise_masks()
+
+        self._RasterList.append(Raster)
+        self._RasterList[-1].set_colourmap(colourmap)
+
+        im = self.ax_list[0].imshow(self._RasterList[-1]._RasterArray, self._RasterList[-1]._colourmap, extent = self._RasterList[0].extents, interpolation="nearest", alpha = alpha, zorder=zorder)
+
+
+        self.ax_list[0] = self.add_ticks_to_axis(self.ax_list[0])
+        self._drape_list.append(im)
+
+        print("The number of axes are: "+str(len(self._drape_list)))
+
+
+        return self.ax_list
+
 
     def add_categorised_drape_image(self,RasterName,Directory,colourmap = "gray",
                         alpha=0.5,

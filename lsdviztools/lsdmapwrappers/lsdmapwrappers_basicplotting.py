@@ -195,6 +195,73 @@ def SimpleDrape(DataDirectory,Base_file, Drape_prefix, cmap = "cubehelix", cbar_
     print(thing_to_return)
     return thing_to_return
 
+def BinaryDrape(DataDirectory,Base_file, Drape_prefix, cmap = "Blues", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", coord_type = "UTM_km", use_scalebar = False, save_fig = True, alpha=0.5):
+    """
+    This function makes a simple drape plot of a binary raster over a hillshade. Raster values with 0 in the binary raster are not displayed, and you can
+    choose the colour of the values with 1.
+
+    Args:
+        DataDirectory (str): the data directory with the rasters
+        Base_file (str): The prefix for the rasters
+        Drape_prefix (str): The prefix of the drape name
+        colour (str): the colour of the raster values with a value of 1.
+        size_format (str): Either geomorphology or big. Anything else gets you a 4.9 inch wide figure (standard ESURF size)
+        fig_format (str): An image format. png, pdf, eps, svg all valid
+        dpi (int): The dots per inch of the figure
+        out_fname_prefix (str): The prefix of the image file. If blank uses the fname_prefix
+        coord_type (str): this can be in UTM_km or UTM_m
+        use_scalebar (bool): If true inserts a scalebar in the image
+        save_fig (bool): If true, saves the fig, else, returns the filename
+
+    Returns:
+        If save_fig is true, return a string with the name of the image (printed to file). If save_fig is false, returns the figure handle to the draped plot
+
+    Author: FJC, SMM
+    """
+    # specify the figure size and format
+    # set figure sizes based on format
+    if size_format == "geomorphology":
+        fig_size_inches = 6.25
+    elif size_format == "big":
+        fig_size_inches = 16
+    else:
+        fig_size_inches = 4.92126
+    ax_style = "Normal"
+
+    # Get the filenames you want
+    BackgroundRasterName = Base_file+"_hs.bil"
+    ElevationName = Base_file+".bil"
+    DrapeName = Drape_prefix+".bil"
+
+    # clear the plot
+    plt.clf()
+
+    # set up the base image and the map
+    MF = MapFigure(BackgroundRasterName, DataDirectory,coord_type=coord_type,colourbar_location = 'None')
+    #MF.add_drape_image(ElevationName,DataDirectory,colourmap = "gray", alpha = 0.6, colorbarlabel = None)
+    MF.add_binary_drape_image(DrapeName,DataDirectory,colourmap = cmap, alpha = alpha)
+
+    if(use_scalebar):
+        print("Let me add a scalebar")
+        MF.add_scalebar()
+
+    # Save the image or return the figure handle
+    if (save_fig):
+        if len(out_fname_prefix) == 0:
+            ImageName = DataDirectory+Base_file+"_drape."+fig_format
+        else:
+            ImageName = DataDirectory+out_fname_prefix+"_drape."+fig_format
+
+        MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi, transparent=True)
+
+        thing_to_return = ImageName
+    else:
+        fig = MF.save_fig(fig_width_inches = fig_size_inches, transparent=True, return_fig = True)
+        thing_to_return = fig
+
+    print("I'm returning:")
+    print(thing_to_return)
+    return thing_to_return
 
 def SimpleHillshadeForAnimation(DataDirectory,Base_file, cmap = "jet", cbar_loc = "right",
                                 size_format = "ESURF", fig_format = "png",
