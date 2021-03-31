@@ -27,7 +27,7 @@ pandas==1.2.3
 
 
 
-scipy==1.6.1
+scipy==1.6.2
 pyproj==3.0.1
 rasterio==1.2.1
 utm==0.7.0
