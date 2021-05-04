@@ -5,7 +5,7 @@ wheel==0.36.2
 flake8==3.9.1
 watchdog==2.0.3
 flake8==3.9.1
-pytest==6.2.3
+pytest==6.2.4
 tox==3.23.0
 coverage==5.5
 twine==3.4.1
