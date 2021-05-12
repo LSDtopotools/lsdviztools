@@ -1,12 +1,13 @@
-pip==21.1
+pip==21.1.1
 bump2version==1.0.1
 watchdog==2.0.3
 wheel==0.36.2
 flake8==3.9.1
 watchdog==2.0.3
 flake8==3.9.1
-pytest==6.2.3
-tox==3.23.0
+tox==3.23.1
+pytest==6.2.4
+
 coverage==5.5
 twine==3.4.1
 Sphinx==3.5.4
@@ -18,9 +19,7 @@ descartes==1.1.0
 Fiona==1.8.19
 matplotlib==3.4.2
 geopandas==0.9.0
-GDAL==3.2.2
-matplotlib==3.4.2
-
+GDAL==3.3.0
 numpy==1.20.2
 
 pandas==1.2.4
