@@ -32,7 +32,6 @@ from lsdmapfigure import plottinghelpers as Helper
 from lsdmapfigure.plottingraster import MapFigure
 from lsdmapfigure.plottingraster import BaseRaster
 from lsdplottingtools import lsdmap_saplotting as SA
-from lsdplottingtools import joyplot
 from . import lsdmap_movernplotting as MN
 import fnmatch
 import random

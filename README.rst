@@ -14,9 +14,6 @@ lsdviztools
         :alt: Documentation Status
 
 
-.. image:: https://pyup.io/repos/github/LSDtopotools/lsdviztools/shield.svg
-     :target: https://pyup.io/repos/github/LSDtopotools/lsdviztools/
-     :alt: Updates
 
 
 
@@ -31,8 +28,9 @@ Features
 --------
 
 * Plotting of rasters that includes formatting so you can get publication-ready figures with one command.
-* Selection of basins and channels for topogroahic analysis.
+* Selection of basins and channels for topographic analysis.
 * Tools for plotting point data, usually associated with channel networks, derived from LSDTopoTools command line tools.
+* Downloading of data from opentopography
 
 
 Getting started
@@ -57,6 +55,8 @@ Then go to the jupyter notebook in your web browser by going to http://localhost
 
 Credits
 -------
+
+This package was written by Simon M. Mudd, Fiona J. Clubb and Stuart W.D. Grieve
 
 This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
 

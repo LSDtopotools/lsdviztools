@@ -154,16 +154,11 @@ def check_if_disorder_metric_only(this_dir, this_fname_prefix):
 #=============================================================================
 # This is the main function that runs the whole thing
 #=============================================================================
-def main(argv):
+def main(args=None):
 
-    # print("On some windows systems you need to set an environment variable GDAL_DATA")
-    # print("If the code crashes here it means the environment variable is not set")
-    # print("Let me check gdal enviroment for you. Currently is is:")
-    # print(os.environ['GDAL_DATA'])
-    #os.environ['GDAL_DATA'] = os.popen('gdal-config --datadir').read().rstrip()
-    #print("Now I am going to get the updated version:")
-    #print(os.environ['GDAL_DATA'])
-
+    if args is None:
+        args = sys.argv[1:]    
+    
     # If there are no arguments, send to the welcome screen
     if not len(sys.argv) > 1:
         full_paramfile = print_welcome()
@@ -217,9 +212,6 @@ def main(argv):
     parser.add_argument("-parallel", "--parallel", type=bool, default=False, help="If this is true I'll assume you ran the code in parallel and append all your CSVs together before plotting.")
 
     args = parser.parse_args()
-
-    print(argv)
-    print(args)
 
     if not args.fname_prefix:
         if not args.parallel:
@@ -493,4 +485,4 @@ def main(argv):
 
 #=============================================================================
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()

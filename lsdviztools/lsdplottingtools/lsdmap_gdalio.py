@@ -1325,7 +1325,8 @@ def convert4lsdtt(DataDirectory, RasterFile,minimum_elevation=0.01,resolution=30
     convert2UTM(DataDirectory,RasterFile,minimum_elevation=minimum_elevation,resolution=resolution)
     convert2bil(DataDirectory,NewRasterName,minimum_elevation=minimum_elevation)
 
-    return NewRasterName
+    bil_name = RasterPrefix+"_UTM.bil"
+    return bil_name
 
 
 #==============================================================================

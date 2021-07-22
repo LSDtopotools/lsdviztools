@@ -15,12 +15,21 @@ from scipy.stats import gaussian_kde
 from warnings import warn
 from matplotlib import ticker
 
+
 try:
+    # pandas < 0.25
     from pandas.plotting._tools import (_subplots, _flatten)
     print("You are using a quite old version of pandas (<=0.24). Have you thought about upgrading?")
-except:
-    #TODO this is a quick fix for #38
-    from pandas.plotting._matplotlib.tools import (_subplots, _flatten)
+except ImportError:
+    try:
+        #pandas >= 0.25, <1.2.0
+        from pandas.plotting._matplotlib.tools import (_subplots, _flatten)
+        print("You are using a somewhat old version of pandas (<=0.24). Have you thought about upgrading?")
+    except ImportError:
+        #pandas >= 1.2.0
+        from pandas.plotting._matplotlib.tools import create_subplots as _subplots
+        from pandas.plotting._matplotlib.tools import flatten_axes as _flatten
+
 
 
 _DEBUG = False

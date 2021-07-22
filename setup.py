@@ -10,7 +10,7 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['numpy','pandas','rasterio','scipy','cartopy','fiona','shapely','geopandas','pyproj','gdal','utm']
+requirements = ['numpy','pandas','rasterio','scipy','cartopy','fiona','shapely','geopandas','pyproj','gdal','utm','matplotlib']
 
 setup_requirements = ['pytest-runner', ]
 
@@ -33,7 +33,10 @@ setup(
     description="lsdviztools is a collection of routines for plotting geospatial data, with a focus on data produces by LSDTopoTools or by lsdtopytools.",
     entry_points={
         'console_scripts': [
-            'plotbasicrasters=lsdviztools.scripts.plotbasicrasters:main',
+            'lsdtt_plotbasicrasters=lsdviztools.scripts.plotbasicrasters:main',
+            'lsdtt_plotmovernanalysis=lsdviztools.scripts.plotmovernanalysis:main',
+            'lsdtt_plotchianalysis=lsdviztools.scripts.plotchianalysis:main',
+            'lsdtt_grabopentopographydata=lsdviztools.scripts.grabopentopographydata:main'
         ],
     },
     install_requires=requirements,
@@ -47,6 +50,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/simon-m-mudd/lsdviztools',
-    version='0.4.4',
+    version='0.4.5',
     zip_safe=False,
 )
