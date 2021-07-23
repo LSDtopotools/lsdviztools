@@ -34,7 +34,7 @@ def print_welcome():
     print("Use the -dir flag to define the working directory.")
     print("If you don't do this I will assume the data is in the same directory as this script.")
     print("For help type:")
-    print("   python PlotChiAnalysis.py -h\n")
+    print("   lsdtt_plotchianalysis.py -h\n")
     print("=======================================================================\n\n ")
 
 

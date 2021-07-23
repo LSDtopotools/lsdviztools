@@ -28,7 +28,7 @@ def print_welcome():
     print("You also need to tell me the prefix of the DEM you want to download")
     print("Use the -fname flag to designate a file prefix")
     print("For help type:")
-    print("   grabopentopographydata -h\n")
+    print("   lsdtt_grabopentopographydata -h\n")
     print("=======================================================================\n\n ")
    
     

@@ -25,7 +25,7 @@ from lsdviztools.lsdmapfigure import plottinghelpers as Helper
 def print_welcome():
 
     print("\n\n=======================================================================")
-    print("Hello! I'm going to plot the m/n analysis results for you.")
+    print("Hello! I'm going to plot the concavity analysis results for you.")
     print("You will need to tell me which directory to look in.")
     print("Use the -dir flag to define the working directory.")
     print("If you don't do this I will assume the data is in the same directory as this script.")
@@ -33,7 +33,7 @@ def print_welcome():
     print("See our documentation for computing the data needed for these visualisation scripts:")
     print("https://lsdtopotools.github.io/LSDTT_documentation/LSDTT_chi_analysis.html#_calculating_concavity")
     print("For help type:")
-    print("   python PlotMOverNAnalysis.py -h\n")
+    print("   lsdtt_plotconcavityanalysis -h\n")
     print("=======================================================================\n\n ")
 
 

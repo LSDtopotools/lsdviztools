@@ -33,10 +33,10 @@ setup(
     description="lsdviztools is a collection of routines for plotting geospatial data, with a focus on data produces by LSDTopoTools or by lsdtopytools.",
     entry_points={
         'console_scripts': [
-            'lsdtt_plotbasicrasters=lsdviztools.scripts.plotbasicrasters:main',
-            'lsdtt_plotmovernanalysis=lsdviztools.scripts.plotmovernanalysis:main',
-            'lsdtt_plotchianalysis=lsdviztools.scripts.plotchianalysis:main',
-            'lsdtt_grabopentopographydata=lsdviztools.scripts.grabopentopographydata:main'
+            'lsdtt_plotbasicrasters=lsdviztools.scripts.lsdtt_plotbasicrasters:main',
+            'lsdtt_plotconcavityanalysis=lsdviztools.scripts.lsdtt_plotconcavityanalysis:main',
+            'lsdtt_plotchianalysis=lsdviztools.scripts.lsdtt_plotchianalysis:main',
+            'lsdtt_grabopentopographydata=lsdviztools.scripts.lsdtt_grabopentopographydata:main'
         ],
     },
     install_requires=requirements,
@@ -50,6 +50,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/simon-m-mudd/lsdviztools',
-    version='0.4.5',
+    version='0.4.6',
     zip_safe=False,
 )
