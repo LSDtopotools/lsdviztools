@@ -137,7 +137,7 @@ class ot_scraper(object):
         if(self.api_key=="NULL"):
             url_string = 'https://portal.opentopography.org/API/globaldem?demtype=%s&south=%s&north=%s&west=%s&east=%s&outputFormat=GTiff'%(self.source,self.latitude_S,self.latitude_N,self.longitude_W,self.longitude_E)
         else:
-            url_string = 'https://portal.opentopography.org/API/globaldem?demtype=%s&south=%s&north=%s&west=%s&east=%s&outputFormat=GTiff&API_key=%s'%(self.source,self.latitude_S,self.latitude_N,self.longitude_W,self.longitude_E,self.api_key )
+            url_string = 'https://portal.opentopography.org/API/globaldem?demtype=%s&south=%s&north=%s&west=%s&east=%s&outputFormat=GTiff&API_Key=%s'%(self.source,self.latitude_S,self.latitude_N,self.longitude_W,self.longitude_E,self.api_key )
 
         filename = self.path+self.prefix+"_"+self.source + ".tif"
         fwithoutpath= self.prefix+"_"+self.source + ".tif"
