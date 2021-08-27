@@ -84,7 +84,8 @@ def main(args=None):
             print("You forgot the separator at the end of the directory, appending...")
             this_dir = this_dir+os.sep
     else:
-        this_dir = "./"
+        this_dir = os.getcwd()+os.sep
+
 
     print("Creating an opentopography scraper")
     YOUR_DEM_SCRAPER = bmt.ot_scraper(source = args.source,longitude_W = args.west, longitude_E = args.east,latitude_S = args.south, latitude_N = args.north,prefix = args.fname_prefix,path = this_dir)

@@ -47,3 +47,12 @@ The four scripts are
 * lsdtt_plotchianalysis for channel profile analysis and tectonic geomorphology
 * lsdtt_plotconcavityanalysis for concavity analysis of river profiles
 * lsdtt_grabopentopographydata for grabbing data from opentopography.org
+
+
+0.4.7 (2021-08-27)
+------------------
+
+Some fixes
+
+* For scripts a fix to make sure you have the correct directory without the -dir flag
+* A fix to the opentopography api key

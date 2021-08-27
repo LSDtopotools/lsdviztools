@@ -425,7 +425,7 @@ def main(args=None):
             print("You forgot the separator at the end of the directory, appending...")
             this_dir = this_dir+os.sep
     else:
-        this_dir = os.getcwd()
+        this_dir = os.getcwd()+os.sep
 
     # some formatting for the figures
     if args.FigFormat == "manuscipt_svg":

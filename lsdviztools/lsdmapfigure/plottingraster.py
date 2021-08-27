@@ -243,6 +243,8 @@ class BaseRaster(object):
         """
 
         vals = np.unique(self._RasterArray)
+        vals = vals[~np.isnan(vals)]
+        vals = vals[ (vals >-9999)]
 
         return(vals)
 
@@ -663,11 +665,11 @@ class MapFigure(object):
             norm = "None"
 
         # Get minimum and maximum values
-        yp = Raster.get_min_max()
+        #yp = Raster.get_min_max()
         #print("Min and max are")
         #print(yp)
-        rmin = yp[0]
-        rmax = yp[1]
+        rmin = min(unique_val)
+        rmax = max(unique_val)
         #print("Minimum is: ")
         #print(rmin)
         #print("Maximum is:")
@@ -686,7 +688,7 @@ class MapFigure(object):
             else:
                 print("I cannot customize your minimum and maximum because I don't understand your input. It should be [min,max] with min max as integers or floats")
         else:
-            print("I am using the full range of values in the raster.")
+            print("I am using the maximum and minimum unique values.")
 
         # We need to initiate with a figure
         #self.ax = self.fig.add_axes([0.1,0.1,0.7,0.7])
@@ -1171,6 +1173,7 @@ class MapFigure(object):
         cbar.solids.set_edgecolor("face")
 
         if discrete==True:
+            print("I am doing a discrete colourbar")
             # change ticks
             if categorized==False:
                 self.fix_colourbar_ticks(BaseRaster, cbar, n_colours, cbar_type)
@@ -1179,8 +1182,12 @@ class MapFigure(object):
                 n_colours = len(categories_string)
                 print("The categories string is")
                 print(categories_string)
+                print("These as floats are:")
+                cs_float = [float(i) for i in categories_string]
+                print(cs_float)
                 cbar_type=str
-                self.fix_colourbar_ticks(BaseRaster, cbar, n_colours, cbar_type=str,categories_string = categories_string)
+                self.fix_colourbar_ticks(BaseRaster, cbar, n_colours, cbar_type=str,categories_string = categories_string,
+                                         use_baseraster = False, min_value = min(cs_float), max_value = max(cs_float))
 
         #Will's changes:
         # Changed rotation of colourbar text to 90 and the labelpad to -75 for "left"
@@ -1244,7 +1251,7 @@ class MapFigure(object):
             print("tick spacing is: "+str(tick_spacing))
 
             new_vmin = vmin+(tick_spacing/2)
-            new_vmax = vmax+(tick_spacing/2+0.0005) #+tick_spacing
+            new_vmax = vmax+(tick_spacing/2-0.0005) #+tick_spacing
 
 
 

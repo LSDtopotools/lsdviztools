@@ -227,7 +227,7 @@ def main(args=None):
             print("You forgot the '/' at the end of the directory, appending...")
             this_dir = this_dir+"/"
     else:
-        this_dir = os.getcwd()
+        this_dir = os.getcwd()+os.sep
 
     # check the basins
     print("You told me that the basin keys are: ")
