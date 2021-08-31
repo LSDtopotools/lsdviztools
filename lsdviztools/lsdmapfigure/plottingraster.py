@@ -248,6 +248,35 @@ class BaseRaster(object):
 
         return(vals)
 
+    def purge_extreme(self,minimum_value = -9999, maximum_value = 9999):
+        """
+        Removes extreme values from the raster
+
+        Args:
+            minimum_value (float): Anything less than this will become nan
+            maximum_value (float): Anything greater than this will become nan       
+
+        Author: SMM
+
+        Date: 31/08/2021
+        """    
+
+        #print("Before and after minimums:")
+        #print(np.nanmin(self._RasterArray))
+
+        #print("Purging, minimum value is: "+str(minimum_value))
+        A = self._RasterArray
+        #np.where(A <= minimum_value,A,-999)
+
+        A[A < minimum_value] = float("nan")
+        A[A > maximum_value] = float("nan")
+
+
+        print(np.nanmin(A))
+
+        self._RasterArray = A
+
+
 class MapFigure(object):
     """
     This is the main object used for plotting. It contains the underlying axes of the figures.
@@ -629,8 +658,17 @@ class MapFigure(object):
 
         Date: 23/03/2020
         """
+        
+        from matplotlib.colors import ListedColormap, BoundaryNorm
+
         Raster = BaseRaster(RasterName,Directory, NFF_opti = NFF_opti)
 
+        print("This min an max are:")
+        print(Raster.get_min_max())
+
+        print("Purging extremes, the new min max are:")
+        Raster.purge_extreme()
+        print(Raster.get_min_max())
 
         # Get unique values
         unique_val = Raster.get_unique()
@@ -640,6 +678,7 @@ class MapFigure(object):
         dictOfVal = { i : unique_val[i] for i in range(0, len(unique_val) ) }
 
         replace_ints  = list(range(0, len(unique_val) ))
+        class_bins = np.arange(-0.5,len(unique_val)+1,1)
 
         str_vals = []
         for val in unique_val:
@@ -649,16 +688,33 @@ class MapFigure(object):
 
         dictOfStr = { i : str_vals[i] for i in range(0, len(str_vals) ) }
 
+        print("Values")
         print(dictOfVal)
+
+        print("class_bins")
+        print(class_bins)
+
+        print("Strings")
         print(dictOfStr)
+
+        print("Replacement ints")
         print(replace_ints)
 
-        # Replace the raster vales with integers
+        #norm = BoundaryNorm(class_bins,len(unique_val))
+
+        # Replace the raster values with integers
         Raster.replace_raster_values(unique_val, replace_ints)
+        Raster.replace_raster_values(unique_val, replace_ints)
+
+        # Make a listed colourmap
+        #colourmap = ListedColourmap()
 
         print("N colours: "+str(len(str_vals)))
         n_colours = len(str_vals)
         colourmap = self.cmap_discretize(colourmap, len(str_vals))
+
+        #print("The colourmap has dimensions)
+        #print()
 
 
         if(norm == "none"):
@@ -668,8 +724,8 @@ class MapFigure(object):
         #yp = Raster.get_min_max()
         #print("Min and max are")
         #print(yp)
-        rmin = min(unique_val)
-        rmax = max(unique_val)
+        rmin = 0
+        rmax = len(unique_val)
         #print("Minimum is: ")
         #print(rmin)
         #print("Maximum is:")
