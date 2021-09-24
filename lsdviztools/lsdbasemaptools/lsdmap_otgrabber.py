@@ -35,6 +35,10 @@ class ot_scraper(object):
         padding (float): how much padding you want around your target area (in decimal degrees)
         path (str): the directory where you want to put your data
         prefix (str): the prefix of the file to be downloaded
+        resolution (float): the desired grid resolution (gdal will resample)
+        api_key (str): your api_key from opentopography
+        lower_left_coordinates (float list): a two element list of the latitude and longitude of the lower left corner. Overwrites the other edge coordinates
+        upper_right_coordinates (float list): a two element list of the latitude and longitude of the upper right corner. Overwrites the other edge coordinates
 
     Returns:
         Creates a DEM_scraper object
@@ -46,11 +50,22 @@ class ot_scraper(object):
     def __init__(self, source = "SRTMGL1", longitude_W = -5.178834 , longitude_E = -4.808695, 
                        latitude_S = 56.554025, latitude_N = 56.699391, 
                        padding = 0, path = "./", prefix = "mySRTM",
-                       resolution = 30, api_key = "NULL"):
+                       resolution = 30, api_key = "NULL", 
+                       lower_left_coordinates = [], upper_right_coordinates = []):
         super(ot_scraper, self).__init__()
 
         # Registering the attributes
         self.source = source
+
+
+        if (len(lower_left_coordinates) = 2):
+            self.longitude_W = lower_left_coordinates[1]
+            self.latitude_S = lower_left_coordinates[0]
+        if (len(upper_right_coordinates) = 2):
+            self.longitude_E = upper_right_coordinates[1]
+            self.latitude_N = upper_right_coordinates[0]
+
+
         self.longitude_W = longitude_W - padding
         self.longitude_E = longitude_E + padding
         self.latitude_S = latitude_S - padding
