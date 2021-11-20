@@ -57,19 +57,26 @@ class ot_scraper(object):
         # Registering the attributes
         self.source = source
 
-
-        if (len(lower_left_coordinates) = 2):
+        if (len(lower_left_coordinates) == 2):
+            print("I am taking your coordinates from the lower left list")
             self.longitude_W = lower_left_coordinates[1]
             self.latitude_S = lower_left_coordinates[0]
-        if (len(upper_right_coordinates) = 2):
+        else:
+            self.longitude_W = longitude_W
+            self.latitude_S = latitude_S            
+        if (len(upper_right_coordinates) == 2):
+            print("I am taking your coordinates from the upper right list")
             self.longitude_E = upper_right_coordinates[1]
             self.latitude_N = upper_right_coordinates[0]
+        else:
+            self.longitude_E = longitude_E
+            self.latitude_N = latitude_N            
 
 
-        self.longitude_W = longitude_W - padding
-        self.longitude_E = longitude_E + padding
-        self.latitude_S = latitude_S - padding
-        self.latitude_N = latitude_N + padding
+        self.longitude_W = self.longitude_W - padding
+        self.longitude_E = self.longitude_E + padding
+        self.latitude_S = self.latitude_S - padding
+        self.latitude_N = self.latitude_N + padding
         self.path = path
         self.prefix = prefix
         self.resolution = resolution
