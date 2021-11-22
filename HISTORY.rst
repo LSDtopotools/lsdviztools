@@ -56,3 +56,4 @@ Some fixes
 
 * For scripts a fix to make sure you have the correct directory without the -dir flag
 * A fix to the opentopography api key
+* An update to the opentopography scraper that allows lower lef and upper right corners to be easily copied from google maps
