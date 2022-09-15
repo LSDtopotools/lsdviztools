@@ -50,6 +50,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/simon-m-mudd/lsdviztools',
-    version='0.4.7',
+    version='0.4.8',
     zip_safe=False,
 )

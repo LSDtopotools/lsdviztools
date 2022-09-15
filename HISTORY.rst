@@ -57,3 +57,11 @@ Some fixes
 * For scripts a fix to make sure you have the correct directory without the -dir flag
 * A fix to the opentopography api key
 * An update to the opentopography scraper that allows lower lef and upper right corners to be easily copied from google maps
+
+0.4.8 (2022-09-15)
+------------------
+
+Some fixes
+
+* More fixes to the opentopography grabber
+* This uses an api key in a file now

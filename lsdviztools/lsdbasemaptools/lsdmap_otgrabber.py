@@ -36,7 +36,7 @@ class ot_scraper(object):
         path (str): the directory where you want to put your data
         prefix (str): the prefix of the file to be downloaded
         resolution (float): the desired grid resolution (gdal will resample)
-        api_key (str): your api_key from opentopography
+        api_key_file (str): A filename that holds your api key
         lower_left_coordinates (float list): a two element list of the latitude and longitude of the lower left corner. Overwrites the other edge coordinates
         upper_right_coordinates (float list): a two element list of the latitude and longitude of the upper right corner. Overwrites the other edge coordinates
 
@@ -50,7 +50,7 @@ class ot_scraper(object):
     def __init__(self, source = "SRTMGL1", longitude_W = -5.178834 , longitude_E = -4.808695, 
                        latitude_S = 56.554025, latitude_N = 56.699391, 
                        padding = 0, path = "./", prefix = "mySRTM",
-                       resolution = 30, api_key = "NULL", 
+                       resolution = 30, api_key_file = "NULL", 
                        lower_left_coordinates = [], upper_right_coordinates = []):
         super(ot_scraper, self).__init__()
 
@@ -80,7 +80,7 @@ class ot_scraper(object):
         self.path = path
         self.prefix = prefix
         self.resolution = resolution
-        self.api_key = api_key
+        self.api_key_file = api_key_file
 
 
         if( self.longitude_W > self.longitude_E ):
@@ -102,12 +102,16 @@ class ot_scraper(object):
         ninety_list = ["SRTMGL3","COP90"]
         api_list = ["NASADEM","COP30","COP90"]
 
-        if(self.source in api_list):
-            if(self.api_key=="NULL"):
-                print("You have chosen a source that requires an API key.")
-                print("You need to create an opentopography account and get one")
-                print("For now I am defaulting to the ALOSW3D30 DEM")
-                self.source = "AW3D30"
+        if(self.api_key_file=="NULL"):
+            print("Opentopography requires an API key.")
+            print("You need to create an opentopography account and get one")
+            print("When you have your key, put it in a file and set the filename")
+            print("NEVER upload this file to a repository. It is your private key")
+            exit()
+        
+        with open(self.api_key_file, 'r') as file:
+            print("I am reading you OT API key from the file "+self.api_key_file)
+            self.api_key = file.read().rstrip()
 
         if (self.source in ninety_list):
             print("Your source is a 90m DEM.")
