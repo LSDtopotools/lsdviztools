@@ -882,3 +882,73 @@ def PrintCategorised(DataDirectory,fname_prefix, Drape_prefix,
     MF.save_fig(fig_width_inches = fig_width_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi, transparent=True) # Save the figure
 
 
+
+
+
+def PrintPointsOverHillshade(DataDirectory,fname_prefix, cmap = "jet", points_fname = "points.csv", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", save_fig = True):
+    """
+    This function prints a channel map over a hillshade.
+
+    Args:
+        DataDirectory (str): the data directory with the m/n csv files
+        fname_prefix (str): The prefix for the m/n csv files
+        add_basin_labels (bool): If true, label the basins with text. Otherwise use a colourbar.
+        cmap (str or colourmap): The colourmap to use for the plot
+        size_format (str): Either geomorphology or big. Anything else gets you a 4.9 inch wide figure (standard ESURF size)
+        fig_format (str): An image format. png, pdf, eps, svg all valid
+        dpi (int): The dots per inch of the figure
+        out_fname_prefix (str): The prefix of the image file. If blank uses the fname_prefix
+
+
+    Returns:
+        A string with the name of the image (printed to file): Shaded relief plot with the basins coloured by basin ID. Uses a colourbar to show each basin
+
+    Author: SMM
+    """
+    # specify the figure size and format
+    # set figure sizes based on format
+    if size_format == "geomorphology":
+        fig_size_inches = 6.25
+    elif size_format == "big":
+        fig_size_inches = 16
+    else:
+        fig_size_inches = 4.92126
+    ax_style = "Normal"
+
+
+
+    thisPointData = LSDP.LSDMap_PointData(points_fname)
+
+    # clear the plot
+    plt.clf()
+
+    # set up the base image and the map
+    print("I am showing the basins without text labels.")
+    MF = MapFigure(HillshadeName, DataDirectory,coord_type="UTM_km", colourbar_location="None")
+
+    MF.add_point_data(thisPointData,column_for_plotting = "basin_key",
+                       scale_points = True,column_for_scaling = "drainage_area",
+                       this_colourmap = cmap, scaled_data_in_log = True,
+                       max_point_size = 3, min_point_size = 1)
+
+    # Save the image
+    thing_to_return = []
+    if (save_fig):
+        if len(out_fname_prefix) == 0:
+            ImageName = DataDirectory+fname_prefix+"_channels_with_basins."+fig_format
+        else:
+            ImageName = DataDirectory+out_fname_prefix+"_channels_with_basins."+fig_format
+
+        MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, FigFormat=fig_format, Fig_dpi = dpi, transparent=True)
+
+        thing_to_return = ImageName
+
+    else:
+        fig = MF.save_fig(fig_width_inches = fig_size_inches, transparent=True, return_fig = True)
+        thing_to_return = fig
+
+    print("I'm returning:")
+    print(thing_to_return)
+    return thing_to_return
+
+
