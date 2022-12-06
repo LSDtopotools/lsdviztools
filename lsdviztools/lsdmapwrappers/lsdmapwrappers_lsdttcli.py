@@ -54,8 +54,8 @@ class lsdtt_driver(object):
 
         self.check_command_line_tools()
         print("The lsdtopotools command line tools available are: ")
-        print(["lsdtt-basic-metrics","lsdtt-channel-extraction","lsdtt-chi-mapping","lsdtt-cosmo-tool","lsdtt-hillslope-channel-coupling"])
-        print("Please note only lsdtt-basic-metrics has been fully tested")
+        print(["lsdtt-basic-metrics","lsdtt-channel-extraction","lsdtt-chi-mapping","lsdtt-cosmo-tool","lsdtt-hillslope-channel-coupling","lsdtt-valley-metrics"])
+        print("Testing has been done against lsdtopotools v0.7")
 
 
     def print_parameters(self):
@@ -91,7 +91,7 @@ class lsdtt_driver(object):
         Date: 10/07/2020
         """
 
-        valid_clt = ["lsdtt-basic-metrics","lsdtt-channel-extraction","lsdtt-chi-mapping","lsdtt-cosmo-tool","lsdtt-hillslope-channel-coupling"]
+        valid_clt = ["lsdtt-basic-metrics","lsdtt-channel-extraction","lsdtt-chi-mapping","lsdtt-cosmo-tool","lsdtt-hillslope-channel-coupling","lsdtt-valley-metrics"]
 
         if (self.command_line_tool not in valid_clt):
             print("Warning: incorrect command line tool. Defaulting to lsdtt-basic-metrics")

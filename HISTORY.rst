@@ -65,3 +65,11 @@ Some fixes
 
 * More fixes to the opentopography grabber
 * This uses an api key in a file now
+
+0.4.8 (2022-12-06)
+------------------
+
+Some fixes
+
+* Added the lsdtt-valley-metrics to the driver interface
+* Added point mapping to the plotting tools
