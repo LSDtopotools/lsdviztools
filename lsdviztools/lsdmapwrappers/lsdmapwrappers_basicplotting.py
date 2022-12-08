@@ -831,8 +831,7 @@ def PrintCategorised(DataDirectory,fname_prefix, Drape_prefix,
         Drape_prefix (str): The prefix of the drape name
         show_colourbar (bool): if true show the colourbar
         cmap (str or colourmap): The colourmap to use for the plot
-        cbar_loc (str): where you want the colourbar. Options are none, left, right, top and botton. The colourbar will be of the elevation.
-                        If you want only a hillshade set to none and the cmap to "gray"
+        cbar_loc (str): where you want the colourbar. Options are none, left, right, top and botton. The colourbar will be of the elevation. If you want only a hillshade set to none and the cmap to "gray"
         cbar_label (str): The text on the colourbar label
         size_format (str): Either geomorphology or big. Anything else gets you a 4.9 inch wide figure (standard ESURF size)
         fig_format (str): An image format. png, pdf, eps, svg all valid
@@ -885,9 +884,14 @@ def PrintCategorised(DataDirectory,fname_prefix, Drape_prefix,
 
 
 
-def PrintPointsOverHillshade(DataDirectory,fname_prefix, cmap = "jet", points_fname = "points.csv", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", save_fig = True):
+def PrintPointsOverHillshade(DataDirectory,fname_prefix, cmap = "jet", points_fname = "points.csv", 
+                             column_for_plotting = "latitude", 
+                             scale_points = True, column_for_scaling = "drainage_area",
+                             scaled_data_in_log = True, max_point_size = 3, min_point_size = 1,
+                             size_format = "ESURF", manual_size = 3,
+                             fig_format = "png", dpi = 250, out_fname_prefix = "", save_fig = True):
     """
-    This function prints a channel map over a hillshade.
+    This function prints some points over a hillshade
 
     Args:
         DataDirectory (str): the data directory with the m/n csv files
@@ -915,21 +919,26 @@ def PrintPointsOverHillshade(DataDirectory,fname_prefix, cmap = "jet", points_fn
         fig_size_inches = 4.92126
     ax_style = "Normal"
 
+    # get the rasters
+    raster_ext = '.bil'
+    #BackgroundRasterName = fname_prefix+raster_ext
+    HillshadeName = fname_prefix+'_hs'+raster_ext
 
-
+    print("I am loading the points from: "+points_fname)
     thisPointData = LSDP.LSDMap_PointData(points_fname)
 
     # clear the plot
     plt.clf()
 
     # set up the base image and the map
-    print("I am showing the basins without text labels.")
+    print("I am getting the hillshade")
     MF = MapFigure(HillshadeName, DataDirectory,coord_type="UTM_km", colourbar_location="None")
-
-    MF.add_point_data(thisPointData,column_for_plotting = "basin_key",
-                       scale_points = True,column_for_scaling = "drainage_area",
-                       this_colourmap = cmap, scaled_data_in_log = True,
-                       max_point_size = 3, min_point_size = 1)
+    
+    print("Now I'll get some points")
+    MF.add_point_data(thisPointData,column_for_plotting = column_for_plotting,
+                       scale_points = scale_points, column_for_scaling = column_for_scaling,
+                       this_colourmap = cmap, scaled_data_in_log = scaled_data_in_log, manual_size = manual_size, 
+                       max_point_size = max_point_size, min_point_size = min_point_size)
 
     # Save the image
     thing_to_return = []

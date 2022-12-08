@@ -1507,7 +1507,11 @@ class MapFigure(object):
         except AttributeError:
             this_data = thisPointData.QueryData(column_for_plotting)
 
-        print("I got the data column you wanted")
+        #print("I got the data column you wanted")
+        #print("Is is:")
+        #print(this_data)
+        
+        
         if(color_abs):
             print("I will color your data using its absolute value")
             this_data = np.abs(this_data)
@@ -1517,14 +1521,18 @@ class MapFigure(object):
             print("I have taken the log your colour data, the minimum is %s and the maximum is %s" %(np.nanmin(this_data), np.nanmax(this_data)))
 
         # Now the data for scaling. Point size will be scaled by these data
-        scale_data = thisPointData.QueryData(column_for_scaling)
-        print("I also got the data for scaling, which is in column "+column_for_scaling)
-        scale_data = np.asarray(scale_data)
-        if(scale_in_absolute):
-            scale_data = np.abs(scale_data)
-        #scale_data = scale_data.flatten()
-        print("The size of the array is: ")
-        print(scale_data.shape)
+        if scale_points == True:
+            scale_data = thisPointData.QueryData(column_for_scaling)
+            print("I also got the data for scaling, which is in column "+column_for_scaling)
+            scale_data = np.asarray(scale_data)
+            if(scale_in_absolute):
+                scale_data = np.abs(scale_data)
+            #scale_data = scale_data.flatten()
+            print("The size of the array is: ")
+            print(scale_data.shape)
+        else:
+            print("I am not going to scale your data.")
+            scale_data = []
 
         # If there is scaled data, convert to log if that option is selected
         if scaled_data_in_log:
@@ -1575,11 +1583,12 @@ class MapFigure(object):
         else:
             print("I will not scale your points.")
             point_scale = manual_size
-
+            print("The scale is: "+str(manual_size))
 
 
         print("I will plot the points now.")
         print("The colourmap is: " + this_colourmap)
+        #print("The length of the data file is "+str(len(this_data)))
         if len(this_data) == 0 or len(this_data) != len(easting):
             print("I am only plotting the points.")
             unicolor = unicolor
@@ -1593,11 +1602,6 @@ class MapFigure(object):
                 print("let me rescale the colour using your array")
                 if(len(colour_manual_scale) == 2):
                     cNorm  = _mcolors.Normalize(vmin=colour_manual_scale[0], vmax=colour_manual_scale[1])
-                    #scalarMap = _cm.ScalarMappable(norm = cNorm, cmap= this_colourmap)
-                    #tps_color = scalarMap.to_rgba(this_data)
-                    #scalarMap.set_array(tps_color)
-                    #this_colourmap = scalarMap
-                    #sc = self.ax_list[0].scatter(easting,northing,s=point_scale, c=tps_color,cmap=this_colourmap,edgecolors='none', alpha = alpha)
                     sc = self.ax_list[0].scatter(easting,northing,s=point_scale, c=this_data,cmap=this_colourmap,norm=cNorm,edgecolors='none', alpha = alpha,zorder=zorder, marker = marker)
                     if(black_contours):
 
@@ -1607,7 +1611,6 @@ class MapFigure(object):
                     print("Your colour_log_manual_scale should be something like [min,max], aborting")
                     quit()
             else:
-                #sc = self.ax_list[0].scatter(easting,northing,s=point_scale, c=this_data,cmap=this_colourmap,edgecolors='none', alpha = alpha,zorder=zorder, marker = marker)
                 if discrete_colours:
                     # make a color map of fixed colors
                     NUM_COLORS = NColours
