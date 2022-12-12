@@ -1837,7 +1837,7 @@ def StackedProfilesGradient(chi_csv_fname, FigFileName = 'Image.pdf',
 
         print("cmap is:")
         print(this_cmap)
-        sc = ax.scatter(maskX,maskElevation,s=2.0, c=maskMChi,cmap=this_cmap,edgecolors='none',norm = cnorm, vmin = M_chi_axis_min, vmax = M_chi_axis_max)
+        sc = ax.scatter(maskX,maskElevation,s=2.0, c=maskMChi,cmap=this_cmap,edgecolors='none',vmin = M_chi_axis_min, vmax = M_chi_axis_max)
 
         # increment the offset
         this_X_offset = this_X_offset+X_offset

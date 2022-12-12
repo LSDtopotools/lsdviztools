@@ -409,7 +409,7 @@ def PrintChiStacked(DataDirectory,fname_prefix, ChannelFileName, cmap = "jet", c
 
 def PrintMultipleStacked(DataDirectory,fname_prefix, ChannelFileNameList, cmap = "jet", cbar_loc = "bottom", size_format = "ESURF", fig_format = "png", dpi = 250,discrete_colours = False, NColours = 10,colorbarlabel = "Colourbar", axis_data_name = "chi", plotting_data_format = 'log', Basin_select_list = [], Basin_rename_dict = {}, out_fname_prefix = "", first_basin = 0, last_basin = 0, figure_aspect_ratio = 2, X_offset = 5, rotate_labels=False):
     """
-    This function takes a list of files and converst them to a stacked plot
+    This function takes a list of files and converts them to a stacked plot
 
     Args:
         DataDirectory (str): the data directory with the m/n csv files

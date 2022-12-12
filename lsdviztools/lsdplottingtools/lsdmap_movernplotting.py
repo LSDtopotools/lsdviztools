@@ -2432,7 +2432,7 @@ def MakeMOverNSummaryPlot(DataDirectory, fname_prefix, basin_list=[], start_move
         points_chi_keys = points_chi_keys.astype(float) - 0.1
 
         if Chi_bootstrap:
-            ax.errorbar(points_chi_keys, df['Chi_MLE_points'], s=15, marker='o', xerr=None, yerr=errors,
+            ax.errorbar(points_chi_keys, df['Chi_MLE_points'], ms=15, marker='o', xerr=None, yerr=errors,
                     ecolor='#fdbb84', fmt='none', elinewidth=1,label='_nolegend_')
             ax.scatter(points_chi_keys, df['Chi_MLE_points'], s=15, c='#fdbb84', marker='o', edgecolors='k',
                    lw=0.5,facecolors='#fdbb84', label='Chi bootstrap',zorder=200)
@@ -2449,7 +2449,7 @@ def MakeMOverNSummaryPlot(DataDirectory, fname_prefix, basin_list=[], start_move
 
             disorder_chi_keys = df['basin_key'].values
             disorder_chi_keys = disorder_chi_keys.astype(float)-0.3
-            ax.errorbar(disorder_chi_keys, df['Chi_disorder'], s=15, marker='o', xerr=None, yerr=errors, ecolor='#F06292', fmt='none', elinewidth=1,label='_nolegend_')
+            ax.errorbar(disorder_chi_keys, df['Chi_disorder'], markersize=15,marker='o', xerr=None, yerr=errors, ecolor='#F06292', fmt='none', elinewidth=1,label='_nolegend_')
             ax.scatter(disorder_chi_keys, df['Chi_disorder'],marker='o', edgecolors='k', lw=0.5, facecolors='#F06292', s=15, zorder=100, label='Chi disorder')
 
 
@@ -2472,7 +2472,7 @@ def MakeMOverNSummaryPlot(DataDirectory, fname_prefix, basin_list=[], start_move
 
         SA_tribs_keys = df['basin_key'].values
         SA_tribs_keys = SA_tribs_keys.astype(float)+0.1
-        ax.errorbar(SA_tribs_keys, df['SA_tribs'], s=15, marker='D', facecolors='white', xerr=None, yerr=errors, edgecolors='r', fmt='none', elinewidth=1, linestyle = ":", ecolor='r',label='_nolegend_')
+        ax.errorbar(SA_tribs_keys, df['SA_tribs'], markersize=15, marker='D', markerfacecolor='white', xerr=None, yerr=errors, markeredgecolor='r', fmt='none', elinewidth=1, linestyle = ":", ecolor='r',label='_nolegend_')
         ax.scatter(SA_tribs_keys, df['SA_tribs'], s=15, marker='D', facecolors='white', edgecolors='r', label='S-A by channel',zorder=100)
 
     # plot the segmented SA data
@@ -2486,8 +2486,8 @@ def MakeMOverNSummaryPlot(DataDirectory, fname_prefix, basin_list=[], start_move
     SA_segment_keys = df['basin_key'].values
     SA_segment_keys = SA_segment_keys.astype(float)+0.2
     if SA_segmented:
-        ax.errorbar(SA_segment_keys, df['SA_segments'], s=15, marker='o', facecolors='#a6bddb', xerr=None, yerr=errors,
-                edgecolors='#a6bddb', fmt='none', elinewidth=1, linestyle = ":", ecolor='#a6bddb',label='_nolegend_')
+        ax.errorbar(SA_segment_keys, df['SA_segments'], markersize=15, marker='o', markerfacecolor='#a6bddb', xerr=None, yerr=errors,
+                markeredgecolor='#a6bddb', fmt='none', elinewidth=1, linestyle = ":", ecolor='#a6bddb',label='_nolegend_')
         ax.scatter(SA_segment_keys, df['SA_segments'], s=15, marker='o', facecolors='#a6bddb', edgecolors='k',
                lw=0.5, label='Segmented S-A', zorder=100)
 
@@ -2618,7 +2618,7 @@ def MakeMOverNPlotOneMethod(DataDirectory, fname_prefix, basin_list=[], start_mo
             errors = np.array(zip(points_min_err, points_max_err)).T
 
             points_chi_keys = df['basin_key'].values # -0.1 I removed that to fix the movern plots - Boris
-            ax.errorbar(points_chi_keys, df['Chi_MLE_points'], s=15, marker='o', xerr=None, yerr=errors, ecolor='#fdbb84', fmt='none', elinewidth=1,label='_nolegend_')
+            ax.errorbar(points_chi_keys, df['Chi_MLE_points'], ms=15, marker='o', xerr=None, yerr=errors, ecolor='#fdbb84', fmt='none', elinewidth=1,label='_nolegend_')
             ax.scatter(points_chi_keys, df['Chi_MLE_points'], s=15, c='#fdbb84', marker='o', edgecolors='k', lw=0.5,facecolors='#fdbb84', label='Chi bootstrap',zorder=200)
 
             # plot the SA data
@@ -2640,7 +2640,7 @@ def MakeMOverNPlotOneMethod(DataDirectory, fname_prefix, basin_list=[], start_mo
 
             disorder_chi_keys = df['basin_key'].values
             disorder_chi_keys = disorder_chi_keys.astype(float)-0.3
-            ax.errorbar(disorder_chi_keys, df['Chi_disorder'], s=15, marker='o', xerr=None, yerr=errors, ecolor='#F06292', fmt='none', elinewidth=1,label='_nolegend_')
+            ax.errorbar(disorder_chi_keys, df['Chi_disorder'], ms=15, marker='o', xerr=None, yerr=errors, ecolor='#F06292', fmt='none', elinewidth=1,label='_nolegend_')
             ax.scatter(disorder_chi_keys, df['Chi_disorder'],marker='o', edgecolors='k', lw=0.5, facecolors='#F06292', s=15, zorder=100, label='Chi disorder')
 
         else:
@@ -2654,7 +2654,7 @@ def MakeMOverNPlotOneMethod(DataDirectory, fname_prefix, basin_list=[], start_mo
 
             SA_segment_keys = df['basin_key'].values
             SA_segment_keys=SA_segment_keys.astype(float)+0.2
-            ax.errorbar(SA_segment_keys, df['SA_segments'], s=15, marker='o', facecolors='#a6bddb', xerr=None, yerr=errors, edgecolors='#a6bddb', fmt='none', elinewidth=1, linestyle = ":", ecolor='#a6bddb',label='_nolegend_')
+            ax.errorbar(SA_segment_keys, df['SA_segments'], ms=15, marker='o', markerfacecolor='#a6bddb', xerr=None, yerr=errors, markeredgecolor='#a6bddb', fmt='none', elinewidth=1, linestyle = ":", ecolor='#a6bddb',label='_nolegend_')
             ax.scatter(SA_segment_keys, df['SA_segments'], s=15, marker='o', facecolors='#a6bddb', edgecolors='k', lw=0.5, label='Segmented S-A', zorder=100)
 
         # set the axis labels
@@ -2797,7 +2797,7 @@ def MakeMOverNDisorderDistancePlot(DataDirectory, fname_prefix, basin_list_list=
 
             disorder_chi_keys = this_df['basin_key'].values
             disorder_chi_keys = disorder_chi_keys.astype(float)-0.3
-            ax.errorbar(long_vals, this_df['Chi_disorder'], s=15, marker='o', xerr=None, yerr=errors, ecolor=colour_list[colour_index_mod], fmt='none', elinewidth=1,label='_nolegend_')
+            ax.errorbar(long_vals, this_df['Chi_disorder'], ms=15, marker='o', xerr=None, yerr=errors, ecolor=colour_list[colour_index_mod], fmt='none', elinewidth=1,label='_nolegend_')
             ax.scatter(long_vals, this_df['Chi_disorder'],marker='o', edgecolors='k', lw=0.5, facecolors=colour_list[colour_index_mod], s=15, zorder=100, label=label_name)
         colour_index = colour_index+1
 
@@ -3000,10 +3000,10 @@ def PlotMOverNByBasin(DataDirectory, fname_prefix, basin_list = [], size_format=
         else:
             values_to_colour = df[column_header].tolist()
             this_cmap = plt.cm.Set2
-            ax.errorbar(basin_list, df['Chi_MLE_points'], s=20, marker='o', xerr=None, yerr=errors, ecolor=values_to_colour, cmap=this_cmap, fmt='none', elinewidth=1,label='_nolegend_')
+            ax.errorbar(basin_list, df['Chi_MLE_points'], ms=20, marker='o', xerr=None, yerr=errors, ecolor=values_to_colour, cmap=this_cmap, fmt='none', elinewidth=1,label='_nolegend_')
             ax.scatter(basin_list, df['Chi_MLE_points'], s=20, c=values_to_colour, cmap=this_cmap, marker='o', edgecolors=None, lw=0.5, label='Chi bootstrap',zorder=200)
     else:
-        ax.errorbar(basin_list, df['Chi_MLE_points'], s=20, marker='o', xerr=None, yerr=errors, ecolor='#fdbb84', fmt='none', elinewidth=1,label='_nolegend_')
+        ax.errorbar(basin_list, df['Chi_MLE_points'], ms=20, marker='o', xerr=None, yerr=errors, ecolor='#fdbb84', fmt='none', elinewidth=1,label='_nolegend_')
         ax.scatter(basin_list, df['Chi_MLE_points'], s=20, c='#fdbb84', marker='o', edgecolors='k', lw=0.5,facecolors='#fdbb84', label='Chi bootstrap',zorder=200)
 
     # set the axis labels
