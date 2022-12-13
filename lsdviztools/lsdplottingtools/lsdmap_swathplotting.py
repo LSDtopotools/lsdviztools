@@ -9,6 +9,7 @@ from __future__ import absolute_import, division, print_function
 
 import numpy as np
 import os
+import pandas as pd
 from . import cubehelix
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -60,12 +61,15 @@ def PlotSwath(swath_csv_name, FigFileName = 'Image.png', size_format = "geomorph
     ax = fig.add_subplot(gs[25:100,10:95])
 
     print("Getting data from the file: "+swath_csv_name)
-    thisPointData = LSDMap_PD.LSDMap_PointData(swath_csv_name)
+    df = pd.read_csv(swath_csv_name)
+
+    print("The headers are: ")
+    print(list(df))
     
-    distance = thisPointData.QueryData('Distance').values
-    mean_val = thisPointData.QueryData('Mean').values
-    min_val = thisPointData.QueryData('Min').values
-    max_val = thisPointData.QueryData('Max').values
+    distance = df["distance"].values
+    mean_val = df["median_z"].values
+    min_val = df["minimum_z"].values
+    max_val = df["max_z"].values
     
     # Get the minimum and maximum distances
     X_axis_min = 0

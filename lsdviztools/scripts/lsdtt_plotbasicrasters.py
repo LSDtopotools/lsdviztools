@@ -462,7 +462,7 @@ def main(args=None):
         
     # See if you should create a basemap
     if args.create_basemap_figure:
-        import LSDBasemapTools as LSDBM
+        from lsdviztools.lsdbasemaptools import lsdmap_basemaptools as LSDBM
         
         MakeBasemapDirectory(this_dir)
         RasterFile = args.fname_prefix+".bil"
