@@ -51,7 +51,7 @@ setup(
     setup_requires=setup_requirements,
     test_suite='tests',
     tests_require=test_requirements,
-    url='https://github.com/simon-m-mudd/lsdviztools',
+    url='https://github.com/LSDTopotools/lsdviztools',
     version='0.4.10',
     zip_safe=False,
 )
