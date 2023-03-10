@@ -35,6 +35,7 @@ from lsdviztools.lsdplottingtools import lsdmap_vectortools as LSDV
 from lsdviztools.lsdmapfigure.plottingraster import MapFigure
 from lsdviztools.lsdmapfigure import plottinghelpers as PlotHelp
 from lsdviztools.lsdplottingtools import lsdmap_chiplotting as LSDCP
+from lsdviztools.lsdplottingtools import lsdmap_swathplotting as LSDSP
 
 def make_display_string(img_name, width=600):
     """
@@ -325,6 +326,37 @@ def SimpleHillshadeForAnimation(DataDirectory,Base_file, cmap = "jet", cbar_loc 
     MF.save_fig(fig_width_inches = fig_size_inches, FigFileName = ImageName, axis_style = ax_style, FigFormat=fig_format, Fig_dpi = dpi, adjust_cbar_characters=False,
                  fixed_cbar_characters=4, hide_ticklabels=hide_ticklabels)
     return ImageName
+
+
+def SimpleSwath(DataDirectory,swath_csv_name, FigFileName = "swath.png",cmap = "jet", size_format = "ESURF", fig_format = "png", dpi = 250, aspect_ratio = 2, save_fig = True):
+    """
+    This function plots a swwath profile
+
+    Args: 
+        DataDirectory (str): the data directory with the m/n csv files
+        fname_prefix (str): The prefix for the m/n csv files
+        add_basin_labels (bool): If true, label the basins with text. Otherwise use a colourbar.
+        cmap (str or colourmap): The colourmap to use for the plot
+        cbar_lox (str): where you want the colourbar. Options are none, left, right, top and botton. The colourbar will be of the elevation.
+                        If you want only a hillshade set to none and the cmap to "gray"
+        size_format (str): Either geomorphology or big. Anything else gets you a 4.9 inch wide figure (standard ESURF size)
+        fig_format (str): An image format. png, pdf, eps, svg all valid
+        dpi (int): The dots per inch of the figure
+        out_fname_prefix (str): The prefix of the image file. If blank uses the fname_prefix
+        channel_colourmap (str or cmap): the colourmap of the point data
+        save_fig (bool): If true, saves the fig, else, returns the filename
+
+    Returns:
+        If save_fig is true, return a string with the name of the image (printed to file). If save_fig is false, returns the figure handle to the shaded relief plot with the channels.
+
+
+    Author: SMM
+
+    Date: 10/03/2023
+    """
+
+    imname = LSDSP.PlotNiceSwath(DataDirectory,swath_csv_name, FigFileName = FigFileName, size_format = size_format, fig_format = fig_format, dpi = dpi, aspect_ratio = aspect_ratio)
+    return imname
 
 
 def PrintAllChannels(DataDirectory,fname_prefix, add_basin_labels = True, cmap = "jet", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "", channel_colourmap = "Blues", save_fig = True):

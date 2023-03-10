@@ -511,7 +511,7 @@ def BasicDensityPlot(FileName, thiscmap='gray',colorbarlabel='Elevation in meter
     label_size = 20
 
     rcParams['font.family'] = 'sans-serif'
-    rcParams['font.sans-serif'] = ['Liberation Sans']
+    #rcParams['font.sans-serif'] = ['Liberation Sans']
     rcParams['font.size'] = label_size
 
     # get the data
@@ -646,7 +646,7 @@ def BasicDrapedPlotGridPlot(FileName, DrapeName, thiscmap='gray',drape_cmap='gra
     # Set up fonts for plots
     label_size = 20
     rcParams['font.family'] = 'sans-serif'
-    rcParams['font.sans-serif'] = ['Liberation Sans']
+    #rcParams['font.sans-serif'] = ['Liberation Sans']
     rcParams['font.size'] = label_size
 
     # get the data
@@ -777,7 +777,7 @@ def DrapedOverHillshade(FileName, DrapeName, thiscmap='gray',drape_cmap='gray',
 
     # Set up fonts for plots
     rcParams['font.family'] = 'sans-serif'
-    rcParams['font.sans-serif'] = ['Liberation Sans']
+    #rcParams['font.sans-serif'] = ['Liberation Sans']
     rcParams['font.size'] = label_size
 
     hillshade = Hillshade(FileName)
@@ -909,7 +909,7 @@ def DrapedOverHillshade_Categories(FileName, DrapeName, nCategories,
 
     # Set up fonts for plots
     rcParams['font.family'] = 'sans-serif'
-    rcParams['font.sans-serif'] = ['Liberation Sans']
+    #rcParams['font.sans-serif'] = ['Liberation Sans']
     rcParams['font.size'] = label_size
 
     hillshade = Hillshade(FileName)
@@ -1034,7 +1034,7 @@ def DrapedOverFancyHillshade(FileName, HSName, DrapeName, thiscmap='gray',drape_
 
     # Set up fonts for plots
     rcParams['font.family'] = 'sans-serif'
-    rcParams['font.sans-serif'] = ['Liberation Sans']
+    #rcParams['font.sans-serif'] = ['Liberation Sans']
     rcParams['font.size'] = label_size
 
     # get the data
@@ -1171,7 +1171,7 @@ def BasinsOverFancyHillshade(FileName, HSName, BasinName, Basin_csv_name, basin_
 
     # Set up fonts for plots
     rcParams['font.family'] = 'sans-serif'
-    rcParams['font.sans-serif'] = ['Liberation Sans']
+    #rcParams['font.sans-serif'] = ['Liberation Sans']
     rcParams['font.size'] = label_size
 
     # get the data
@@ -1499,7 +1499,7 @@ def SwathPlot(path, filename, axis):
     # Set up fonts for plots
     label_size = 20
     rcParams['font.family'] = 'sans-serif'
-    rcParams['font.sans-serif'] = ['Liberation Sans']
+    #rcParams['font.sans-serif'] = ['Liberation Sans']
     rcParams['font.size'] = label_size
 
     # make a figure, sized for a ppt slide

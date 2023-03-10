@@ -436,7 +436,7 @@ class KP_plotting(object):
         
         # Set up fonts for plots
         rcParams['font.family'] = 'sans-serif'
-        rcParams['font.sans-serif'] = ['Liberation Sans'] # Liberation Sans is a free alternative to Arial. Albeit being quite universal, Arial is propietary. #PRAISE_FREE_AND_OPENSOURCE
+        #rcParams['font.sans-serif'] = ['Liberation Sans'] # Liberation Sans is a free alternative to Arial. Albeit being quite universal, Arial is propietary. #PRAISE_FREE_AND_OPENSOURCE
         rcParams['font.size'] = label_size
 
 
@@ -534,7 +534,7 @@ class KP_plotting(object):
         
         # Set up fonts for plots
         rcParams['font.family'] = 'sans-serif'
-        rcParams['font.sans-serif'] = ['Liberation Sans'] # Liberation Sans is a free alternative to Arial. Albeit being quite universal, Arial is propietary. #PRAISE_FREE_AND_OPENSOURCE
+        #rcParams['font.sans-serif'] = ['Liberation Sans'] # Liberation Sans is a free alternative to Arial. Albeit being quite universal, Arial is propietary. #PRAISE_FREE_AND_OPENSOURCE
         rcParams['font.size'] = label_size
 
 
@@ -657,7 +657,7 @@ class KP_plotting(object):
         
         # Set up fonts for plots
         rcParams['font.family'] = 'sans-serif'
-        rcParams['font.sans-serif'] = ['Liberation Sans'] # Liberation Sans is a free alternative to Arial. Albeit being quite universal, Arial is propietary. #PRAISE_FREE_AND_OPENSOURCE
+        #rcParams['font.sans-serif'] = ['Liberation Sans'] # Liberation Sans is a free alternative to Arial. Albeit being quite universal, Arial is propietary. #PRAISE_FREE_AND_OPENSOURCE
         rcParams['font.size'] = label_size
 
         for sources in self.df_SK[binning].unique():
@@ -760,7 +760,7 @@ class KP_plotting(object):
 
         # Set up fonts for plots
         rcParams['font.family'] = 'sans-serif'
-        rcParams['font.sans-serif'] = ['Liberation Sans'] # Liberation Sans is a free alternative to Arial. Albeit being quite universal, Arial is propietary. #PRAISE_FREE_AND_OPENSOURCE
+        #rcParams['font.sans-serif'] = ['Liberation Sans'] # Liberation Sans is a free alternative to Arial. Albeit being quite universal, Arial is propietary. #PRAISE_FREE_AND_OPENSOURCE
         rcParams['font.size'] = label_size
 
         # set figure sizes based on format
@@ -884,7 +884,7 @@ class KP_plotting(object):
 
         # Set up fonts for plots
         rcParams['font.family'] = 'sans-serif'
-        rcParams['font.sans-serif'] = ['Liberation Sans'] # Liberation Sans is a free alternative to Arial. Albeit being quite universal, Arial is propietary. #PRAISE_FREE_AND_OPENSOURCE
+        #rcParams['font.sans-serif'] = ['Liberation Sans'] # Liberation Sans is a free alternative to Arial. Albeit being quite universal, Arial is propietary. #PRAISE_FREE_AND_OPENSOURCE
         rcParams['font.size'] = label_size
 
         # set figure sizes based on format
@@ -1003,7 +1003,7 @@ class KP_plotting(object):
         
         # Set up fonts for plots
         rcParams['font.family'] = 'sans-serif'
-        rcParams['font.sans-serif'] = ['Liberation Sans'] # Liberation Sans is a free alternative to Arial. Albeit being quite universal, Arial is propietary. #PRAISE_FREE_AND_OPENSOURCE
+        #rcParams['font.sans-serif'] = ['Liberation Sans'] # Liberation Sans is a free alternative to Arial. Albeit being quite universal, Arial is propietary. #PRAISE_FREE_AND_OPENSOURCE
         rcParams['font.size'] = label_size
 
 
@@ -1079,7 +1079,7 @@ class KP_plotting(object):
         
         # Set up fonts for plots
         rcParams['font.family'] = 'sans-serif'
-        rcParams['font.sans-serif'] = ['Liberation Sans'] # Liberation Sans is a free alternative to Arial. Albeit being quite universal, Arial is propietary. #PRAISE_FREE_AND_OPENSOURCE
+        #rcParams['font.sans-serif'] = ['Liberation Sans'] # Liberation Sans is a free alternative to Arial. Albeit being quite universal, Arial is propietary. #PRAISE_FREE_AND_OPENSOURCE
         rcParams['font.size'] = label_size
 
 

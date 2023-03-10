@@ -194,7 +194,7 @@ def BasicChiPlotGridPlotKirby(FileName, DrapeName, chi_csv_fname, thiscmap='gray
 
     # Set up fonts for plots
     rcParams['font.family'] = 'sans-serif'
-    rcParams['font.sans-serif'] = ['Liberation Sans']
+    #rcParams['font.sans-serif'] = ['Liberation Sans']
     rcParams['font.size'] = label_size
 
     # get the data
@@ -358,7 +358,7 @@ def BasicChiPlotGridPlot(FileName, DrapeName, chi_csv_fname, thisPointData, this
 
     # Set up fonts for plots
     rcParams['font.family'] = 'sans-serif'
-    rcParams['font.sans-serif'] = ['Liberation Sans']
+    #rcParams['font.sans-serif'] = ['Liberation Sans']
     rcParams['font.size'] = label_size
 
     # get the data
@@ -462,7 +462,7 @@ def BasicChiPlotGridPlot(FileName, DrapeName, chi_csv_fname, thisPointData, this
     # This is the axis for the colorbar
     ax2 = fig.add_subplot(gs[10:15,15:70])
     plt.colorbar(sc,cmap=this_cmap,spacing='uniform', orientation='horizontal',cax=ax2)
-    ax2.set_xlabel(colorbarlabel, fontname='Liberation Sans',labelpad=l_pad)
+    ax2.set_xlabel(colorbarlabel,labelpad=l_pad)
 
     # This affects all axes because we set share_all = True.
     ax.set_xlim(x_min,x_max)
@@ -522,7 +522,7 @@ def BasicChiCoordinatePlot(FileName, DrapeName, csvfile, thiscmap='gray',drape_c
 
     # Set up fonts for plots
     rcParams['font.family'] = 'sans-serif'
-    rcParams['font.sans-serif'] = ['Liberation Sans']
+    #rcParams['font.sans-serif'] = ['Liberation Sans']
     rcParams['font.size'] = label_size
 
     # get the data
@@ -642,7 +642,7 @@ def BasicChiCoordinatePlot(FileName, DrapeName, csvfile, thiscmap='gray',drape_c
     # This is the axis for the colorbar
     ax2 = fig.add_subplot(gs[10:15,15:70])
     plt.colorbar(sc,cmap=this_cmap,spacing='uniform', orientation='horizontal',cax=ax2)
-    ax2.set_xlabel(colorbarlabel, fontname='Liberation Sans',labelpad=l_pad)
+    ax2.set_xlabel(colorbarlabel,labelpad=l_pad)
 
     # This affects all axes because we set share_all = True.
     ax.set_xlim(x_min,x_max)
@@ -701,7 +701,7 @@ def BasicChannelPlotGridPlotCategories(FileName, DrapeName, chi_csv_fname, thisc
 
     # Set up fonts for plots
     rcParams['font.family'] = 'sans-serif'
-    rcParams['font.sans-serif'] = ['Liberation Sans']
+    #rcParams['font.sans-serif'] = ['Liberation Sans']
     rcParams['font.size'] = label_size
 
     # get the data
@@ -866,7 +866,7 @@ def BasicChannelPlotByBasin(FileName, DrapeName, chi_csv_fname, thiscmap='gray',
 
     # Set up fonts for plots
     rcParams['font.family'] = 'sans-serif'
-    rcParams['font.sans-serif'] = ['Liberation Sans']
+    #rcParams['font.sans-serif'] = ['Liberation Sans']
     rcParams['font.size'] = label_size
 
     # get the data
@@ -1028,7 +1028,7 @@ def ChiProfiles(chi_csv_fname, FigFileName = 'Image.pdf',FigFormat = 'show',
 
     # Set up fonts for plots
     rcParams['font.family'] = 'sans-serif'
-    rcParams['font.sans-serif'] = ['Liberation Sans']
+    #rcParams['font.sans-serif'] = ['Liberation Sans']
     rcParams['font.size'] = label_size
 
     if plot_M_chi:
@@ -1279,7 +1279,7 @@ def StackedChiProfiles(chi_csv_fname, FigFileName = 'Image.pdf',
 
     # Set up fonts for plots
     rcParams['font.family'] = 'sans-serif'
-    rcParams['font.sans-serif'] = ['Liberation Sans']
+    #rcParams['font.sans-serif'] = ['Liberation Sans']
     rcParams['font.size'] = label_size
 
 
@@ -1545,7 +1545,7 @@ def StackedProfilesGradient(chi_csv_fname, FigFileName = 'Image.pdf',
 
     # Set up fonts for plots
     rcParams['font.family'] = 'sans-serif'
-    rcParams['font.sans-serif'] = ['Liberation Sans']
+    #rcParams['font.sans-serif'] = ['Liberation Sans']
     rcParams['font.size'] = label_size
 
     # make a figure,
@@ -1863,18 +1863,13 @@ def StackedProfilesGradient(chi_csv_fname, FigFileName = 'Image.pdf',
         # Changed rotation of colourbar text to 90 and the labelpad to -75 for "left"
 
         if cbar_loc == 'top':
-            ax2.set_xlabel(colorbarlabel, fontname='Liberation Sans',labelpad=5)
+            ax2.set_xlabel(colorbarlabel, labelpad=5)
         elif cbar_loc == 'bottom':
-            ax2.set_xlabel(colorbarlabel, fontname='Liberation Sans',labelpad=5)
+            ax2.set_xlabel(colorbarlabel, labelpad=5)
         elif cbar_loc == 'left':
-            ax2.set_ylabel(colorbarlabel, fontname='Liberation Sans',labelpad=-75,rotation=90)
+            ax2.set_ylabel(colorbarlabel, labelpad=-75,rotation=90)
         elif cbar_loc == 'right':
-            ax2.set_ylabel(colorbarlabel, fontname='Liberation Sans',labelpad=10,rotation=270)
-
-        #ax2 = fig.add_axes([0.1,0.8,0.05,0.2])
-        #cbar = plt.colorbar(sc,cmap=this_cmap,spacing='uniform', orientation='horizontal',cax=ax2)
-        #cbar.set_label(colorbarlabel, fontsize=10)
-        #ax2.set_xlabel(colorbarlabel, fontname='Liberation Sans',labelpad=5)
+            ax2.set_ylabel(colorbarlabel, labelpad=10,rotation=270)
 
 
     ax.spines['top'].set_linewidth(1)
@@ -1968,7 +1963,7 @@ def ChannelProfilePlot(DataDirectory, fname_prefix, FigFormat='png', size_format
     # Set up fonts for plots
     label_size = 10
     rcParams['font.family'] = 'sans-serif'
-    rcParams['font.sans-serif'] = ['Liberation Sans']
+    #rcParams['font.sans-serif'] = ['Liberation Sans']
     rcParams['font.size'] = label_size
 
     # make a figure
@@ -2039,7 +2034,7 @@ def map_Mchi_standard(DataDirectory, fname_prefix, size_format='ESURF', FigForma
     basls = basin_list
     label_size = 10
     rcParams['font.family'] = 'sans-serif'
-    rcParams['font.sans-serif'] = ['Liberation Sans']
+    #rcParams['font.sans-serif'] = ['Liberation Sans']
     rcParams['font.size'] = label_size
 
     # set figure sizes based on format

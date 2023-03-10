@@ -74,3 +74,12 @@ Some fixes
 * Added the lsdtt-valley-metrics to the driver interface
 * Added point mapping to the plotting tools
 * A number of bug fixes to the command line interface
+
+
+0.4.10 (2023-03-10)
+------------------
+
+Some fixes
+
+* Added the descartes dependency
+* Small change to the swath plotting routine
