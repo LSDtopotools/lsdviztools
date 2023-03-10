@@ -9,13 +9,6 @@ lsdviztools
 .. image:: https://travis-ci.com/LSDtopotools/lsdviztools.svg?branch=master
         :target: https://travis-ci.com/LSDtopotools/lsdviztools
 
-.. image:: https://readthedocs.org/projects/lsdviztools/badge/?version=latest
-        :target: https://lsdviztools.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
-
-
-
-
 
 lsdvizools is a collection of routines for plotting geospatial data, with a focus on data produced by LSDTopoTools or by lsdtopytools.
 
@@ -30,8 +23,15 @@ Features
 * Plotting of rasters that includes formatting so you can get publication-ready figures with one command.
 * Selection of basins and channels for topographic analysis.
 * Tools for plotting point data, usually associated with channel networks, derived from LSDTopoTools command line tools.
-* Downloading of data from opentopography
+* Downloading of data from opentopography,org
 
+
+Examples
+--------
+
+Multiple examples can be found in the form of python notebooks located here: https://github.com/LSDtopotools/lsdtt_notebooks 
+
+These notebooks can be opened using google colaboratory, only a functioning web browser is required. 
 
 Getting started
 ---------------

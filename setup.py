@@ -33,6 +33,8 @@ setup(
         'Programming Language :: Python :: 3.10',
     ],
     description="lsdviztools is a collection of routines for plotting geospatial data, with a focus on data produces by LSDTopoTools or by lsdtopytools.",
+    long_description=long_description,
+    long_description_content_type='text/x-rst',
     entry_points={
         'console_scripts': [
             'lsdtt_plotbasicrasters=lsdviztools.scripts.lsdtt_plotbasicrasters:main',
@@ -42,7 +44,7 @@ setup(
         ],
     },
     install_requires=requirements,
-    license="MIT license",
+    license="MIT",
     long_description=readme + '\n\n' + history,
     include_package_data=True,
     keywords='lsdviztools,lsdtopotools,lsdtopytools,GIS,topographic analysis,remote sensing,geomorphology,earth observation',
