@@ -84,3 +84,10 @@ Some fixes
 * Added the descartes dependency
 * Small change to the swath plotting routine
 
+0.4.11 (2023-03-19)
+-------------------
+
+Some fixes
+
+* Removed descartes dependency and switched this to a drect plotting routine
+* starting a bit more functionality with channel profile plotting

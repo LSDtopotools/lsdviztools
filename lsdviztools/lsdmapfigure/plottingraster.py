@@ -28,6 +28,9 @@ import matplotlib.axes
 import numpy as np
 from matplotlib import ticker
 from matplotlib import rcParams
+from matplotlib.path import Path
+from matplotlib.patches import PathPatch
+import geopandas as gpd
 
 
 class BaseRaster(object):
@@ -947,8 +950,10 @@ class MapFigure(object):
         Author: SMM
         """
 
+        print("Welcome to the basin plotting subroutine. I will plot some basins for you")
+        print("This version does not rely on descartes")
         from shapely.geometry import Polygon, Point
-        from descartes import PolygonPatch
+        #from descartes import PolygonPatch
         from matplotlib.collections import PatchCollection
 
         # Get the basin outlines
@@ -1015,7 +1020,7 @@ class MapFigure(object):
                 else:
                     texts = self.add_text_annotation_from_shapely_points_v2(Points, text_colour='k',zorder = zorder +1)
             else:
-                # Okay so the way tyhis is going to work is that we ware going to
+                # Okay so the way this is going to work is that we are going to
                 # look for renamed basins but basins that haven't been renamed are
                 # going to get their old names.
 
@@ -1086,16 +1091,33 @@ class MapFigure(object):
             new_colours = plt.cm.ScalarMappable(norm=cNorm, cmap=this_cmap)
 
             # now plot the polygons
-            print('Plotting the polygons, colouring by basin...')
+            print('Plotting the polygons, colouring by basin...I am using the geopandas version')
             for key, poly in Basins.items():
                 print(key, int(key))
                 colourkey = int(key) % n_colours
                 # We need two patches since we don't want the edges transparent
+
+                # The next 4 lines are the descartes version
+                #if not outlines_only:
+                #    this_patch = PolygonPatch(poly, fc=new_colours.to_rgba(colourkey), ec="none", alpha=alpha,zorder = zorder)
+                #    self.ax_list[0].add_patch(this_patch)
+                #this_patch = PolygonPatch(poly, fc="none", ec=edgecolour, alpha=1,zorder = zorder)                
+                #self.ax_list[0].add_patch(this_patch)
+
+                # This is the direct version
+                # cribbed from 
+                # https://stackoverflow.com/questions/55522395/how-do-i-plot-shapely-polygons-and-objects-using-matplotlib
+                path = Path.make_compound_path(
+                        Path(np.asarray(poly.exterior.coords)[:, :2]),
+                        *[Path(np.asarray(ring.coords)[:, :2]) for ring in poly.interiors])
                 if not outlines_only:
-                    this_patch = PolygonPatch(poly, fc=new_colours.to_rgba(colourkey), ec="none", alpha=alpha,zorder = zorder)
+                    this_patch = PathPatch(path, fc=new_colours.to_rgba(colourkey), ec="none", alpha=alpha,zorder = zorder)                                           
                     self.ax_list[0].add_patch(this_patch)
-                this_patch = PolygonPatch(poly, fc="none", ec=edgecolour, alpha=1,zorder = zorder)
+                this_patch = PathPatch(path, fc="none", ec=edgecolour, alpha=1,zorder = zorder)
                 self.ax_list[0].add_patch(this_patch)
+
+
+
         else:
             if discrete_cmap:
                 this_cmap = self.cmap_discretize(this_cmap, n_colours)
@@ -1125,28 +1147,59 @@ class MapFigure(object):
 
                 # If we are using keys, we need to check to see if the key referred to by
                 # this junction is in the value dict
+
+                path = Path.make_compound_path(
+                        Path(np.asarray(poly.exterior.coords)[:, :2]),
+                        *[Path(np.asarray(ring.coords)[:, :2]) for ring in poly.interiors])
                 if not outlines_only:
                     if use_keys_not_junctions:
                         print(junc)
                         this_key = junction_to_key_dict[int(junc)]
                         #print ("This key is: "+str(this_key)+", and this value is: "+str(value_dict[this_key]))
                         if this_key in value_dict:
-                            this_patch = PolygonPatch(poly, fc=new_colours.to_rgba( value_dict[this_key] ), ec="none", alpha=alpha, zorder = zorder)
+
+                            # This is the direct version
+                            this_patch = PathPatch(path, fc="none", ec=edgecolour, alpha=1,zorder = zorder)
+
+                            # old descartes version
+                            #this_patch = PolygonPatch(poly, fc=new_colours.to_rgba( value_dict[this_key] ), ec="none", alpha=alpha, zorder = zorder)
+                            
                             self.ax_list[0].add_patch(this_patch)
                         else:
-                            this_patch = PolygonPatch(poly, fc=gray_colour, ec="none", alpha=alpha, zorder = zorder)
+
+                            # This is the direct version
+                            this_patch = PathPatch(path, facecolor=gray_colour, edgecolor="none", alpha=alpha, zorder = zorder)
+
+                            # old descartes version
+                            this_patch = PolygonPatch(poly, facecolor=gray_colour, edgecolor="none", alpha=alpha, zorder = zorder)
+                            
                             self.ax_list[0].add_patch(this_patch)
                     else:
                         # We are using junction indices so these link directly in to the polygon keys
                         if junc in value_dict:
-                            this_patch = PolygonPatch(poly, fc=new_colours.to_rgba( value_dict[junc] ), ec="none", alpha=alpha, zorder = zorder)
+                            
+                            # new direct version
+                            this_patch = PathPatch(path, facecolor=new_colours.to_rgba( value_dict[junc] ), edgecolor="none", alpha=alpha, zorder = zorder)
+                             
+                            # old descartes version
+                            #this_patch = PolygonPatch(poly, facecolor=new_colours.to_rgba( value_dict[junc] ), edgecolor="none", alpha=alpha, zorder = zorder)
+                            
                             self.ax_list[0].add_patch(this_patch)
                         else:
-                            this_patch = PolygonPatch(poly, fc=gray_colour, ec="none", alpha=alpha, zorder = zorder)
+                            # new direct version
+                            this_patch = PathPatch(path, facecolor=gray_colour, edgecolor="none", alpha=alpha, zorder = zorder)
+
+                            # old descartes version  
+                            #this_patch = PolygonPatch(poly, facecolor=gray_colour, edgecolor="none", alpha=alpha, zorder = zorder)
+                            
                             self.ax_list[0].add_patch(this_patch)
 
                 # We need to add the outline seperately because we don't want it to be transparent
-                this_patch = PolygonPatch(poly, fc="none", ec=edgecolour, alpha=1, zorder = zorder)
+                # new direct version
+                this_patch = PathPatch(path, facecolor="none", edgecolor=edgecolour, alpha=1, zorder = zorder)
+                
+                # old descartes version
+                this_patch = PolygonPatch(poly, facecolor="none", edgecolor=edgecolour, alpha=1, zorder = zorder)
                 self.ax_list[0].add_patch(this_patch)
 
 
@@ -1787,7 +1840,7 @@ class MapFigure(object):
         this_ylim = self.ax_list[0].get_ylim()
 
         # Format the bounding box
-        bbox_props = dict(boxstyle="circle,pad=0.1", fc="w", ec=border_colour, lw=0.5,alpha = alpha)
+        bbox_props = dict(boxstyle="circle,pad=0.1", facecolor="w", edgecolor=border_colour, linewidth=0.5,alpha = alpha)
 
         # see if the data column exists
         test_data = thisPointData.QueryData(column_for_plotting, PANDEX=PANDEX)
@@ -2055,14 +2108,24 @@ class MapFigure(object):
         Author: FJC
         """
         from shapely.geometry import Polygon
-        from descartes import PolygonPatch
+        #from descartes import PolygonPatch
         from matplotlib.collections import PatchCollection
 
         print('Plotting the polygons...')
 
         #patches = []
         for key, poly in polygons.items():
-            this_patch = PolygonPatch(poly, fc=facecolour, ec=edgecolour, alpha=alpha)
+
+            # old descartes version
+            #print("Using the descartes polygon version")
+            #this_patch = PolygonPatch(poly, fc=facecolour, ec=edgecolour, alpha=alpha)          
+            #self.ax_list[0].add_patch(this_patch)
+
+            # new direct plotting version
+            path = Path.make_compound_path(
+                    Path(np.asarray(poly.exterior.coords)[:, :2]),
+                    *[Path(np.asarray(ring.coords)[:, :2]) for ring in poly.interiors])
+            this_patch = PathPatch(path, fc=facecolour, ec=edgecolour, alpha=alpha)
             self.ax_list[0].add_patch(this_patch)
 
 

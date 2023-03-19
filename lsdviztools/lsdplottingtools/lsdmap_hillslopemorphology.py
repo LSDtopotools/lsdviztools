@@ -38,7 +38,6 @@ import matplotlib.pyplot as plt
 from matplotlib import cm, gridspec
 from shapely.ops import cascaded_union
 import matplotlib.colors as colors
-from descartes import PolygonPatch
 
 # plotting tools for using LSDMapFigure
 import lsdplottingtools as LSDP

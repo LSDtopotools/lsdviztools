@@ -216,7 +216,8 @@ def multiple_flood_maps(DataDirectory):
 def flood_maps_with_shapefile(DataDirectory):
 
     from fiona import collection
-    from descartes import PolygonPatch
+    #from descartes import PolygonPatch
+    import geopandas as gpd
 
     # Set up fonts
     rcParams['font.family'] = 'sans-serif'
@@ -261,10 +262,10 @@ def flood_maps_with_shapefile(DataDirectory):
         # plot the raster
         ax[i].imshow(hillshade_raster, extent = extent_raster, cmap=cmx.gray)
 
-        # plot the floodplain shapefile using fiona and descartes
+        # plot the floodplain shapefile using fiona and geopandas
         with collection(FPFiles[i], 'r') as input:
             for f in input:
-                ax[i].add_patch(PolygonPatch(f['geometry'], fc='blue', ec='blue', lw=0.1, alpha=0.8))
+                ax[i].add_patch(gpd.GeoSeries(f['geometry'], fc='blue', ec='blue', lw=0.1, alpha=0.8))
 
         #plot the mapped points
         with collection(PointFiles[i],'r') as input:
