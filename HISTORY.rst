@@ -84,10 +84,9 @@ Some fixes
 * Added the descartes dependency
 * Small change to the swath plotting routine
 
-0.4.11 (2023-03-19)
+0.4.11 (2023-03-27)
 -------------------
 
-Some fixes
+Important fix
 
-* Removed descartes dependency and switched this to a drect plotting routine
-* starting a bit more functionality with channel profile plotting
+* Removed descartes dependency and switched this to a direct plotting routine. This fixes an error caused by transition to python 3.9 in google colab
