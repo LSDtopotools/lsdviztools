@@ -1251,9 +1251,9 @@ def convert2UTM(DataDirectory, RasterFile,minimum_elevation=0.01,resolution=30):
 
     UTMzone = temp_info[2]
     if south:
-        EPSG = "327" + str(UTMzone)
+        EPSG = f"327{UTMzone:02d}"
     else:
-        EPSG = "326" + str(UTMzone)
+        EPSG = f"326{UTMzone:02d}"
 
     res_tuple = (res,res)
     print("res tuple is:")
