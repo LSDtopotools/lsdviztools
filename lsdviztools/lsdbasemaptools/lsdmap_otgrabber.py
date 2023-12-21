@@ -169,8 +169,11 @@ class ot_scraper(object):
         fwithoutpath= self.prefix+"_"+self.source + ".tif"
 
 
-        print("I am going to download the following for you:")
-        print(url_string)
+        url_string_no_api = 'https://portal.opentopography.org/API/globaldem?demtype=%s&south=%s&north=%s&west=%s&east=%s&outputFormat=GTiff'%(self.source,self.latitude_S,self.latitude_N,self.longitude_W,self.longitude_E)        
+        
+        
+        print("I am going to download a file from opentopography (I've removed the API key):")
+        print(url_string_no_api)
         print("This might take a little while, depending on the size of the file. ")
 
         print("The filename will be:")

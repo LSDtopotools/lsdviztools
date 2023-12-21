@@ -90,3 +90,9 @@ Some fixes
 Important fix
 
 * Removed descartes dependency and switched this to a direct plotting routine. This fixes an error caused by transition to python 3.9 in google colab
+
+0.4.12 (2023-03-28)
+-------------------
+
+* Trying to solve a weird problem with conversion to UTM
+* Making hiding API key for opentopography
