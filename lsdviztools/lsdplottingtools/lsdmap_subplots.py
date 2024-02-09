@@ -216,7 +216,6 @@ def multiple_flood_maps(DataDirectory):
 def flood_maps_with_shapefile(DataDirectory):
 
     from fiona import collection
-    #from descartes import PolygonPatch
     import geopandas as gpd
 
     # Set up fonts
@@ -467,13 +466,6 @@ def MultiDrapeFloodMaps(DataDir, ElevationRaster, DrapeRasterWild, cmap,
 
     cbar = f.colorbar(im, cax=cax)
     cbar.set_label(cbar_label)
-    #cbar.set_ticks(np.linspace(0, 8, 8))
-    #cbar = LSDP.colours.colorbar_index(f, cax, 8, cmap,
-    #                                     drape_min_threshold, drape_max)
-
-    #tick_locator = ticker.MaxNLocator(nbins=8)
-    #cbar.locator = tick_locator
-    #cbar.update_ticks()
 
     f.text(0.5, 0.04, 'Easting (m)', ha='center', fontsize=17)
     f.text(0.04, 0.5, 'Northing (m)', va='center', rotation='vertical', fontsize=17)

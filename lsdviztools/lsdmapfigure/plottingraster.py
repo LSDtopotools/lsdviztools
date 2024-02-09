@@ -953,7 +953,6 @@ class MapFigure(object):
         print("Welcome to the basin plotting subroutine. I will plot some basins for you")
         print("This version does not rely on descartes")
         from shapely.geometry import Polygon, Point
-        #from descartes import PolygonPatch
         from matplotlib.collections import PatchCollection
 
         # Get the basin outlines
@@ -1097,13 +1096,6 @@ class MapFigure(object):
                 colourkey = int(key) % n_colours
                 # We need two patches since we don't want the edges transparent
 
-                # The next 4 lines are the descartes version
-                #if not outlines_only:
-                #    this_patch = PolygonPatch(poly, fc=new_colours.to_rgba(colourkey), ec="none", alpha=alpha,zorder = zorder)
-                #    self.ax_list[0].add_patch(this_patch)
-                #this_patch = PolygonPatch(poly, fc="none", ec=edgecolour, alpha=1,zorder = zorder)                
-                #self.ax_list[0].add_patch(this_patch)
-
                 # This is the direct version
                 # cribbed from 
                 # https://stackoverflow.com/questions/55522395/how-do-i-plot-shapely-polygons-and-objects-using-matplotlib
@@ -1160,19 +1152,13 @@ class MapFigure(object):
 
                             # This is the direct version
                             this_patch = PathPatch(path, fc="none", ec=edgecolour, alpha=1,zorder = zorder)
-
-                            # old descartes version
-                            #this_patch = PolygonPatch(poly, fc=new_colours.to_rgba( value_dict[this_key] ), ec="none", alpha=alpha, zorder = zorder)
                             
                             self.ax_list[0].add_patch(this_patch)
                         else:
 
                             # This is the direct version
                             this_patch = PathPatch(path, facecolor=gray_colour, edgecolor="none", alpha=alpha, zorder = zorder)
-
-                            # old descartes version
-                            this_patch = PolygonPatch(poly, facecolor=gray_colour, edgecolor="none", alpha=alpha, zorder = zorder)
-                            
+                           
                             self.ax_list[0].add_patch(this_patch)
                     else:
                         # We are using junction indices so these link directly in to the polygon keys
@@ -1180,26 +1166,18 @@ class MapFigure(object):
                             
                             # new direct version
                             this_patch = PathPatch(path, facecolor=new_colours.to_rgba( value_dict[junc] ), edgecolor="none", alpha=alpha, zorder = zorder)
-                             
-                            # old descartes version
-                            #this_patch = PolygonPatch(poly, facecolor=new_colours.to_rgba( value_dict[junc] ), edgecolor="none", alpha=alpha, zorder = zorder)
-                            
+                                                        
                             self.ax_list[0].add_patch(this_patch)
                         else:
                             # new direct version
                             this_patch = PathPatch(path, facecolor=gray_colour, edgecolor="none", alpha=alpha, zorder = zorder)
-
-                            # old descartes version  
-                            #this_patch = PolygonPatch(poly, facecolor=gray_colour, edgecolor="none", alpha=alpha, zorder = zorder)
-                            
+                           
                             self.ax_list[0].add_patch(this_patch)
 
                 # We need to add the outline seperately because we don't want it to be transparent
                 # new direct version
                 this_patch = PathPatch(path, facecolor="none", edgecolor=edgecolour, alpha=1, zorder = zorder)
                 
-                # old descartes version
-                this_patch = PolygonPatch(poly, facecolor="none", edgecolor=edgecolour, alpha=1, zorder = zorder)
                 self.ax_list[0].add_patch(this_patch)
 
 
@@ -2108,18 +2086,12 @@ class MapFigure(object):
         Author: FJC
         """
         from shapely.geometry import Polygon
-        #from descartes import PolygonPatch
         from matplotlib.collections import PatchCollection
 
         print('Plotting the polygons...')
 
         #patches = []
         for key, poly in polygons.items():
-
-            # old descartes version
-            #print("Using the descartes polygon version")
-            #this_patch = PolygonPatch(poly, fc=facecolour, ec=edgecolour, alpha=alpha)          
-            #self.ax_list[0].add_patch(this_patch)
 
             # new direct plotting version
             path = Path.make_compound_path(
