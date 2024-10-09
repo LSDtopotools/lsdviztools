@@ -1180,8 +1180,10 @@ def convert2UTM(DataDirectory, RasterFile,minimum_elevation=0.01,resolution=30):
     Date: 27/07/2020
     """
 
+    
+    print("You are converting a DEM, you need to give it a grid spacing, if not the default is 30m")
     from pyproj import Proj
-    from pyproj import transform as TFORM
+    from pyproj import Transformer
     from rasterio.warp import calculate_default_transform, reproject, Resampling
 
 
@@ -1218,6 +1220,8 @@ def convert2UTM(DataDirectory, RasterFile,minimum_elevation=0.01,resolution=30):
     this_crs = dem_data.crs
     this_epsg = this_crs.to_epsg()
     init_string = "epsg:"+str(this_epsg)
+    
+    print("The initial epsg code is: "+init_string)
 
 
 
@@ -1229,9 +1233,14 @@ def convert2UTM(DataDirectory, RasterFile,minimum_elevation=0.01,resolution=30):
 
     # Get the latlong of this point
     if this_epsg != 4326:
-        inProj = Proj(init_string)
-        outProj = Proj(init='epsg:4326')
-        x2,y2 = TFORM(inProj,outProj,centre_point[0],centre_point[1])
+        
+        source_crs = this_crs
+        target_crs = 'EPSG:4326'
+
+        # Create a Transformer object
+        transformer = Transformer.from_crs(source_crs, target_crs)
+        x2, y2 = transformer.transform(centre_point[0],centre_point[1])
+
         print("The centre lat-long is")
         print(y2,x2)
     else:
@@ -1241,6 +1250,10 @@ def convert2UTM(DataDirectory, RasterFile,minimum_elevation=0.01,resolution=30):
         print(y2,x2)
 
 
+    print("latitude: "+str(y2))
+    print("longitude: "+str(x2))
+    
+    
     temp_info = utm.from_latlon(y2, x2)
     if(temp_info[3] in ['X','W','V','U','T','S','R','Q','P','N']):
         south = False
@@ -1300,7 +1313,7 @@ def convert4lsdtt(DataDirectory, RasterFile,minimum_elevation=0.01,resolution=30
         DataDirectory (str): the data directory with the basin raster
         RasterFile (str): the name of the raster
         minimum_elevation (float): the minimum elevation of the raster, below this you have nodata
-        resolution (float): the resultution of the transformed DEM
+        resolution (float): the grid spacing of the transformed DEM
 
     Returns:
         The name of the new raster file, and prints a raster to file in UTM coordinate system in ENVI bil format
@@ -1310,6 +1323,8 @@ def convert4lsdtt(DataDirectory, RasterFile,minimum_elevation=0.01,resolution=30
     Date: 27/07/2020
     """
 
+    print("You are converting a DEM, you need to give it a grid spacing, if not the default is 30m")
+    
     # get the filename of the outfile.
     if not DataDirectory.endswith(os.sep):
         print("You forgot the separator at the end of the directory, appending...")

@@ -97,3 +97,10 @@ Important fix
 * Trying to solve a weird problem with conversion to UTM
 * Making hiding API key for opentopography
 * Fixing another descartes problem
+
+0.4.13 (2024-10-09)
+-------------------
+
+* Sorting out another hidden UTM issue
+* Updated the list of datasets available from opentopography
+

@@ -54,6 +54,10 @@ class ot_scraper(object):
                        lower_left_coordinates = [], upper_right_coordinates = []):
         super(ot_scraper, self).__init__()
 
+        
+        # The kind of download
+        self.download_type = "global"
+        
         # Registering the attributes
         self.source = source
 
@@ -82,7 +86,8 @@ class ot_scraper(object):
         self.resolution = resolution
         self.api_key_file = api_key_file
 
-
+  
+        
         if( self.longitude_W > self.longitude_E ):
             print("Your west edge is to the east of you east edge.")
             print("Go back and check your coordinates")
@@ -98,9 +103,20 @@ class ot_scraper(object):
             self.source = "SRTMGL3"
         if(self.source == "alos"):
             self.source = "AW3D30"
+        if(self.source == "otCatalog"):
+            self.source = "otcatalog"
+            
+        USGS_list = ["USGS30m", "USGS10m", "USGS1m"]
+        if (self.source == "USGS1m"):
+            print("You are asking for a USGS 1m raster: if you do not have an academic account at opentopography this won't work")
+            
+        
+        if (self.source in USGS_list):
+            self.download_type = "usgsdem"
 
+        
         ninety_list = ["SRTMGL3","COP90"]
-        api_list = ["NASADEM","COP30","COP90"]
+        fivehunnert_list = ["SRTM15Plus","GEBCOIceTopo","GEBCOSubIceTopo"]
 
         if(self.api_key_file=="NULL"):
             print("Opentopography requires an API key.")
@@ -113,14 +129,27 @@ class ot_scraper(object):
             print("I am reading you OT API key from the file "+self.api_key_file)
             self.api_key = file.read().rstrip()
 
+            
+        
         if (self.source in ninety_list):
             print("Your source is a 90m DEM.")
             self.resolution = 90
-        elif (self.source == "SRTM15Plus"):
-            print("Your source includes bathymetry and has a 450 m resolution")
-            self.resolution = 450
+        elif (self.source == "USGS10m"):
+            print("You have chosen a USGS 10m DEM")
+            self.resolution = 10
+        elif (self.source == "USGS1m"):
+            self.resolution = 1   
+            print("You have chosen a USGS 1m DEM. This requires you to have approval from opentopography.")
+        elif (self.source in fivehunnert_list):
+            print("Your source has 500 m grid spacing")
+            self.resolution = 500
+        elif (self.source == "GEDI_L3"):
+            print("Your source has 1000 m grid spacing")
+            self.resolution = 1000
         else:
             self.resolution = 30
+            
+        print("The grid spacing for your DEM will be:" + str(self.resolution))
 
 
         if(self.path != "./"):
@@ -138,6 +167,7 @@ class ot_scraper(object):
         Date: 06/07/2020
         """
 
+        
         print("The source is: "+self.source)
         print("The west longitude is: "+str(self.longitude_W))
         print("The east longitude is: "+str(self.longitude_E))
@@ -145,7 +175,7 @@ class ot_scraper(object):
         print("The north latitude is: "+str(self.latitude_S))
         print("The path is: "+self.path)
         print("The prefix is: "+self.prefix)
-        print("The resolution is: "+str(self.resolution))
+        print("The grid spacing is: "+str(self.resolution))
 
     def download_pythonic(self):
         """
@@ -161,15 +191,26 @@ class ot_scraper(object):
 
     
         if(self.api_key=="NULL"):
-            url_string = 'https://portal.opentopography.org/API/globaldem?demtype=%s&south=%s&north=%s&west=%s&east=%s&outputFormat=GTiff'%(self.source,self.latitude_S,self.latitude_N,self.longitude_W,self.longitude_E)
-        else:
+            print("I cannot download data without an API key")
+            exit()
+            
+        url_string = "NULL"
+        url_string_no_api = "NULL"
+        if(self.download_type == "global"):
             url_string = 'https://portal.opentopography.org/API/globaldem?demtype=%s&south=%s&north=%s&west=%s&east=%s&outputFormat=GTiff&API_Key=%s'%(self.source,self.latitude_S,self.latitude_N,self.longitude_W,self.longitude_E,self.api_key )
 
+            url_string_no_api = 'https://portal.opentopography.org/API/globaldem?demtype=%s&south=%s&north=%s&west=%s&east=%s&outputFormat=GTiff'%(self.source,self.latitude_S,self.latitude_N,self.longitude_W,self.longitude_E)             
+        elif(self.download_type == "usgsdem"):
+            url_string = 'https://portal.opentopography.org/API/usgsdem?datasetName=%s&south=%s&north=%s&west=%s&east=%s&outputFormat=GTiff&API_Key=%s'%(self.source,self.latitude_S,self.latitude_N,self.longitude_W,self.longitude_E,self.api_key )
+
+            url_string_no_api = 'https://portal.opentopography.org/API/usgsdem?datasetName=%s&south=%s&north=%s&west=%s&east=%s&outputFormat=GTiff'%(self.source,self.latitude_S,self.latitude_N,self.longitude_W,self.longitude_E)  
+           
+            
         filename = self.path+self.prefix+"_"+self.source + ".tif"
         fwithoutpath= self.prefix+"_"+self.source + ".tif"
 
 
-        url_string_no_api = 'https://portal.opentopography.org/API/globaldem?demtype=%s&south=%s&north=%s&west=%s&east=%s&outputFormat=GTiff'%(self.source,self.latitude_S,self.latitude_N,self.longitude_W,self.longitude_E)        
+       
         
         
         print("I am going to download a file from opentopography (I've removed the API key):")
@@ -222,7 +263,7 @@ class ot_scraper(object):
         # open dataset
         ds = gdal.Open(filename)
         prj=ds.GetProjection()
-        print("The projections is:")
+        print("The projection is:")
         print(prj)
         ds = []
 
@@ -243,15 +284,14 @@ class ot_scraper(object):
         else:
             south = True
 
-        res = 30.0
-        if(self.source == "SRTM90" ):
-            res=90.0
+        print("My grid spacing is: "+str(self.resolution))
+        res = self.resolution
 
         UTMzone = temp_info[2]
         if south:
-            EPSG = "327" + str(UTMzone)
+            EPSG = f"327{UTMzone:02d}"
         else:
-            EPSG = "326" + str(UTMzone)
+            EPSG = f"326{UTMzone:02d}"
 
         res_tuple = (res,res)
         print("res tuple is:")
@@ -307,15 +347,16 @@ class ot_scraper(object):
         else:
             south = True
 
-        res = 30
-        if(self.source == "SRTM90"):
-            res=90
+        res = self.resolution
+        print("The resolution is: "+ str(res))
 
         UTMzone = temp_info[2]
+        
+           
         if south:
-            EPSG = "+proj=utm +zone="+str(UTMzone)+" +south +datum=WGS84"
+            EPSG = "+proj=utm +zone="+f"327{UTMzone:02d}"+" +south +datum=WGS84"
         else:
-            EPSG = "+proj=utm +zone="+str(UTMzone)+" +datum=WGS84"
+            EPSG = "+proj=utm +zone="+f"326{UTMzone:02d}"+" +datum=WGS84"
 
         if(bil):
             output_format = "-of ENVI"

@@ -53,6 +53,6 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     url='https://github.com/LSDTopotools/lsdviztools',
-    version='0.4.12',
+    version='0.4.13',
     zip_safe=False,
 )

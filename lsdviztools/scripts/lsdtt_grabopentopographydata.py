@@ -57,7 +57,7 @@ def main(args=None):
         
     #===============================================================================
     # These are some arguments for potting rasters other than the defaults
-    parser.add_argument("-source", "--source", type=str, default = "SRTMGL1", help="The dataset you want. Options are: SRTMGL3, SRTMGL1, AW3D30, SRTM15Plus, NASADEM, COP30, COP90.")
+    parser.add_argument("-source", "--source", type=str, default = "SRTMGL1", help="The dataset you want. Options are:   SRTMGL3, SRTMGL1, SRTMGL1_E, AW3D30, AW3D30_E, SRTM15Plus, NASADEM, COP30, COP90, EU_DTM, GEDI_L3, GEBCOIceTopo, GEBCOSubIceTopo, USGS30m, USGS10m, USGS1m.")
     parser.add_argument("-south", "--south", type=float, default = 56.57, help="The southern latitude of the DEM in WGS84.")
     parser.add_argument("-north", "--north", type=float, default = 56.72, help="The northern latitude of the DEM in WGS84.")
     parser.add_argument("-east", "--east", type=float, default = -4.89, help="The eastern latitude of the DEM in WGS84.")
