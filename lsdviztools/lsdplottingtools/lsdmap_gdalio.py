@@ -1240,7 +1240,7 @@ def convert2UTM(DataDirectory, RasterFile,minimum_elevation=0.01,resolution=30):
         # Create a Transformer object
         transformer = Transformer.from_crs(source_crs, target_crs)
         x2, y2 = transformer.transform(centre_point[0],centre_point[1])
-
+        print("You had a weird coordinate system. I converted to EPSG:4326")
         print("The centre lat-long is")
         print(y2,x2)
     else:
@@ -1253,7 +1253,7 @@ def convert2UTM(DataDirectory, RasterFile,minimum_elevation=0.01,resolution=30):
     print("latitude: "+str(y2))
     print("longitude: "+str(x2))
     
-    
+    print("Getting the UTM zone.")
     temp_info = utm.from_latlon(y2, x2)
     if(temp_info[3] in ['X','W','V','U','T','S','R','Q','P','N']):
         south = False

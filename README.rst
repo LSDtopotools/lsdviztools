@@ -6,9 +6,6 @@ lsdviztools
 .. image:: https://img.shields.io/pypi/v/lsdviztools.svg?branch=master
         :target: https://pypi.org/project/lsdviztools/
 
-.. image:: https://travis-ci.com/LSDtopotools/lsdviztools.svg?branch=master
-        :target: https://travis-ci.com/LSDtopotools/lsdviztools
-
 
 lsdvizools is a collection of routines for plotting geospatial data, with a focus on data produced by LSDTopoTools or by lsdtopytools.
 

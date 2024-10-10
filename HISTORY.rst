@@ -101,6 +101,7 @@ Important fix
 0.4.13 (2024-10-09)
 -------------------
 
-* Sorting out another hidden UTM issue
+* Sorting out another hidden UTM issue. Ensures a single digit UTM is processed correctly.
 * Updated the list of datasets available from opentopography
+* You can now download USGS data
 
