@@ -21,6 +21,7 @@ import geopandas as gpd
 import rasterio
 from rasterio import features
 from rasterio.features import shapes
+import csv
 
 #=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=#
 # BASIN FUNCTIONS
@@ -329,11 +330,12 @@ def Rasterize_BGS_geologic_maps(shapefile_name):
     print("The rocks are: ")
     print(geol_dict)
 
-    with open(outcsv, 'wb') as f:
-        f.write('ID,rocktype\n')
-        for key in geol_dict:
-            f.write(str(key)+','+ str(geol_dict[key])+'\n')
-
+    with open(outcsv, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['ID', 'rocktype'])
+        for key, value in geol_dict.items():
+            writer.writerow([key, value])            
+            
     print("All done")
 
 
@@ -433,10 +435,11 @@ def Rasterize_geologic_maps_pythonic(shapefile_name, raster_resolution = 400, ge
     print("The rocks are: ")
     print(geol_dict)
 
-    with open(outcsv, 'w') as f:
-        f.write('ID,rocktype\n')
-        for key in geol_dict:
-            f.write(str(key)+','+ str(geol_dict[key])+'\n')
+    with open(outcsv, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['ID', 'rocktype'])
+        for key, value in geol_dict.items():
+            writer.writerow([key, value])  
 
     print("Done rasterizing!")
     return outraster
