@@ -31,7 +31,8 @@ from matplotlib.patches import Polygon
 from matplotlib.collections import PatchCollection
 from matplotlib.colors import Normalize
 import os
-
+from cartopy.io.shapereader import Reader
+from shapely.geometry import shape
 
 
 def BasemapExtentSizer(FigWidthInches, FigHeightInches):
@@ -73,25 +74,15 @@ def GenerateExtentShapefile(DataDirectory, RasterFile):
     """
     LSDMGDAL.CreateShapefileOfRasterFootprint(DataDirectory, RasterFile)
 
-
-def GenerateBasemapImage(DataDirectory, RasterFile, FigWidthInches = 4, FigHeightInches = 3, bm_width = 2000000, bm_height = 2000000, projection = 'lcc',resolution = 'l', lat_0 = 0, lon_0 = 0, lat_1 = 45,lat_2 = 55, satellite_height = 10000000, FigFormat = "png", fig_dpi = 500, out_fname_prefix = ""):
+def GenerateBasemapImageOrthographic(DataDirectory, RasterFile, FigWidthInches = 1, FigHeightInches = 1, FigFormat = "png", fig_dpi = 500, out_fname_prefix = ""):
     """
-    This makes the basemap image.
+    This makes an Orthographic basemap image. Uses data from the raster to size the figure and locate the centrepoint
 
     Args:
         DataDirectory (str): The directory of the raster file
         RasterFile (str): the name of the raster file (include extension)
-        FigWidthInches (float): How wide you want the basemap
+        FigWidthInches (flt): How wide you want the basemap
         FigHeightInches (float): How high you want your basemap
-        bm_width (float): The width in metres of your basemap
-        bm_height (float): The height in metres covered by your basemap
-        projection (str): The projection of your basemap. See basemap docs for details
-        resolution (str): Resolution. See basmap documentation. Default is "l" (for low) since higher resolution ("high" or "full") must be installed separately with basemap (and is very large)
-        lat_0 (flt): Latitude of centre of your map
-        lon_0 (flt): Longitude of centre of your map
-        lat_1 (flt): See basemap documentation
-        lon_1 (flt): See basemap documentation
-        satellite_height (flt): The satellite height in metres for geostationary projections
         FigFormat (str): Figure format, can be `png`, `svg`, `pdf`, etc.
         fig_dpi (int): Dots per inch of your figure
         out_fname_prefix (str): The prefix of the image file. If blank uses the fname_prefix
@@ -99,8 +90,8 @@ def GenerateBasemapImage(DataDirectory, RasterFile, FigWidthInches = 4, FigHeigh
 
     Author: SMM
 
-    Date: 24/01/2018
-    """
+    Date: 19/11/2024
+    """  
 
     # Make sure data directory is in correct format
     if not DataDirectory.endswith(os.sep):
@@ -108,66 +99,45 @@ def GenerateBasemapImage(DataDirectory, RasterFile, FigWidthInches = 4, FigHeigh
         DataDirectory = DataDirectory+os.sep
 
     # Set up the figure. This is needed to both size the figure and get the axis handle for plotting polygons
-    fig, ax = plt.subplots(figsize=(FigWidthInches, FigHeightInches))
-
+    fig = plt.figure(figsize=(FigWidthInches, FigHeightInches))    
+    
     # get some filenames
     RasterSplit = RasterFile.split(".")
     Raster_prefix = RasterSplit[0]
-    Shape_name = DataDirectory+Raster_prefix+"_footprint"
+    Shape_name = DataDirectory+Raster_prefix+"_footprint.shp"
     SName = "Shape"
-    Full_Shape_name = Shape_name+".shp"
 
     # Get the name of the image
     if len(out_fname_prefix) == 0:
-        FigFileName = DataDirectory+Base_file+"_basemap."+fig_format
+        FigFileName = DataDirectory+Raster_prefix+"_basemap."+FigFormat
     else:
-        FigFileName = DataDirectory+out_fname_prefix+"_basemap."+fig_format
+        FigFileName = DataDirectory+out_fname_prefix+"_basemap."+FigFormat
 
+    # Now we get the extents from the raster
+    centre_lat, centre_long, extent_lat, extent_long, xproj_extent, yproj_extent = LSDMGDAL.GetCentreAndExtentOfRaster(DataDirectory, RasterFile)
 
-    # Now for the basemap
-    # setup Lambert Conformal basemap.
-    #m = Basemap(width=bm_width,height=bm_width,projection=projection,
-    #            resolution=resolution,lat_1=lat_1 ,lat_2=lat_2,lat_0=lat_0,lon_0=lon_0, satellite_height = satellite_height, area_thresh = 100000)
+    # Create an Orthographic projection centered on the given latitude and longitude
+    ax = plt.axes(projection=ccrs.Orthographic(central_longitude=centre_long, central_latitude=centre_lat))
 
-    # create the shapefile
-    LSDMGDAL.CreateShapefileOfRasterFootprint(DataDirectory, RasterFile)
+    # Add features to the map
+    ax.add_feature(cfeature.LAND)
+    ax.add_feature(cfeature.OCEAN)
+    ax.add_feature(cfeature.COASTLINE,linewidth=0.25)
+    #ax.add_feature(cfeature.BORDERS, linestyle=':')
 
+    # Plot the given latitude and longitude
+    ax.scatter(centre_long, centre_lat, marker='+', c='r', linewidth=0.5, s=0.5,transform=ccrs.Geodetic())
+    ax.set_global()
 
-    #shape_feature = ShapelyFeature(Reader(fname).geometries(),ccrs.PlateCarree(), facecolor='none')
-    #ax.add_feature(shape_feature)
+    #A fancy arrow
+    transform = ccrs.Orthographic()._as_mpl_transform(ax)
+    ax.annotate('', xy=(centre_long, centre_lat), xytext=(centre_long, centre_lat-40),xycoords='data',size=10,arrowprops=dict(facecolor='red',ec = 'none',arrowstyle="fancy",connectionstyle="arc3,rad=-0.3"),transform=ccrs.Geodetic())   
+  
+    # Set the title
+    #plt.title(f'Site midpoint: \n{centre_lat:.4f}, {centre_long:.4f}',fontsize=8)
 
-    # draw coastlines.
-    #m.drawcoastlines(linewidth = 0.5)
-    # draw a boundary around the map, fill the background.
-    # this background will end up being the ocean color, since
-    # the continents will be drawn on top.
-    #m.drawmapboundary(fill_color='snow')
-    # fill continents, set lake color same as ocean color.
-    #m.fillcontinents(color='lightgray',lake_color='snow')
-    # draw parallels and meridians.
-    # label parallels on right and top
-    # meridians on bottom and left
-    parallels = np.arange(0.,90,5.)
-    # labels = [left,right,top,bottom]
-    #m.drawparallels(parallels,labels=[False,True,True,False])
-    meridians = np.arange(10.,351.,5.)
-    #m.drawmeridians(meridians,labels=[True,False,False,True])
-    #m.drawcountries()
-
-    # Make a patch from the shapefile
-    # All this stuff from:
-    # http://www.datadependence.com/2016/06/creating-map-visualisations-in-python/
-    df_poly = pd.DataFrame({
-            'shapes': [Polygon(np.array(shape), True) for shape in m.footprint]})
-
-    #df_poly = df_poly.merge(new_areas, on='area', how='left')
-    #cmap = plt.get_cmap('Oranges')
-    pc = PatchCollection(df_poly.shapes, zorder=2, alpha = 0.5)
-    pc.set_facecolor("crimson")
-    ax.add_collection(pc)
-
-    plt.savefig(FigFileName,format=FigFormat,dpi=fig_dpi)
-
+    # Show the plot
+    plt.savefig(FigFileName,format=FigFormat,dpi=fig_dpi)    
 
 def GenerateBasemapImageAutomated(DataDirectory, RasterFile, FigWidthInches = 4, FigHeightInches = 3, FigFormat = "png", fig_dpi = 500, regional_extent_multiplier = 5, label_spacing_multiplier = 0.5, out_fname_prefix = "", is_orthographic = False):
     """
@@ -208,16 +178,16 @@ def GenerateBasemapImageAutomated(DataDirectory, RasterFile, FigWidthInches = 4,
 
     # Get the name of the image
     if len(out_fname_prefix) == 0:
-        FigFileName = DataDirectory+Base_file+"_basemap."+FigFormat
+        FigFileName = DataDirectory+Raster_prefix+"_basemap."+FigFormat
     else:
         FigFileName = DataDirectory+out_fname_prefix+"_basemap."+FigFormat
 
     # Now we get the extents from the raster
     centre_lat, centre_long, extent_lat, extent_long, xproj_extent, yproj_extent = LSDMGDAL.GetCentreAndExtentOfRaster(DataDirectory, RasterFile)
 
-    # Calculate the aspect ratio
-    aspect_ratio = BasemapExtentSizer(FigWidthInches,  FigHeightInches)
 
+    aspect_ratio =  xproj_extent/yproj_extent
+    
     # Figure out the longest dimension
     long_dimension = xproj_extent
     if yproj_extent > long_dimension:
@@ -252,20 +222,11 @@ def GenerateBasemapImageAutomated(DataDirectory, RasterFile, FigWidthInches = 4,
     print(extents)
 
 
-    # Now we set up the extents and coordinate system
-    #if (is_orthographic):
-    #    ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.Orthographic(centre_lat, #centre_long))
-    #
-    #    ax.add_feature(cfeature.LAND)
-    #    ax.add_feature(cfeature.OCEAN, edgecolor='black')
-    #    ax.set_global()
-    #    ax.gridlines()
     if(is_orthographic):
         print("I am setting up an orthographic projection.")
-        ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.NearsidePerspective(
+        ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.Orthographic(
                         central_latitude=centre_lat,
-                        central_longitude=centre_long,
-                        satellite_height=10000000.0))
+                        central_longitude=centre_long))
 
         ax.coastlines(resolution='110m',linewidth=0.5)
         borders_110m = cfeature.NaturalEarthFeature('cultural', 'admin_0_boundary_lines_land', '110m',edgecolor='face', facecolor=cfeature.COLORS['land'])
@@ -274,7 +235,9 @@ def GenerateBasemapImageAutomated(DataDirectory, RasterFile, FigWidthInches = 4,
 
     else:
         print("The projection is not orthographic.")
-        ax = fig.add_axes([0, 0, 1, 1], projection=ccrs.PlateCarree())
+        
+        # Create a projection for the map
+        ax = plt.axes(projection=ccrs.PlateCarree())
 
         print("Setting extent.")
         ax.set_extent(extents, ccrs.PlateCarree())
@@ -288,25 +251,17 @@ def GenerateBasemapImageAutomated(DataDirectory, RasterFile, FigWidthInches = 4,
                                         facecolor=cfeature.COLORS['land'])
         ax.add_feature(land_50m, edgecolor='black', linewidth=0.5)
         ax.add_feature(borders_50m, edgecolor='black', facecolor = "none",linewidth=0.5)
-        #ax.add_feature(cfeature.LAND)
-        #ax.add_feature(cfeature.OCEAN)
-        #ax.add_feature(cfeature.COASTLINE)
-        #ax.add_feature(cfeature.BORDERS, linestyle='--')
-        #ax.add_feature(cfeature.LAKES, alpha=0.5)
-        #ax.add_feature(cfeature.RIVERS)
+
 
 
     # create the shapefile
     print("Making the shapefile.")
     LSDMGDAL.CreateShapefileOfRasterFootprint(DataDirectory, RasterFile)
 
+    shape_feature = cfeature.ShapelyFeature(Reader(Shape_name).geometries(), ccrs.PlateCarree(), edgecolor='black')
+    ax.add_feature(shape_feature, facecolor='none',alpha=0.5, linewidth=0.5)
 
-
-    ax.add_geometries(
-        shpreader.Reader(Shape_name).geometries(),
-        ccrs.PlateCarree(),edgecolor='black', facecolor='green', alpha=0.5, linewidth=0.5)
 
     ax.gridlines(draw_labels=False, dms=True, x_inline=False, y_inline=False)
-    #plt.tight_layout()
     plt.savefig(FigFileName,format=FigFormat,dpi=fig_dpi)
 

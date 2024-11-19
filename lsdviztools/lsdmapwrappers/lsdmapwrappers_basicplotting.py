@@ -60,7 +60,7 @@ def make_display_string(img_name, width=600):
     todisplay = r"""<img src="%s" width=%i>"""%(img_name,img_width)
     return todisplay
 
-def SimpleHillshade(DataDirectory,Base_file, cmap = "terrain", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "",save_fig = True):
+def SimpleHillshade(DataDirectory,Base_file, cmap = "terrain", cbar_loc = "right", size_format = "ESURF", fig_format = "png", dpi = 250, out_fname_prefix = "",save_fig = True,use_scalebar = False):
     """
     This function makes a shaded relief plot of the DEM.
 
@@ -102,6 +102,10 @@ def SimpleHillshade(DataDirectory,Base_file, cmap = "terrain", cbar_loc = "right
     MF = MapFigure(BackgroundRasterName, DataDirectory,coord_type="UTM_km",colourbar_location = cbar_loc)
     MF.add_drape_image(DrapeRasterName,DataDirectory,colourmap = cmap, alpha = 0.6, colorbarlabel = "Elevation (m)")
 
+    if(use_scalebar):
+        print("Let me add a scalebar")
+        MF.add_scalebar()    
+    
     # Save the image or return the figure handle
     if (save_fig):
         if len(out_fname_prefix) == 0:

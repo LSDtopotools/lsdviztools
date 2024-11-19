@@ -335,6 +335,7 @@ def main(args=None):
     #===============================================================================
     # These are some arguments for potting rasters other than the defaults
     parser.add_argument("-drape_fname", "--drape_fname_prefix", type=str, help="The prefix of a raster that is used in a drape plot WITHOUT EXTENSION!!! If not supplied this will just use the hillshade.")
+    parser.add_argument("-point_fname", "--point_fname_prefix", type=str, help="The prefix of a csv file used to plot points over a hillshade WITHOUT EXTENSION!!!")
     parser.add_argument("-drape_cbar_loc", "--drape_cbar_loc", type=str, default = "right", help="This is the location of the colourbar for the drape plot. Options are None, left, right, top and bottom.")
     parser.add_argument("-drape_cbar_label", "--drape_cbar_label", type=str, default = "colourbar_label", help="This is the label on the colourbar.")
     parser.add_argument("-drape_cmap", "--drape_cmap", type=str, default = "jet", help="This is colourmap. See matplotlib docs for options.") 
@@ -685,7 +686,7 @@ def main(args=None):
             os.makedirs(raster_directory)
             
         # Get the names of the relevant files
-        ChannelFname = args.fname_prefix+"_points.csv"
+        PointsFname = args.point_fname_prefix+".csv"
         
         raster_out_prefix = "/raster_plots/"+out_fname_prefix 
         
