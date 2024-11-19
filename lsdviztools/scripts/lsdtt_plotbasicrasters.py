@@ -330,8 +330,16 @@ def main(args=None):
     parser.add_argument("-fname", "--fname_prefix", type=str, help="The prefix of your DEM WITHOUT EXTENSION!!! This must be supplied or you will get an error (unless you're running the parallel plotting).")
     parser.add_argument("-out_fname", "--out_fname_prefix", type=str, help="The prefix of the figures WITHOUT EXTENSION!!! If not supplied the fname prefix will be used.")
     
-    
-    
+  
+    #==========================================================================
+    # arguments for plotting points
+    parser.add_argument("-scaling_column", "--column_for_scaling", type=str, default = "None", help="The column in the points csv that is used to scale points.") 
+    parser.add_argument("-plotting_column", "--column_for_plotting", type=str, default = "None", help="The column in the points csv that is used to colour points.") 
+    parser.add_argument("-log_scaling", "--scaled_in_log", type=bool, default = False, help="If true, the scaling of points is logarithmic.")   
+    parser.add_argument("-scale_points", "--scale_points", type=bool, default = True, help="If true, scale the points with a data column.") 
+    parser.add_argument("-max_pts_sz", "--max_point_size", type=int, default = 5, help="Maximum size of points for point plot.")
+    parser.add_argument("-min_pts_sz", "--min_point_size", type=int, default = 1, help="Minimum size of points for point plot.") 
+  
     #===============================================================================
     # These are some arguments for potting rasters other than the defaults
     parser.add_argument("-drape_fname", "--drape_fname_prefix", type=str, help="The prefix of a raster that is used in a drape plot WITHOUT EXTENSION!!! If not supplied this will just use the hillshade.")
@@ -674,7 +682,7 @@ def main(args=None):
                    
  
 
-   # This just plots the basins with the channels. Useful for checking on basin selection.
+   # This plot point data over a hillshade.
     if args.plot_points:
         print("I am going to plot some points.")
         
@@ -689,30 +697,13 @@ def main(args=None):
         PointsFname = args.point_fname_prefix+".csv"
         
         raster_out_prefix = "/raster_plots/"+out_fname_prefix 
-        
-        # First the basins, with blue channels scaled by drainage area
-        # Now plot the channels coloured by the elevation
-        if args.simple_channel_format == "elevation":
-            # Now plot the channels coloured by the source number
-            LSDMW.PrintChannels(this_dir, args.fname_prefix, ChannelFname,add_basin_labels = False, cmap = "gist_earth", cbar_loc = "None", size_format = args.size_format, fig_format = simple_format, dpi = args.dpi, out_fname_prefix = "", plotting_column = "elevation" )
-        elif args.simple_channel_format == "source_key":
-            # Now plot the channels coloured by the source number
-            LSDMW.PrintChannels(this_dir, args.fname_prefix, ChannelFname,add_basin_labels = False, cmap = "gist_earth", cbar_loc = "None", size_format = args.size_format, fig_format = simple_format, dpi = args.dpi, out_fname_prefix = "", plotting_column = "source_key" )
-        elif args.simple_channel_format == "basin_key":
-            # Now plot the channels coloured by the source number
-            LSDMW.PrintChannels(this_dir, args.fname_prefix, ChannelFname,add_basin_labels = False, cmap = "gist_earth", cbar_loc = "None", size_format = args.size_format, fig_format = simple_format, dpi = args.dpi, out_fname_prefix = "", plotting_column = "basin_key" )
-        elif args.simple_channel_format == "drainage_area":
-            # Now plot the channels coloured by the source number
-            LSDMW.PrintChannels(this_dir, args.fname_prefix, ChannelFname,add_basin_labels = False, cmap = "gist_earth", cbar_loc = "None", size_format = args.size_format, fig_format = simple_format, dpi = args.dpi, out_fname_prefix = "", plotting_column = "drainage_area" )
-        elif args.simple_channel_format == "none":
-            # Now plot the channels coloured by the source number
-            LSDMW.PrintChannels(this_dir, args.fname_prefix, ChannelFname,add_basin_labels = False, cmap = "gist_earth", cbar_loc = "None", size_format = args.size_format, fig_format = simple_format, dpi = args.dpi, out_fname_prefix = "", plotting_column = "none" )
-        else:
-            print("You didn't select a valid channel colouring scheme.\n Choices are elevation, source_key, basin_key, and drainage_area")
 
-            
-            
-            
+         
+        LSDMW.PrintPointsOverHillshade(this_dir, args.fname_prefix, points_fname = PointsFname, 
+                                       cmap = "gist_earth", size_format = args.size_format, fig_format = simple_format, dpi = args.dpi, 
+                                       column_for_plotting = args.column_for_plotting, scale_points = args.scale_points, column_for_scaling = args.column_for_scaling,
+                                       scaled_data_in_log = args.scaled_in_log, max_point_size = args.max_point_size, min_point_size = args.min_point_size,manual_size = 3, out_fname_prefix = raster_out_prefix+"_points",save_fig = True, use_scalebar = args.use_scalebar)      
+        
             
             
     # This plots the chi coordinate. It plots three different versions. 
