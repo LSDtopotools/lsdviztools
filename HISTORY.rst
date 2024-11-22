@@ -102,6 +102,15 @@ Important fix
 -------------------
 
 * Sorting out another hidden UTM issue. Ensures a single digit UTM is processed correctly.
+* Sorting out another hidden UTM issue. Ensures a single digit UTM is processed correctly.
 * Updated the list of datasets available from opentopography
 * You can now download USGS data
+
+0.4.14 (2024-11-22)
+-------------------
+
+* Slight adjustment to the csv ingestion in the rasterisation tools
+* Updates to the basemaps. New functions to make and orthographic basemap and a large regional hillshade
+* More flexibility in the points over hillshade function
+* Added the scalebar option to a number of plot types
 
