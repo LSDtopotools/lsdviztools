@@ -1987,7 +1987,150 @@ class MapFigure(object):
 
         self.ax_list[0].quiver(new_X,new_Y,dx,dy,angles='xy',scale_units='xy',scale=1, width=0.002)
 
-    def add_strike_and_dip_symbols(self,dip_df,colour='black',linewidth=1,alpha=1, symbol_length=10):
+    def add_line_segments(self, line_segments_df, x_a_header = "x_j", y_a_header = "y_j", x_b_header = "x_pu", y_b_header = "y_pu", colour_header = "",
+                          this_colourmap = "cubehelix", show_colourbar = False, colourbar_location = "bottom", colourbarlabel = "", colour_log = False, colour_abs = False, unicolour = "blue", 
+                          linewidth = 1, scaling_header = "", scaling_log = False, max_linewidth = 5, min_linewidth = 0.5, capstyle = "round",
+                          labels_header = "", fontsize = 3, width_white_text_border = 1.5):
+                  
+        """
+        This function adds line segments from a pandas dataframe. The user has to
+        specify the column headers of the X and Y locations of the two points (a
+        and b) between which a line is drawn. Default values are chosen to match
+        csv output of segment_bearings csv produced by LSDTopoTools.
+
+        Args:
+            segments_df (pandas dataframe): pandas dataframe with the projected 
+                coordinates of the two points.
+            x_a_header (str): header of column containing x coordinate of point a
+            y_a_header (str): header of column containing y coordinate of point a
+            x_b_header (str): header of column containing x coordinate of point b
+            y_b_header (str): header of column containing y coordinate of point b
+            colour_header (str): the header of the column that should be used to colour your line segments. An empty string means uniform colour.
+            this_colourmap (str or colourmap): the colourmap
+            show_colourbar (bool): if true, will display a colourbar for the segments
+            colourbar_location (string): The location of the colourbar, can be either "top", "bottom", "left", or "right"
+            colourbarlabel (string): The label of the colourbar
+            colour_log (bool): If the colours are scaled by logarithm.
+            unicolour (str): set a unique color in case of no plotting column, this is otherwise ignored
+            colour_abs (bool): get the absolute values of the colour scaling
+            scaling_header (string): The column name that is used to scale linewidth. An empty string means uniform linewidth.
+            scaling_log (bool): If true, the points are scaled in proportion to the logarithm of their value.
+            max_linewidth (float): Maximum size in points of the symbols.
+            min_linewidth (float): Minumum size in points of the symbols.
+            linewidth (int/float): line width in case of no linewidth scaling, this is otherwise ignored
+            capstyle (str): either "round", "butt", or "projecting". See matplotlib documentation for visuals of these options.
+            labels_header (str): The column name that is used to plot labels to individual line segments. An empty string means no labels.
+            fontsize (float): font size for plotting labels
+            width_white_text_border (float): sets how wide the white edge around the label text is (set to 0 if you don't want white edge)
+        Author: RV
+        Date 28/11/2024
+        """
+        print("I am going to plot line segments on your MapFigure.")
+        # this ensures that segments with lowest values in colour_header are plotted first, to avoid weirdly overlapping colours
+        if colour_header != "":
+            line_segments_df.sort_values(by=[colour_header],inplace = True)
+
+        # get coordinates of endpoints of line segments
+        X_a = line_segments_df[x_a_header].values
+        Y_a = line_segments_df[y_a_header].values
+        X_b = line_segments_df[x_b_header].values
+        Y_b = line_segments_df[y_b_header].values
+
+        # store segment coordinates in a format that can be plotted by matplotlib's LineCollection [(X_a, Y_b), (X_b, Y_b)), ...]
+        lines_array = np.stack((np.column_stack((X_a, Y_a)), np.column_stack((X_b, Y_b))), axis=1)
+
+        # check if lines need to be coloured by column value, and if this needs to be abs or log
+        if colour_header != "":
+            colouring_array = line_segments_df[colour_header].values
+            if(colour_abs):
+                colouring_array = np.abs(colouring_array)
+                print(f"I will colour your lines using absolute values of column {colour_header}")
+            elif(colour_log):
+                colouring_array = np.log10(colouring_array)
+                print(f"I will colour your lines using log10 values of column {colour_header}")
+            else:
+                print(f"I will colour your lines using values of column {colour_header}")
+        else:
+            colouring_array = []
+            print(f"I am using a unicolour ({unicolour}) to colour your lines")
+        
+        # check if line widths need to be scaled by column value, and if this needs to be log
+        if scaling_header != "":
+            scaling_data = line_segments_df[scaling_header].values
+            if(scaling_log):
+                print(f"I am scaling your linewidths according to the log of column {scaling_header} with a min & max linewidth of {min_linewidth} & {max_linewidth}")
+                scaling_data = np.log10(scaling_data)
+            else:
+                print(f"I am scaling your linewidths according to column {scaling_header} with a min/max linewidth of {min_linewidth}/{max_linewidth}")
+
+            # rescale the data linearly 
+            data_min = np.min(scaling_data)
+            data_max = np.max(scaling_data)
+            size_range = max_linewidth - min_linewidth
+            scaling_array = []
+            for datum in scaling_data:
+                normalized = (datum - data_min) / (data_max - data_min) if (data_max - data_min) != 0 else 0
+                new_size = normalized * size_range + min_linewidth
+                scaling_array.append(new_size)
+            scaling_array = np.asarray(scaling_array)
+
+        else: 
+            scaling_data = []
+            print(f"I am using a uniform linewidth of {linewidth}")   
+             
+        from matplotlib.collections import LineCollection
+
+        if len(colouring_array) == 0 or len(colouring_array) != len(X_a):
+           # Uniform colouring
+           if scaling_header != "":
+               lines_to_plot = LineCollection(segments = lines_array, colors = unicolour, linewidths = scaling_array, capstyle = capstyle)
+           else: 
+               lines_to_plot = LineCollection(segments = lines_array, colors = unicolour, linewidths = linewidth, capstyle = capstyle)
+        else:
+            # Continuous colouring
+            if scaling_header != "":
+                lines_to_plot = LineCollection(segments = lines_array, array = colouring_array, cmap = this_colourmap, linewidths = scaling_array, capstyle = capstyle)
+            else:
+                lines_to_plot = LineCollection(segments = lines_array, array = colouring_array, cmap = this_colourmap, linewidths = linewidth, capstyle = capstyle)
+                  
+        # add lines_to_plot to the plot
+        self.ax_list[0].add_collection(lines_to_plot)
+        
+        # make the colourbar
+        if show_colourbar:
+            print(f"Making colourbar positioned at the {colourbar_location}")
+            if colourbar_location == "top" or colourbar_location == "bottom":
+                self.colourbar_location = colourbar_location
+                self.colourbar_orientation = "horizontal"
+            elif colourbar_location == "left" or colourbar_location == "right":
+                self.colourbar_location = colourbar_location
+                self.colourbar_orientation = "vertical"
+            elif colourbar_location == "None":
+                self.colourbar_location = "None"
+                self.colourbar_orientation = "None"
+            if self.colourbar_location != "None":
+                self.ax_list = self.add_objectless_colourbar(self.ax_list, minimum_value = min(colouring_array), maximum_value = max(colouring_array), cmap = this_colourmap, colorbarlabel = colourbarlabel)
+        
+        # optionally add annotations to each line segment (e.g., stream orders)
+        from matplotlib import patheffects
+
+        if labels_header != "":
+            labels_array = line_segments_df[labels_header].values
+            for label, line in zip(labels_array, lines_array):
+                # Segment is an array of two points [start, end], each with [x, y]
+                midpoint = line.mean(axis=0)
+                text = self.ax_list[0].text(midpoint[0], midpoint[1], str(label), fontsize=fontsize, ha='right', va='center')
+                # Applying a path effect to create a white border around each text
+                text.set_path_effects([
+                    patheffects.withStroke(linewidth=width_white_text_border, foreground="white")
+                ])
+
+        
+        
+        
+        print("Finished plotting line segments on your MapFigure.")
+
+    def add_strike_and_dip_symbols(self,dip_df,colour='black',linewidth=1,alpha=1, symbol_length=10, label_dip=True):
         """
         This function adds strike and dip symbols to the map from a pandas
         dataframe with the dip, dip direction, and strike
@@ -1999,6 +2142,7 @@ class MapFigure(object):
             linewidth: linewidth of the symbols
             alpha: transparency of the symbols.
             symbol_length: length of the strike element of the strike/dip symbol
+            label_dip: whether or not to label the dip. Default is True.
 
         Author: FJC
         """
@@ -2041,7 +2185,8 @@ class MapFigure(object):
             self.ax_list[0].plot([start_X[i], end_X],[start_Y[i], end_Y],c=colour, lw=linewidth,alpha=alpha)
             self.ax_list[0].plot([X[i], end_X_dd], [Y[i], end_Y_dd], c=colour, lw=linewidth,alpha=alpha)
             # add the dip labelling
-            self.ax_list[0].text(X[i], Y[i]-symbol_length, dips[i], fontsize=4, color=colour,alpha=alpha,bbox=bbox_props, ha= 'center',zorder=2)
+            if(label_dip):
+                self.ax_list[0].text(X[i], Y[i]-symbol_length, dips[i], fontsize=4, color=colour,alpha=alpha,bbox=bbox_props, ha= 'center',zorder=2)
 
 
     def plot_polygon_outlines(self,polygons, colour='black', linewidth=1, alpha = 1, legend=False, label=""):

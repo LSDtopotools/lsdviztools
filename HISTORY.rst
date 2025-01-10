@@ -114,3 +114,8 @@ Important fix
 * More flexibility in the points over hillshade function
 * Added the scalebar option to a number of plot types
 
+0.4.15 (2025-01-10)
+-------------------
+* Added function to plot line segments on a MapFigure object
+* Added lsdtt-basin-metrics as allowed driver function
+* Removed a depricated and unused import that threw an error

@@ -28,7 +28,6 @@ __all__ = ['ScaleBar',
 # Standard library modules.
 import sys
 import bisect
-import imp
 
 # Third party modules.
 from matplotlib.artist import Artist
