@@ -119,3 +119,4 @@ Important fix
 * Added function to plot line segments on a MapFigure object
 * Added lsdtt-basin-metrics as allowed driver function
 * Removed a depricated and unused import that threw an error
+* New functions to download DEMs based on HydroBASINS outlines 
