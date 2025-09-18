@@ -139,7 +139,7 @@ class lsdtt_driver(object):
 
         self.write_lsdtt_driver()
 
-        print("I've finised writing the driver file. Let me run LSDTT for you.")
+        print("I've finished writing the driver file. Let me run LSDTT for you.")
         subprocess.run([self.command_line_tool,self.driver_name+".driver"])
 
 
